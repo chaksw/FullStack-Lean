@@ -1,0 +1,11 @@
+Django/PROJECT/Data/*
+Django/PROJECT/SCGA_Project/*
+!PROJECT/SCGA_Project/SCGA
+Pipfile
+Pipfile.lock
+# do not trace any __pychache__ files
+__pycache__/
+*.pyc
+*.sqlite3
+*.log
+.DS_Store
