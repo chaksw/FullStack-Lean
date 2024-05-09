@@ -94,7 +94,7 @@ JavaScript 中几乎所有的东西（数组，函数）都是对象（Object)�
 函数在 JavaScript 中被视为常规变量，也意味着它们可以被当作另一个函数函数的输入参数，也可以作为函数的返回值
 
 <div align="center">
-<img src=https://github.com/chaksw/FullStack-Dev/blob/main/JavaScript/imgs/first-class-fcuntion.png" width=80%>
+<img src="https://github.com/chaksw/FullStack-Dev/blob/main/JavaScript/imgs/first-class-fcuntion.png" width=80%>
 </div>
 
 ## 1.5. Dynamic
