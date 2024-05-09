@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- make sure rel attribute is added to the link tag -->
+        <link href="style.css" rel="stylesheet" />
+        <!-- <style>
+            body {
+                background-color: green;
+            }
+        </style> -->
+        <title>Learning HTML & CSS</title>
+    </head>
+    <body>
+        <!-- using h1/h2/h3 block elements to descript heading -->
+        <h1>JavaScript is fun, but so is HTML & CSS!</h1>
+        <!-- use p to descript paragraph -->
+        <!-- We can use class and id in all kinds of elements -->
+        <p class="first">
+            You can learn JavaScript without HTML and CSS, but for DOM
+            manipulation it's useful to have some basic ideas of HTML & CSS. You
+            can learn more about it
+            <!-- Inline element, using href to insert a link  -->
+            <a href="https://www.udemy.com/user/jonasschmedtmann/">on Udemy</a>.
+        </p>
+        <h2>Another heading</h2>
+        <p class="second">Just another paragraph</p>
+        <!-- use img tag to insert image, enter the image source link in src attribute-->
+        <!-- the difference between class and id it's that id must be unique in oen html file -->
+        <!-- In html we use dash(-) to separate difference word in id or class -->
+        <img
+            id="course-image"
+            src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAoHCBIVFBYSFRUVEhYSEhYVGBUZGR4VFRgZGR4ZGRwVFhgdLi8lHCQsHxYaJjonLC8xNTU1HDE7Tj0zPy40NTQBDAwMEA8QHBISHTQrIys0NDQxOjQ1MTQ9Pj80NTY0NTExND40NDQxNjQxND4xNDgxMT01ODQxNDE2NDQ9MTo0Mf/AABEIALEBHAMBIgACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAAAwQBAgUGB//EADkQAAIBAgMECAUDAwQDAAAAAAECAAMRBBIhMUFRYQUTFCIycYGRBqHB0fBCUrEV4fEjYpLCM3KC/8QAGQEBAQEBAQEAAAAAAAAAAAAAAAECAwQF/8QAJxEBAQACAgEDAgcBAAAAAAAAAAECEQMhMRJBUQQTYXGBkaHh8CL/2gAMAwEAAhEDEQA/APrsRE0hERAREQEREBERAREQETzfx5m7GxBYZalMkqSALtlUuQQ2UOytpc6DSeU6NqVmq4emcS5ZqlBATXr7aVV6jkqCyv1lMW75Ftm4QPp8T5Z8QYxuvxlNqtRVq9rpu1gwyU8LVcUyoAuqqCQAwOY33mW671H6Org1M4rVgisatVlINEA2dkC1FJB7iIqbr3BJht9JtMWnyyjXD4ig7NUBatgVNnLEZshUd90ZixYBm6u2VQAL3ZnSOJcVsWxLq642sq1Cz4dFY4SqEdsy5bCmqqdQbKr3Kstxt9TifMaONDdF5aTOpTGUaQVH7QAqOgRe8SKS5VQgEhWYAbGtK2ExlVsaHL1Q7YoU7kYwZ1UZmwwslgFfM5UgWAP6NYNvq9onzDpTTH4pTWrO5ZHvSdEITKMtNxY2yZiADY65rd65nbEVP6aKiu7ZsbUAZajO7qodUW9NXzbASAFGhvbWB9IifJOjce7HB0i75KfUrkZmsCmI6NKHIyIBZXuts2j6MQZ9blCIiAiIgIiICIiAiIgIiICIiAiJVxWMyELlLEi+2wA2fSJLfAtROc/SqB3Qq96aFydLZQoa976eK2sYXpem6CoobIc3e0sMqByTY3OhtpfZA6MTnVul6armGZ9dABt0Ygi+0HKbTdOkkLrTs13BIOltFV/4cCBeiJx63TQWuKAQG7opbOAbtfULtNrfmssxt8JllMdbdiJyj05TAZirKKdRUa9gAWZk23sbZDeTU+klYoArd8AgmwsCxQXHmJFS9JYGnXptRfNkfLfKSrd1g4sRqNVEoUvhrDK6VB1uak+dc1ao4vZl1V2I2MZLT6aQqzZHAVgu4nUMb+Vl+ckTpZCyLlYGqFIvbTMCbHnp84FTEfC+FqO1R1Zi7VWYFiFJqoaT3A29xmA4ZjMVfhXCOjU3R6ivUFRs9R2ZmVDSW7E3sqnQbiL7dZ3JDVrZbk5QLgC5tcncNNTCybcml8MUVZWFTEXQrlvVLWCWyi51toBtm2K+GcM9RqxFRajutQutV0IdEVFZcpspCrbyYjUG0nqdM01626v/AKJs2zewUWN7a3v5SQdJoctgSHKgHd3iQP4JvCKw+HqPViizVnQVlrZWqMbsrZwDb9ObvEbzrI6XwthFqdeFqddnDGt1r9YbfpZs2qnYV2GWz0wl3GVu4VBNhtZ8gt7gzH9Yp9zusOsIAvYWJLLY8PAYEGL+GcJVZnqq1XMXIUuwRc/jKothc7ybnnJqfQdFaYpf6jIj50D1HcoQpQBSxJsATobjWdOee6a+JDh66UepLKaeepVLZQMxYKlMWOdjkYkXAAG3UQJKPwvhkFNUNVVp1EqlesYio6CmFaoDty9UlgLAW2W0ndnNq9L01aohV/8ASplydMpUBDob21zDbNf63SyCpZsrZtdP0lATa+y7j28oHUiUX6SQM6ZWvTXM2gtY7La/nKRN0ygUOVcAsw3bmVb+ucEQOnESljMfkbLlzd0Ne9gLlhrpp4b3+0SbF2Jzv6sgqGkVYFVDEmwFiubS510v7QnSqlBUCPYkC1gCL8b2F76WF7mw2m0DoxKVXpJFZkIa6Uy58O4Fsu3xWGz12ayGp00ioXyvZXKbhqAGv5agesDpxMI1wDxAPvMwEREBETV3sLwNpFUoIxBZVYjYSASPKblX0uVBO7X5Tbq34r842I+pTNmyrmOmawvbheZWkgFgqgHcAANgGzyAHpN+rfivzjqn4r84EbUEIsUUjbYqCNlv40haCAghFBXYbC40A0O7QAekk6p+K/OOqfivzkCQdkp5+syLn/dbvDyMm6p+K/OOrfivzll14SyXyjGGpi9kXUgnujUjYTxmwpJe+Vb7b2F9pN/ck+siqVWUkG2k17Q3KFSLhaYFgiAG1xlFjbZfyuZkYenp3E7tsvdGluHCRdoblHaG5QLUjqUUbxKrag6gHVSCDrwIB9JD2huUdoblBLpL2enqci3bxGwu2/XjMmgl75FvxsPP+ZD2huUdoblAlOHpkk5FuRYnKNRe9j6gGY7NT07id03HdGh1Nxw1J95H2huUdoblAtSDEYSm9s6JUy3y5lDWuLG19mk07Q3KO0NygS9np3JyLcixOUXI4HlDYamdCiEcCoI/SP8Aqv8AxHCRdoblHaG5QJez07k5VuwIJyi5BvcHjtPvMHC07WyJa97ZRbdu9B7SPtDco7Q3KBakNbCo/jQNoBrqCBcgEb9SfeR9oblHaG5QJ+rW+bKL8ba6abfIn3mvUU7WyLYbsotw2eUi7Q3KDiT/ALYE/Vr+0bMuwbOHlNOy07WyJY62yi3DZ6CR9oblMLiybgZdNv56GBbAiVGxRGpygSWjVzcIE0REBIaovYDebSaRnxL5iBvXwgZlYlgUNxawvqDYm17abARffea1MGCS2d1vbQEAaemvr5bNJulNg7MWurWyr+2wsR73N9uttwkjKbg3sBe44zKoMNg8jE5nYm/ia415bzptlsmVMRRdmUhiACL2YqRYgnQaNcaWOySYlWKnKQGykKTqA1tCRv1tAmzDjGYcZy+rxApouZTUBUO+WyEfqIU6+l78980ejidmdbHS9hddDqTYX14W110GkDr5hxkFegrFSdtNswsba8+PkdN+0Aij1OJsO+mYAXOXQm5ubeRA9Jaoo4BzHMb6G1tLDbbneBFjcOWLDaGFtGynZbbcESKjgyqqgBsoAF2DGw4knWXsp4RlPCXaKnUPw+Y+8dQ/D5j7y3lPCMp4RsVOofh8x946h+HzH3lvKeEZTwjYqdQ/D5j7x1D8PmPvLeU8IynhGxU6h+HzH3jqH4fMfeW8p4RlPCNip1D8PmPvHUPw+Y+8t5TwjKeEbFTqH4fMfeOofh8x95bImI2KvUPw+Y+8dQ/D5j7y1ECr1D8PmPvHUPw+Y+8tRAq9Q/D5j7wcM3Ae4lqIFbs78PmPvNOysNctr/7r8TprptMkSnU6wsXuhFgumh7tt3/tv4cJD0uldgoolQTcMxsculgSDtA1JAsTYC4BJEtuuhI2FZhYrcHdcETZKbKRcWvzvsky0j1ZUHUqQDexuRtuNnpsm2J2r6/SJbZ2tjMQImkJGfEvmJJIz4l8xAuWiZiZViJmIGImYgYiZiBiJmIGImZiAiJmBiJmIGImYgYiZiBFV3ef3mklb89ppn5CWI1nJ6UxdZXSlTpl8+Q5rPlN3s93XRMqBm1NySoAOs65cAXIAA1JkdPEoxspVja9gQTbjFm5ZSXSCv1qogSzuLBi28WNztGt7SuXxf7E2nhyt+rznTz8hMltL2G2JNTR5csvi/2JsO8Hfpv4SfCPWJPWKoFha3GwuNp33lrreQjreQjZpmJjreQjreQjZpJT3+f2keK2r6/STJ+ewkOK2r6/SFBECJUJGfEvmJJIz4l8xAuxETKkREBERAREQERMQMTy+JxdfE13w9B+pp0jlqVRqxOoyrw1BGltl77AfTzy/wAKuKdXEYd9KgrM4vtZTvHHSx/+p24pPTll5sn+rlyd2T2qQdA4mmQ9HF1Cbi4qk1FIvrpfh78RtnpBOD0rgK+Z6wxjUKYAbLkBVQAAdbjaQT6zzb4uvVo4ajUqMFxWIe7nRiilQEvzOb+4jm3eP7lsuuvGvP6N/T4TLk+3JZvd+ep5r361lOwg222INpuWG+eI6f6KpYNExOHvTdKii2YkODe6sCddn5pbv0qQrVHz3ISwVb2A266eU+fyc9xsxk3bdT4evLgxkmcv/Pft31+H6uwJr1gva4vwvr7TgYys2HFcUzcLQZ1B1ytx+d5SwHw/QqYYVmZjVqJ1hrZjdWIvxtpsN+E9P0tnNhcs+tXXXff8PJy24ZanfW/h0ulMW64vCIrELUNXOBsbKotfynZaqoIBIBOwEi/oJ4HotrDo8gXscWQONixtKXR2GOKQt1D4mtVLE1mc06VPU5Qp32Fjltpe2yZ5rePkuE71bP2dPouL78zzt1JZ/M/OPppkcpdC4arToolVxUdQRmFzca2BJ1NhpffaXZuXc2zlNWyfuodLqxVcoZu+LhQSbZW4W32kPRNFwxYhlADLZrg65DoDfTunfLRp18x7y5btYW1A3a2mHWvuZB6HnxnT1daZ0uQ/h9Zql7C9r2F7bL77TZ/D6zNWIpDUOrHMwCorWFjvYnSxOwfbWb1qgRSxBIG4an0lU4umTco1+agnu94fzpzmWpUuBxCugdXDqxazggggMQNV02SxKNLH0wAqqygZVACgAA6ADXQCXoLq26Wqf57CQ4ravr9JNT/PYSHFbV9fpCAiBE0hIz4l8xJJGfEvmIF2IiZUiIgIiICIiAiIgYnJ6W6EpV7M2ZXXw1E7rjlff+bJ1RMy45XG7lSyWarzS/C2YjrsRWrKDcIWIU+ep+VjOj0l0NRrUhRYZQtspXulCBYFeGk6ZiXPPLOay8GE+3fVj1fl5zD/AAwM6vWrVcR1Zuiue6CNhI3n81nVr9HgtnVijWsSN/mJei08+XDhlPTY65c2du7VFMGiK5INQspzX7zMLagDnwnjR2TqmK4mtTp94nDFrNfXuW4E+fMz38qt0dQLZzSplr3zFQWvxvxnq+myx4J6cZ1+H9vPy43ku64Xw90PelhKrllaj1jBdLEVGJGa+uwg+s2q/CoDOaVerQWoSWpqe7r+39vz9tJ6YROfJrkyuVnm7deG3hmsL58qPR2BShTWkl7KDa5ueJ/wNJazchN3kUskk1Eyu7bb3WteuqKWcqijazEKo3akyPDY6k9wlSnUI2hWDEedjOX8U4d3oFEUuSy93WxsytY21GgPCUfhfAVUqM70hSU0UQam5KhQdCSbd3TZO048bx3K3v4ea8uU5ZjJ18vVZuQmKhuvrMTJW68NZxr0RVZmtcLc7h6/bnNOsqfsG/f7S31fMe8dXzHvIqmKlTeg3b/eb03cnvKALbb75Z6vmPeOr5j3gTU/z2EhxW1fX6SZPz2EhxW1fX6QAiBE0hIz4l8xJJGfEvmIF2IiZUiIgJgzMwYEK1lLFd4/sf8AsPeTWmmUEgkajYff7n3m1+UDNotMX5RflAzaLTF+UX5QM2i0xflF+UDNotMX5RflAzaLTF+UX5QM2i0xflF+UDD/AH/iRSVjI8/ISxKorTr/AL1Op/SL8t30g08Rfxpa53a29pYxGLVAC1+8bAKrOxNidFQEnQHdNKGPR2ygOGsTZqb07gWBK5wL2uNnGXsS0QwUZiC1tSNAfKbv4fWZzchFQ3X1kpEM5/SPTWGoMlOrUCvVPcQKzu3MIgJtztOhPKfEfwzUrVxiaJpioyJTLVL9xFL5sq5WBurkW7vrsiFeopurKGUhlYBgwNwQdQQRtE3lDoTCVKVBKb5cyAjulmFiSbFnJZiL6m+svyKtJ+ewkOK2r6/STU/z2EhxW1fX6QAiBE0hIz4l8xJJGfEvmIF2IiZUiIgIiICIiAiIgJrmEyZSxNF2IKuUtfdcHzGw+v8AkLmYRmE5b4bEE6V7C23It7+VtRa+/fyvNq2GrXJStkzEmxUMBs2XOlhw/wAB0swmbylQw9RWu1QuMtsuVVF/3ab/AM4Wt7oGcwjMJTai+bMKhUZgStgQVAUZddmw6i3i5SA4OrbKtdgLb1DNfW5zHXePK3uHTzCMwnPShWB1q5lstu6AbgqWva2hAYbf1ctcdmr6HrrkXHgUCxI18wB/iB0GP1/iRTf+80molcvpxCVXRmF2ByoXIupsSoR9NNpUiVuh6TCpcoyJlYqTTCBjmy7rMO6FPfUEkkjQWHRp0q/6nU6blA8jMvSrX7rqBc7QDpYWGzjcy760LcP4fWaUgwUBiGa2pGgPpN38PrJSKtcBgUzZSd4NmHlK4w/Cs2391/TbLL0EJuRc+Z/ia9mp/tHzmVQjCm//AJX2qbX4et9ZbvNBSXTTZs5b5sqgaCBcp/nsJDitq+v0kyfnsJDitq+v0gBECJpCRnxL5iSSM+JfMQLsREypERAREQEREBERAREQEREBERAREQEREDQ7pXXGUzlsQcxKjTaV2ywR6TTqvLTZpsmct+yzXuiXGUzlswOcErodQu2YGMp2U5hZ/Dptta/ltEl6ry02aQaANrhTlNxpsPEcJJM/ewuvZD26lcDMLm1tDv1H5uly0r9mXgv/ABG4WHsJLZuI9v7zaK9XF01YqWAKoajDaVUfqNtn1seBkf8AVKGnfXUqBobd6+XXnYydsMpJJCksLElQSRwPHSOyr+1P+Ai69km/dtRqq4zKbg77W2gHfyIkeMxSUlDPoC2UWFzfU/wCfSSpTsLLYDgBYTWthw4swVhe9mXMPYwqSmwIzDUNYg8iBrIsVtX1+kmVbflpDitq+v0lgCIESoSM+JfMSSRnxL5iBdiImVIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAlbFbV9fpLMrYravr9JYAiBEqEjPiXzEzEC5ERMqREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBK2K2r6/SIlgCIiVH/2Q==" />
+        <form id="your-name">
+            <h2>Your name Here</h2>
+            <p class="first">Please fill in this form :)</p>
+            <!-- use type to define type of input box, use placeholder to defin default text in input box -->
+            <input type="text" placeholder="Your name" />
+            <button>OK!</button>
+        </form>
+        <div>
+            <h3>The CSS Box Model</h3>
+            <li>Content: text, images, etc;</li>
+            <li>
+                Padding: transparent area around the content, inside of the box;
+            </li>
+            <li>Border: gose around the padding and the content;</li>
+            <li>Margin: space between boxes;</li>
+            <li>
+                Fill area: area that gets filled with background color or
+                background image;
+            </li>
+        </div>
+    </body>
+</html>
