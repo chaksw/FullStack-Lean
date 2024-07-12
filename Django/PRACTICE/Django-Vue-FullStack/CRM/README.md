@@ -1,26 +1,26 @@
--   [1. VueJS-based full stack CRM Project](#1-vuejs-based-full-stack-crm-project)
-    -   [1.1. Vue Installation and Creation](#11-vue-installation-and-creation)
-        -   [1.1.1. Dependencies \& Libraries (local)](#111-dependencies--libraries-local)
-        -   [1.1.2. Project setup \& execution](#112-project-setup--execution)
--   [2. Project structure](#2-project-structure)
-    -   [2.1. VueJs based front-end](#21-vuejs-based-front-end)
-        -   [2.1.1. `this.$`](#211-this)
-        -   [2.1.2. Interaction](#212-interaction)
-            -   [2.1.2.1. `@submit.prevent`](#2121-submitprevent)
-            -   [2.1.2.2. `v-model`](#2122-v-model)
-            -   [2.1.2.3. `v-if` `v-for` `v-bind`](#2123-v-if-v-for-v-bind)
-    -   [2.2. Django](#22-django)
-        -   [2.2.1. Dependencies (Pipenv usage)](#221-dependencies-pipenv-usage)
-        -   [2.2.2. Djoser](#222-djoser)
-        -   [2.2.3. Django Rest Framework Authentication (Token)](#223-django-rest-framework-authentication-token)
-            -   [2.2.3.1. Configuration of Token Based Authentication](#2231-configuration-of-token-based-authentication)
+- [1. VueJS-based full stack CRM Project](#1-vuejs-based-full-stack-crm-project)
+  - [1.1. Vue Installation and Creation](#11-vue-installation-and-creation)
+    - [1.1.1. Dependencies \& Libraries (local)](#111-dependencies--libraries-local)
+    - [1.1.2. Project setup \& execution](#112-project-setup--execution)
+- [2. Project structure](#2-project-structure)
+  - [2.1. VueJs based front-end](#21-vuejs-based-front-end)
+    - [2.1.1. `this.$`](#211-this)
+    - [2.1.2. Interaction](#212-interaction)
+      - [2.1.2.1. `@submit.prevent`](#2121-submitprevent)
+      - [2.1.2.2. `v-model`](#2122-v-model)
+      - [2.1.2.3. `v-if` `v-for` `v-bind`](#2123-v-if-v-for-v-bind)
+  - [2.2. Django](#22-django)
+    - [2.2.1. Dependencies (Pipenv usage)](#221-dependencies-pipenv-usage)
+    - [2.2.2. Djoser](#222-djoser)
+    - [2.2.3. Django Rest Framework Authentication (Token)](#223-django-rest-framework-authentication-token)
+      - [2.2.3.1. Configuration of Token Based Authentication](#2231-configuration-of-token-based-authentication)
 
 # 1. [VueJS](https://vuejs.org/)-based full stack CRM Project
 
 ## 1.1. Vue Installation and Creation
 
 ```bash
-npm install -g @vue/cli
+npm install -g @vue/cli (not recommanded anymore)
 ```
 
 Check vue version after installation
