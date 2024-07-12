@@ -20,7 +20,7 @@
 ## 1.1. Vue Installation and Creation
 
 ```bash
-npm install -g @vue/cli (not recommanded anymore)
+npm install -g @vue/cli 
 ```
 
 Check vue version after installation
@@ -32,7 +32,7 @@ vue --version
 Create project (name： ganarcrm_vue)
 
 ```bash
-vue create ganarcrm_vue
+vue create ganarcrm_vue # (not recommanded anymore)
 ```
 
 ### 1.1.1. Dependencies & Libraries (local)
