@@ -8,7 +8,7 @@ import Parent from "./components/Parent.vue";
 export default {
     data() {
         return {
-            message: "Applicn Data",
+            message: "Application Data",
         };
     },
     components: {
