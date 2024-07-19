@@ -1,6 +1,6 @@
 <template>
     <h3>Component Event</h3>
-    <!-- listener (kebab-case) -->
+    <!-- line component event (some-event)(kebab-case) to listener  -->
     <Child @some-event="getHandle" />
     <p>{{ message }}</p>
 </template>
@@ -16,7 +16,7 @@ export default {
         Child,
     },
     methods: {
-        // listener event, here argument link to data from $emit
+        // define logic for listener event, here argument link to data from this.$emit
         getHandle(data) {
             console.log("triggle child event", data);
             this.message = data;

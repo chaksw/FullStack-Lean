@@ -18,7 +18,7 @@ import { isReactive } from "vue";
 export default {
     data() {
         return {
-            // 属性绑定布尔值, 条件渲染
+            // 属性绑定布尔值, 通过定义
             isActive: false,
             hasError: true,
             // 将属性创建为对象

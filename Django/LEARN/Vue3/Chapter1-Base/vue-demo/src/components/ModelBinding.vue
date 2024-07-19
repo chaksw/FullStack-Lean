@@ -21,7 +21,7 @@
     <form action="">
         <div>Checked names: {{ checkedNames }}</div>
 
-        <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+        <input type="checkbox" id="jack" value="jack" v-model="checkedNames">
         <label for="jack">Jack</label>
 
         <input type="checkbox" id="john" value="John" v-model="checkedNames">
@@ -96,7 +96,7 @@ export default {
                 {text: 'One', value: 'A'},
                 {text: 'Two', value: 'B'},
                 {text: 'Three', value: 'C'},
-                {text: ' asd', value: '613'}
+                {text: 'Four', value: 'D'}
             ]
         };
     },

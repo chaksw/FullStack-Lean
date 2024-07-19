@@ -5,7 +5,7 @@
 export default {
     data() {
         return {
-            message: 'asdasd',
+            message: 'message',
         }
     }
 }
@@ -14,6 +14,6 @@ export default {
 <style>
 .container{
     font-size: 30px;
-    color: red
+    color: #569856
 }
 </style>

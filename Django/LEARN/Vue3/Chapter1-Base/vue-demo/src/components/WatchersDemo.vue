@@ -12,7 +12,7 @@ export default {
     },
     methods: {
         updateHandle() {
-            this.message += "World";
+            this.message += " World";
         },
     },
     watch: {

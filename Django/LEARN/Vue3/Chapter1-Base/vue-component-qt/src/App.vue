@@ -1,8 +1,9 @@
 <template>
-    <Header />
+    <!-- <Header />
     <Main />
-    <Aside />
-    <ComponentA />
+    <Aside /> -->
+    <Parent />
+    <!-- <ComponentA /> -->
 </template>
 
 <script>

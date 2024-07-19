@@ -35,7 +35,16 @@ export default {
             this.names = this.names.concat(["sakura"]);
         },
         ConcatHandle() {
+            // don't use push to concat two array.
+            // this.nums1.push(this.nums2);
+            for (let i = 0; i < this.nums2.length; i++){
+                this.nums1.push(this.nums2[i])
+            }
+            console.log(this.nums1)
+            // this.nums1.concat(this.nums2);
+            // console.log(this.nums1)
             this.nums1 = this.nums1.concat(this.nums2);
+            console.log(this.nums1)
         },
     },
 };

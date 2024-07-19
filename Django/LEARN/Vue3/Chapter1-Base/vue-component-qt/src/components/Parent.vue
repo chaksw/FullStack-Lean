@@ -9,6 +9,8 @@
         :names="names"
         :userInfo="userInfo" />
 </template>
+
+
 <script>
 import Child from "./Child.vue";
 export default {

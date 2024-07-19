@@ -9,13 +9,13 @@ export default {
     data() {
         return { search: "" };
     },
+    components: {
+        SearchComponent,
+    },
     methods: {
         getSearch(data) {
             this.search = data;
         },
-    },
-    components: {
-        SearchComponent,
     },
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
     <!-- <ComponentEvent /> -->
-    <!-- <Main /> -->
-    <ComponentA />
+    <Main />
+    <!-- <ComponentA /> -->
 </template>
 <script>
 import ComponentEvent from "./components/ComponentEvent.vue";

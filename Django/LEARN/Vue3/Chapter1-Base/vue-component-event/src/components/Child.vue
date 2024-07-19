@@ -11,7 +11,7 @@ export default {
     },
     methods: {
         clickEventHandle() {
-            // use $emit to declarate component event, where 2 argument accepted, first for listener name in parent component (camelCase), second for data to transfer
+            // use $emit to declarate component customized event, where 2 argument accepted, first for listener name in parent component (camelCase), second for data to transfer
             this.$emit("someEvent", this.msg);
         },
     },

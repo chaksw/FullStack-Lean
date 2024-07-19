@@ -5,11 +5,13 @@
     </p>
     <p :style="styleObject">Style Binding 2</p>
 </template>
+
+
 <script>
 export default {
     data() {
         return {
-            activeColor: "green",
+            activeColor: "cyan",
             fontSize: 30,
             styleObject: {
                 color: "red",

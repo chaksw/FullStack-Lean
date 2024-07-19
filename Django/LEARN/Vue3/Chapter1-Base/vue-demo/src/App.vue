@@ -6,7 +6,7 @@ import ListDemo from "./components/listDemo.vue";
 import KeyDemo from "./components/keyDemo.vue";
 import EventDemo1 from "./components/eventDemo1.vue";
 import EventDemo2 from "./components/eventDemo2.vue";
-import EventDemo3 from "./components/eventDemo3..vue";
+import EventDemo3 from "./components/eventDemo3.vue";
 import EventDemo4 from "./components/eventDemo4.vue";
 import EventDemo5 from "./components/eventDemo5.vue";
 import EventDemo6 from "./components/eventDemo6.vue";
@@ -47,6 +47,7 @@ export default {
     <!-- <WatchersDemo /> -->
     <!-- <ModelBinding /> -->
     <!-- <TemplateRefs/> -->
-    <ComponentBasic/>
+    <!-- <ComponentBasic/> -->
+    <!-- this format also work -->
     <component-basic/>
 </template>
