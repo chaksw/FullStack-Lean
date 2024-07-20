@@ -106,6 +106,9 @@
 > 2. section 5-17.1: vue-demo
 > 3. setion 17.2-19: vue-component-qt
 > 4. section 20-22: vue-component-event
+> 5. section 24-25: vue-component-slot
+> 6. section 26-29: vue-component-lifecycle
+> 7. section 30: vue-component-data
 
 # 1. [VueJS 3.0](https://cn.vuejs.org/)
 
