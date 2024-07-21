@@ -1,29 +1,34 @@
 <template>
     <div>
-        <div style="width: 100px; height: 30px; border: 1px solid">
-            <!-- transfer a dynamic data using ':' -->
-            <aside-item :isActive="curActive === 'dongman'" @active-event="curActive = 'dongman'"> 动漫 </aside-item>
-        </div>
-        <div style="width: 100px; height: 30px; border: 1px solid">
-            <!-- transfer a dynamic data using ':' -->
-            <aside-item :isActive="curActive === 'dianjing'" @active-event="curActive = 'dianjing'"> 电竞 </aside-item>
-        </div>
+        <div style="width: 250px"></div>
+        <title-menu :isActive="select" @active-event="setActive">
+            <template #title>发现频道</template>
+            <template #icon>&gt;</template>
+        </title-menu>
     </div>
 </template>
 
 <script>
-import asideItem from './components/aside-item.vue';
+import titleMenu from './components/title-menu.vue';
 export default {
     data() {
         return {
-            curActive: '',
+            select: false,
         };
     },
     components: {
-        asideItem,
+        titleMenu,
     },
+    // provide: {
+    //     isActive: '',
+    // },
 
-    methods: {},
+    methods: {
+        setActive(e) {
+            this.select = !this.select;
+            console.log(e, this.select);
+        },
+    },
 };
 </script>
-<style scoped></style>
+<style></style>

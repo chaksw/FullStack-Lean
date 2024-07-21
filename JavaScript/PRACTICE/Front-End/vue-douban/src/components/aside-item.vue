@@ -10,9 +10,10 @@ export default {
         isActive: {
             type: Boolean,
             // required: true,
-            default: false,
+            default: true,
         },
     },
+    // inject: ['isActive'],
     methods: {
         handleClick() {
             this.$emit('activeEvent', 123);
@@ -24,8 +25,6 @@ export default {
 <style scoped>
 .item {
     cursor: pointer;
-    width: 100%;
-    height: 100%;
     transition: 0.2s;
 }
 .active {
@@ -33,6 +32,6 @@ export default {
 }
 
 .item:hover {
-    background: #f4f4f4;
+    background: red;
 }
 </style>
