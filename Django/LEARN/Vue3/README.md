@@ -1,5 +1,6 @@
 - [1. VueJS 3.0](#1-vuejs-30)
-  - [1.1. 1.1 DOM (Document Object Model) 概述](#11-11-dom-document-object-model-概述)
+  - [What is Vue ?](#what-is-vue-)
+  - [1.1. DOM (Document Object Model) 概述](#11-dom-document-object-model-概述)
 - [2. Chapter 1: Vue Base](#2-chapter-1-vue-base)
   - [2.1. Precondition](#21-precondition)
   - [2.2. Create Vue Project](#22-create-vue-project)
@@ -112,7 +113,28 @@
 
 # 1. [VueJS 3.0](https://cn.vuejs.org/)
 
-## 1.1. 1.1 [DOM (Document Object Model) 概述](https://developer.mozilla.org/zh-CN/docs/Web/API/Document_Object_Model/Introduction)
+## What is Vue ?
+
+前端是连接终端设备与人的技术，而 `vue` 是实现这些技术的其中一种方式。
+
+`vue` 是一种前端开发框架，区别于常规的 `html`, `css`, 它主要解决前端开发中复杂的DOM操作
+
+特点：
+- 渐进式: 允许网页部分组件用 `vue` 开发，而不是必须整个网页都必须用 `vue` 
+- 组件化: 允许网页以组件为单位进行开发
+- 响应式:  
+
+应用场景:
+- 前台的部分页面
+- 中后台的全部页面
+
+
+
+> 完整的 `vue` 前端开发包含：`html + css`, `Javascript`, `css3`, `HTML5`, `thrid-party libarry`, `网络通信，` `ES6+`, `webpack`, `模块化，` `包管理器，` `css预编译器`。但这样的学习曲线过于漫长，而使用（或者体验）`vue` 只需要掌握 `html + css`, `Javascript`，那何不先将 `vue` 使用起来，等遇到具体的问题或者相应知识的缺乏时，再进行后续的补充。
+
+ 
+
+## 1.1. [DOM (Document Object Model) 概述](https://developer.mozilla.org/zh-CN/docs/Web/API/Document_Object_Model/Introduction)
 
 # 2. Chapter 1: Vue Base
 
