@@ -1,6 +1,11 @@
-import './assets/main.css'
+import './assets/main.css';
+import { createApp } from 'vue';
+import App from './App.vue';
+import channelServ from './services/channel';
+async function test() {
+    var channels = await channelServ.getChannels();
+    console.log(channels);
+}
 
-import { createApp } from 'vue'
-import App from './App.vue'
-
-createApp(App).mount('#app')
+test();
+createApp(App).mount('#app');
