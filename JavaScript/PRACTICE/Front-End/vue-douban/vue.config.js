@@ -10,8 +10,8 @@ module.exports = {
             },
             onProxyReq(proxyReq) {
                 // add custom header to request
-                proxyReq.setHeader('Origin', 'https://www.bilibili.com');
-                proxyReq.setHeader('Referer', 'https://www.bilibili.com/?spm_id_from=333.337.0.0');
+                proxyReq.setHeader('origin', 'https://www.bilibili.com');
+                proxyReq.setHeader('referer', 'https://www.bilibili.com/?spm_id_from=333.1365.0.0');
                 // or log the req
             },
         },
