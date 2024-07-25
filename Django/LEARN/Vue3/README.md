@@ -1,108 +1,116 @@
--   [1. VueJS 3.0](#1-vuejs-30)
-    -   [What is Vue ?](#what-is-vue-)
-    -   [1.1. DOM (Document Object Model) 概述](#11-dom-document-object-model-概述)
--   [2. Chapter 1: Vue Base](#2-chapter-1-vue-base)
-    -   [2.1. Precondition](#21-precondition)
-    -   [2.2. Create Vue Project](#22-create-vue-project)
-    -   [2.3. 安装`cnpm`](#23-安装cnpm)
--   [3. Vue Project Structure](#3-vue-project-structure)
--   [4. `Template` Syntax - 模版语法 `{{ }}`](#4-template-syntax---模版语法--)
-    -   [4.1. Text Interpolation - 文本插值 - `{{ variable }}`](#41-text-interpolation---文本插值----variable-)
-    -   [4.2. Using `JavaScript` Expressions - `{{ expression }}`](#42-using-javascript-expressions----expression-)
-    -   [4.3. 原始`HTML` - `v-html`](#43-原始html---v-html)
--   [5. Attribute Bindings - 属性绑定 - `v-bind:attribute` | `:arrtribute`](#5-attribute-bindings---属性绑定---v-bindattribute--arrtribute)
-    -   [5.0.1. Shorthand - 简写](#501-shorthand---简写)
-    -   [5.1. Boolean Attributes - 布尔型 Attribute](#51-boolean-attributes---布尔型-attribute)
-    -   [5.2. Dynamically Binding Multiple Attributes - 动态绑定多个值](#52-dynamically-binding-multiple-attributes---动态绑定多个值)
--   [6. Conditional Rendering - 条件渲染](#6-conditional-rendering---条件渲染)
-    -   [6.1. `v-if`](#61-v-if)
-    -   [6.2. `v-else`](#62-v-else)
-    -   [6.3. `v-else-if`](#63-v-else-if)
-    -   [6.4. `v-show`](#64-v-show)
-    -   [6.5. `v-if` VS `v-show`](#65-v-if-vs-v-show)
--   [7. List Rendering - 列表渲染 `v-for`](#7-list-rendering---列表渲染-v-for)
-    -   [7.1. 复杂数据](#71-复杂数据)
-    -   [7.2. `v-for`对象](#72-v-for对象)
-    -   [7.3. 通过 key 管理状态 - `:key`](#73-通过-key-管理状态---key)
-        -   [7.3.1. key 的来源](#731-key-的来源)
--   [8. Event Handing - 事件处理 - `v-on:event` |`@event`](#8-event-handing---事件处理---v-onevent-event)
-    -   [8.1. Inline Handlers - 内联事件处理器](#81-inline-handlers---内联事件处理器)
-    -   [8.2. Method Handlers - 方法事件处理器](#82-method-handlers---方法事件处理器)
-    -   [8.3. Method vs. Inline Detection - 方法事件 | 内联事件辨别](#83-method-vs-inline-detection---方法事件--内联事件辨别)
-    -   [8.4. 事件参数](#84-事件参数)
-        -   [8.4.1. 获取`event`对象](#841-获取event对象)
-    -   [8.5. 传递参数](#85-传递参数)
-    -   [8.6. 传递参数过程获取`event`](#86-传递参数过程获取event)
--   [9. Event Modifiers - 事件修饰符](#9-event-modifiers---事件修饰符)
-    -   [9.1. 补充知识：`event.preventDefault()` 与 `event.stopPropagation()`](#91-补充知识eventpreventdefault-与-eventstoppropagation)
-    -   [9.2. 附录：表单｜事件｜按键修饰符修饰符详解](#92-附录表单事件按键修饰符修饰符详解)
-    -   [9.3. Examples](#93-examples)
-        -   [9.3.1. `.prevent` 阻止默认事件 \& `stop` 阻止事件进一步捕获或冒泡](#931-prevent-阻止默认事件--stop-阻止事件进一步捕获或冒泡)
--   [10. Array Change Watchers - Detection](#10-array-change-watchers---detection)
-    -   [10.1. Method to change - 变更方法](#101-method-to-change---变更方法)
-    -   [10.2. 替换一个数组](#102-替换一个数组)
--   [11. Computed Properties - 计算属性 `computed`](#11-computed-properties---计算属性-computed)
-    -   [11.1. 计算属性缓存 vs 方法](#111-计算属性缓存-vs-方法)
--   [12. Class Binding - Class 绑定](#12-class-binding---class-绑定)
--   [13. Style Banding - Style 绑定](#13-style-banding---style-绑定)
--   [14. Wathcers - 侦听器](#14-wathcers---侦听器)
--   [15. Form Input Bindings - 表单输入绑定 `v-model`](#15-form-input-bindings---表单输入绑定-v-model)
-    -   [15.1. Basic Usage - 基本用法](#151-basic-usage---基本用法)
-    -   [15.2. Value Bindings - 值绑定](#152-value-bindings---值绑定)
-    -   [15.3. Modifiers - 修饰符 `.lazy`, `.number`, `trim`](#153-modifiers---修饰符-lazy-number-trim)
-        -   [15.3.1. `.lazy`](#1531-lazy)
-        -   [15.3.2. `.number`](#1532-number)
-        -   [15.3.3. `.trim`](#1533-trim)
--   [16. Template Refs - 模板引用 `ref`](#16-template-refs---模板引用-ref)
-    -   [16.1. Accessing the Refs - 访问模板引用](#161-accessing-the-refs---访问模板引用)
--   [17. Components Basics - 组件组成](#17-components-basics---组件组成)
-    -   [17.1. 定义一个组件](#171-定义一个组件)
-    -   [17.2. 使用组件](#172-使用组件)
-    -   [17.3. 组件嵌套关系](#173-组件嵌套关系)
-        -   [17.3.1. 创建组件及引用关系](#1731-创建组件及引用关系)
--   [18. Component Registration - 组件注册](#18-component-registration---组件注册)
-    -   [18.1. 全局注册(不写了，反正不推荐使用)](#181-全局注册不写了反正不推荐使用)
--   [19. Props - 组件传递数据 - 父传子](#19-props---组件传递数据---父传子)
-    -   [19.1. 基础用法（静态\&动态）- 字符串声明形式 - String Declaration](#191-基础用法静态动态--字符串声明形式---string-declaration)
-    -   [19.2. 传递多种数据类型 - Passing Different Value Types](#192-传递多种数据类型---passing-different-value-types)
-    -   [19.3. 对象形式的 `props` 声明 \& Props 校验 - Object Declaration \& Prop Validation](#193-对象形式的-props-声明--props-校验---object-declaration--prop-validation)
-        -   [19.3.1. 对象形式的 `props` 声明](#1931-对象形式的-props-声明)
-        -   [19.3.2. Prop 校验](#1932-prop-校验)
--   [20. 组件事件 - Component Events 子传父 - `this.$emit`](#20-组件事件---component-events-子传父---thisemit)
--   [21. Component v-model - 组件 v-model](#21-component-v-model---组件-v-model)
--   [22. 组件数据传递 - 使用`props`实现子传父 (好垃圾的方法。)](#22-组件数据传递---使用props实现子传父-好垃圾的方法)
--   [23. Fallthrough Attributes - 透传 Attributes (不常用)](#23-fallthrough-attributes---透传-attributes-不常用)
--   [24. Slots - 插槽 `<slot></slot>` (父传子)](#24-slots---插槽-slotslot-父传子)
-    -   [24.1. Basic](#241-basic)
-    -   [24.2. Render Scope - 渲染作用域](#242-render-scope---渲染作用域)
-    -   [24.3. Fallback Content - 插槽默认值](#243-fallback-content---插槽默认值)
-    -   [24.4. Named Slot - 具名插槽 `v-slot` | `#`](#244-named-slot---具名插槽-v-slot--)
--   [25. Scoped Slots - 作用域插槽： 插槽内容中使用子组件域内数据](#25-scoped-slots---作用域插槽-插槽内容中使用子组件域内数据)
-    -   [25.1. 具体步骤：（非具名） `<ChildComponent v-slot='slotProps'>`](#251-具体步骤非具名-childcomponent-v-slotslotprops)
-    -   [25.2. 具体步骤 (具名) `<template #name="slotProps">`](#252-具体步骤-具名-template-nameslotprops)
--   [26. Lifecycle Hook - 组件生命周期钩子](#26-lifecycle-hook---组件生命周期钩子)
-    -   [26.1. Lifecycle Diagram](#261-lifecycle-diagram)
-    -   [26.2. Options: Lifecycle](#262-options-lifecycle)
-    -   [26.3. Application of Lifecycle](#263-application-of-lifecycle)
-        -   [26.3.1. 通过 `ref` 获取元素 DOM 结构](#2631-通过-ref-获取元素-dom-结构)
-        -   [26.3.2. 模拟网络请求渲染数据](#2632-模拟网络请求渲染数据)
--   [27. Dynamic Component - 动态组件 `<component :is="..."></component>`](#27-dynamic-component---动态组件-component-iscomponent)
--   [28. 组件保持存活 - `<keep-alive></keep-alive>`](#28-组件保持存活---keep-alivekeep-alive)
--   [29. Async Components - 异步组件](#29-async-components---异步组件)
--   [30. Provide / Inject - 依赖注入](#30-provide--inject---依赖注入)
-    -   [30.1. `Provide` (提供)](#301-provide-提供)
-    -   [30.2. `Inject` (注入)](#302-inject-注入)
-    -   [30.3. 全局注入](#303-全局注入)
-    -   [30.4. 和响应式数据配合使用(不清楚具体作用)](#304-和响应式数据配合使用不清楚具体作用)
--   [31. Vue Application - Vue 应用](#31-vue-application---vue-应用)
-    -   [重要概念](#重要概念)
-    -   [The application instance - 应用实例](#the-application-instance---应用实例)
-    -   [The Root Component - 根组件](#the-root-component---根组件)
-    -   [Mountig the App - 挂载应用](#mountig-the-app---挂载应用)
--   [网络通信](#网络通信)
--   [32. Glossary - 术语表](#32-glossary---术语表)
+- [1. VueJS 3.0](#1-vuejs-30)
+  - [1.1. What is Vue ?](#11-what-is-vue-)
+  - [1.2. DOM (Document Object Model) 概述](#12-dom-document-object-model-概述)
+- [2. Chapter 1: Vue Base](#2-chapter-1-vue-base)
+  - [2.1. Precondition](#21-precondition)
+  - [2.2. Create Vue Project](#22-create-vue-project)
+  - [2.3. 安装`cnpm`](#23-安装cnpm)
+- [3. Vue Project Structure](#3-vue-project-structure)
+- [4. `Template` Syntax - 模版语法 `{{ }}`](#4-template-syntax---模版语法--)
+  - [4.1. Text Interpolation - 文本插值 - `{{ variable }}`](#41-text-interpolation---文本插值----variable-)
+  - [4.2. Using `JavaScript` Expressions - `{{ expression }}`](#42-using-javascript-expressions----expression-)
+  - [4.3. 原始`HTML` - `v-html`](#43-原始html---v-html)
+- [5. Attribute Bindings - 属性绑定 - `v-bind:attribute` | `:arrtribute`](#5-attribute-bindings---属性绑定---v-bindattribute--arrtribute)
+    - [5.0.1. Shorthand - 简写](#501-shorthand---简写)
+  - [5.1. Boolean Attributes - 布尔型 Attribute](#51-boolean-attributes---布尔型-attribute)
+  - [5.2. Dynamically Binding Multiple Attributes - 动态绑定多个值](#52-dynamically-binding-multiple-attributes---动态绑定多个值)
+- [6. Conditional Rendering - 条件渲染](#6-conditional-rendering---条件渲染)
+  - [6.1. `v-if`](#61-v-if)
+  - [6.2. `v-else`](#62-v-else)
+  - [6.3. `v-else-if`](#63-v-else-if)
+  - [6.4. `v-show`](#64-v-show)
+  - [6.5. `v-if` VS `v-show`](#65-v-if-vs-v-show)
+- [7. List Rendering - 列表渲染 `v-for`](#7-list-rendering---列表渲染-v-for)
+  - [7.1. 复杂数据](#71-复杂数据)
+  - [7.2. `v-for`对象](#72-v-for对象)
+  - [7.3. 通过 key 管理状态 - `:key`](#73-通过-key-管理状态---key)
+    - [7.3.1. key 的来源](#731-key-的来源)
+- [8. Event Handing - 事件处理 - `v-on:event` |`@event`](#8-event-handing---事件处理---v-onevent-event)
+  - [8.1. Inline Handlers - 内联事件处理器](#81-inline-handlers---内联事件处理器)
+  - [8.2. Method Handlers - 方法事件处理器](#82-method-handlers---方法事件处理器)
+  - [8.3. Method vs. Inline Detection - 方法事件 | 内联事件辨别](#83-method-vs-inline-detection---方法事件--内联事件辨别)
+  - [8.4. 事件参数](#84-事件参数)
+    - [8.4.1. 获取`event`对象](#841-获取event对象)
+  - [8.5. 传递参数](#85-传递参数)
+  - [8.6. 传递参数过程获取`event`](#86-传递参数过程获取event)
+- [9. Event Modifiers - 事件修饰符](#9-event-modifiers---事件修饰符)
+  - [9.1. 补充知识：`event.preventDefault()` 与 `event.stopPropagation()`](#91-补充知识eventpreventdefault-与-eventstoppropagation)
+  - [9.2. 附录：表单｜事件｜按键修饰符修饰符详解](#92-附录表单事件按键修饰符修饰符详解)
+  - [9.3. Examples](#93-examples)
+    - [9.3.1. `.prevent` 阻止默认事件 \& `stop` 阻止事件进一步捕获或冒泡](#931-prevent-阻止默认事件--stop-阻止事件进一步捕获或冒泡)
+- [10. Array Change Watchers - Detection](#10-array-change-watchers---detection)
+  - [10.1. Method to change - 变更方法](#101-method-to-change---变更方法)
+  - [10.2. 替换一个数组](#102-替换一个数组)
+- [11. Computed Properties - 计算属性 `computed`](#11-computed-properties---计算属性-computed)
+  - [11.1. 计算属性缓存 vs 方法](#111-计算属性缓存-vs-方法)
+- [12. Class Binding - Class 绑定](#12-class-binding---class-绑定)
+- [13. Style Banding - Style 绑定](#13-style-banding---style-绑定)
+- [14. Wathcers - 侦听器](#14-wathcers---侦听器)
+- [15. Form Input Bindings - 表单输入绑定 `v-model`](#15-form-input-bindings---表单输入绑定-v-model)
+  - [15.1. Basic Usage - 基本用法](#151-basic-usage---基本用法)
+  - [15.2. Value Bindings - 值绑定](#152-value-bindings---值绑定)
+  - [15.3. Modifiers - 修饰符 `.lazy`, `.number`, `trim`](#153-modifiers---修饰符-lazy-number-trim)
+    - [15.3.1. `.lazy`](#1531-lazy)
+    - [15.3.2. `.number`](#1532-number)
+    - [15.3.3. `.trim`](#1533-trim)
+- [16. Template Refs - 模板引用 `ref`](#16-template-refs---模板引用-ref)
+  - [16.1. Accessing the Refs - 访问模板引用](#161-accessing-the-refs---访问模板引用)
+- [17. Components Basics - 组件组成](#17-components-basics---组件组成)
+  - [17.1. 定义一个组件](#171-定义一个组件)
+  - [17.2. 使用组件](#172-使用组件)
+  - [17.3. 组件嵌套关系](#173-组件嵌套关系)
+    - [17.3.1. 创建组件及引用关系](#1731-创建组件及引用关系)
+- [18. Component Registration - 组件注册](#18-component-registration---组件注册)
+  - [18.1. 全局注册(不写了，反正不推荐使用)](#181-全局注册不写了反正不推荐使用)
+- [19. Props - 组件传递数据 - 父传子](#19-props---组件传递数据---父传子)
+  - [19.1. 基础用法（静态\&动态）- 字符串声明形式 - String Declaration](#191-基础用法静态动态--字符串声明形式---string-declaration)
+  - [19.2. 传递多种数据类型 - Passing Different Value Types](#192-传递多种数据类型---passing-different-value-types)
+  - [19.3. 对象形式的 `props` 声明 \& Props 校验 - Object Declaration \& Prop Validation](#193-对象形式的-props-声明--props-校验---object-declaration--prop-validation)
+    - [19.3.1. 对象形式的 `props` 声明](#1931-对象形式的-props-声明)
+    - [19.3.2. Prop 校验](#1932-prop-校验)
+- [20. 组件事件 - Component Events 子传父 - `this.$emit`](#20-组件事件---component-events-子传父---thisemit)
+- [21. Component v-model - 组件 v-model](#21-component-v-model---组件-v-model)
+- [22. 组件数据传递 - 使用`props`实现子传父 (好垃圾的方法。)](#22-组件数据传递---使用props实现子传父-好垃圾的方法)
+- [23. Fallthrough Attributes - 透传 Attributes (不常用)](#23-fallthrough-attributes---透传-attributes-不常用)
+- [24. Slots - 插槽 `<slot></slot>` (父传子)](#24-slots---插槽-slotslot-父传子)
+  - [24.1. Basic](#241-basic)
+  - [24.2. Render Scope - 渲染作用域](#242-render-scope---渲染作用域)
+  - [24.3. Fallback Content - 插槽默认值](#243-fallback-content---插槽默认值)
+  - [24.4. Named Slot - 具名插槽 `v-slot` | `#`](#244-named-slot---具名插槽-v-slot--)
+- [25. Scoped Slots - 作用域插槽： 插槽内容中使用子组件域内数据](#25-scoped-slots---作用域插槽-插槽内容中使用子组件域内数据)
+  - [25.1. 具体步骤：（非具名） `<ChildComponent v-slot='slotProps'>`](#251-具体步骤非具名-childcomponent-v-slotslotprops)
+  - [25.2. 具体步骤 (具名) `<template #name="slotProps">`](#252-具体步骤-具名-template-nameslotprops)
+- [26. Lifecycle Hook - 组件生命周期钩子](#26-lifecycle-hook---组件生命周期钩子)
+  - [26.1. Lifecycle Diagram](#261-lifecycle-diagram)
+  - [26.2. Options: Lifecycle](#262-options-lifecycle)
+  - [26.3. Application of Lifecycle](#263-application-of-lifecycle)
+    - [26.3.1. 通过 `ref` 获取元素 DOM 结构](#2631-通过-ref-获取元素-dom-结构)
+    - [26.3.2. 模拟网络请求渲染数据](#2632-模拟网络请求渲染数据)
+- [27. Dynamic Component - 动态组件 `<component :is="..."></component>`](#27-dynamic-component---动态组件-component-iscomponent)
+- [28. 组件保持存活 - `<keep-alive></keep-alive>`](#28-组件保持存活---keep-alivekeep-alive)
+- [29. Async Components - 异步组件](#29-async-components---异步组件)
+- [30. Provide / Inject - 依赖注入](#30-provide--inject---依赖注入)
+  - [30.1. `Provide` (提供)](#301-provide-提供)
+  - [30.2. `Inject` (注入)](#302-inject-注入)
+  - [30.3. 全局注入](#303-全局注入)
+  - [30.4. 和响应式数据配合使用(不清楚具体作用)](#304-和响应式数据配合使用不清楚具体作用)
+- [31. Vue Application - Vue 应用](#31-vue-application---vue-应用)
+  - [31.1. 重要概念](#311-重要概念)
+  - [31.2. The application instance - 应用实例](#312-the-application-instance---应用实例)
+  - [31.3. The Root Component - 根组件](#313-the-root-component---根组件)
+  - [31.4. Mountig the App - 挂载应用](#314-mountig-the-app---挂载应用)
+- [32. 网络通信基本概念 - The Complete Guide to Django REST Freamworkd and Vue JS](#32-网络通信基本概念---the-complete-guide-to-django-rest-freamworkd-and-vue-js)
+  - [32.1. Web APIs](#321-web-apis)
+    - [32.1.1. 概念:](#3211-概念)
+    - [32.1.2. 交互本质](#3212-交互本质)
+  - [32.2. Web APIs - REST, HTTP, STATUS CODES](#322-web-apis---rest-http-status-codes)
+    - [32.2.1. REST](#3221-rest)
+    - [32.2.2. HTTP 的作用](#3222-http-的作用)
+    - [32.2.3. Status Code](#3223-status-code)
+- [33. Glossary - 术语表](#33-glossary---术语表)
 
-### NOTE
+
+### 0.0.1. NOTE
 
 > 1. section 4.1-4.3: vue-base
 > 2. section 5-17.1: vue-demo
@@ -114,7 +122,7 @@
 
 # 1. [VueJS 3.0](https://cn.vuejs.org/)
 
-## What is Vue ?
+## 1.1. What is Vue ?
 
 前端是连接终端设备与人的技术，而 `vue` 是实现这些技术的其中一种方式。
 
@@ -133,7 +141,7 @@
 
 > 完整的 `vue` 前端开发包含：`html + css`, `Javascript`, `css3`, `HTML5`, `thrid-party libarry`, `网络通信，` `ES6+`, `webpack`, `模块化，` `包管理器，` `css预编译器`。但这样的学习曲线过于漫长，而使用（或者体验）`vue` 只需要掌握 `html + css`, `Javascript`，那何不先将 `vue` 使用起来，等遇到具体的问题或者相应知识的缺乏时，再进行后续的补充。
 
-## 1.1. [DOM (Document Object Model) 概述](https://developer.mozilla.org/zh-CN/docs/Web/API/Document_Object_Model/Introduction)
+## 1.2. [DOM (Document Object Model) 概述](https://developer.mozilla.org/zh-CN/docs/Web/API/Document_Object_Model/Introduction)
 
 # 2. Chapter 1: Vue Base
 
@@ -2594,7 +2602,7 @@ provide() {
 
 # 31. [Vue Application](https://cn.vuejs.org/guide/essentials/application.html#creating-a-vue-application) - Vue 应用
 
-## 重要概念
+## 31.1. 重要概念
 
 浏览器的可执行文件只有:
 
@@ -2606,7 +2614,7 @@ provide() {
 
 -   构建工具： Webpack, vite
 
-## The application instance - 应用实例
+## 31.2. The application instance - 应用实例
 
 ```js
 // 1. 从 vue 中引入 createApp
@@ -2631,7 +2639,7 @@ const app = createApp({
 });
 ```
 
-## The Root Component - 根组件
+## 31.3. The Root Component - 根组件
 
 传入 `createApp` 的对象实际上是一个组件，每个应用都需要一个"根组件", 其他组件将作为其子组件。
 如果使用的是单文件组件，我们可以直接从另一个文件中导入根组件。
@@ -2644,7 +2652,7 @@ import App from "./App.vue";
 const app = createApp(App);
 ```
 
-## Mountig the App - 挂载应用
+## 31.4. Mountig the App - 挂载应用
 
 应用实例必须在调用了 `.mount()` 方法后才会渲染出来。该方法接受一个 “容器” 参数，可以是一个实际的 DOM 元素或是一个 CSS 选择器字符串。
 
@@ -2660,6 +2668,55 @@ app.mount("#app");
 
 `mount()` 方法应该始终在整个应用配置和资源注册完成后被调用。同时请注意，不同于其他资源注册方法，它的返回值是根组件实例而非应用实例。
 
-# 网络通信
+# 32. 网络通信基本概念 - [The Complete Guide to Django REST Freamworkd and Vue JS](https://honeywell.udemy.com/course/the-complete-guide-to-django-rest-framework-and-vue-js/learn/lecture/14198860#overview)
 
-# 32. [Glossary - 术语表](https://cn.vuejs.org/glossary/#glossary)
+> chekc only Section 2: 5, 6, 7
+> 
+
+## 32.1. Web APIs
+> Web API - Web Apllication Programming Interface
+
+Web API 是一个基于HTTP协议的通信和数据交互接口，允许不同应用和服务通过网络进行数据传输; 而传输数据的格式一般的 `JSON` 和 `XML`
+### 32.1.1. 概念:
+-基于HTTP协议的交互方法有：   
+   - GET：用于请求数据。
+   - POST：用于提交数据以创建新的资源。
+   - PUT：用于更新现有资源。
+   - DELETE：用于删除资源。
+### 32.1.2. 交互本质
+1. 客户端向特定`URL`的服务端发送请求 `Request`， 根据请求类型（CRUD）, 客户端将访问该API接口的特定端点（`ENDPOINT`）所对应的资源或服务；请求 `Request` 一般包含：
+   - HTTP 方法（如 GET、POST、PUT、DELETE）
+   - URL（统一资源定位符）
+   - 头部信息（Headers）
+   - 请求体（Body）（对于 POST 和 PUT 请求）
+2. 服务段收到请求后，根据请求类型进行响应 `Response`， 执行相应的HTTP方法以处理请求并返回数据，响应 `Response`包含：
+   - 服务器处理请求后返回的数据。
+   - 状态码（如 200 OK、404 Not Found、500 Internal Server Error）
+   - 响应头（Headers）
+   - 响应体（Body）（通常为 JSON 或 XML 格式的数据）
+
+
+## 32.2. Web APIs - REST, HTTP, STATUS CODES
+> REST - REpresentational State Transfer
+> 
+> HTTP - Hypertext Transfer protocol
+
+### 32.2.1. REST
+REST 是 一种用于创建以 HTTP 作为底层通信的 Web API 的架构模式，该架构模式必须符合以下标准：
+- 资源: 资源必须通过URL端点访问
+- 数据格式（表现）必须使用 `JSON` 或 `XML` 作为文件格式
+- 状态转移： 必须使用 HTTP Verbs 来执行具体操作 （GET、POST、PUT、DELETE...）
+- 每个请求 `Request` 必需是相互独立的
+
+### 32.2.2. HTTP 的作用
+HTTP: HTTP（HyperText Transfer Protocol，超文本传输协议）是 Web API 中的核心协议, 它提供了客户端和服务器之间的通信机制和标准操作方法。
+1. 请求和响应机制：HTTP 是一个基于请求和响应的协议。客户端发送请求（request），服务器返回响应（response）。每个 HTTP 请求和响应包含多种信息，如方法、URL、头部信息和主体。
+
+2. 资源操作：HTTP 定义了一组标准方法，用于操作服务器上的资源。这些方法包括 GET、POST、PUT、DELETE 等。
+
+3. 无状态通信：每个 HTTP 请求是独立的，服务器不维护任何客户端状态。这样可以简化服务器设计，提高系统的可扩展性。
+
+###  32.2.3. Status Code
+![Status Code](./asset/image.png)
+
+# 33. [Glossary - 术语表](https://cn.vuejs.org/glossary/#glossary)
