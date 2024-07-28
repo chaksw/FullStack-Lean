@@ -1,5 +1,6 @@
 <template>
     <ComponentLifecycle />
+    <component-lifecycle-app/>
     <keep-alive>
         <component :is="tabComponent"></component>
     </keep-alive>

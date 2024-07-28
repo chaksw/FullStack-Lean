@@ -40,9 +40,11 @@ export default {
     },
     beforeUpdate() {
         console.log("before component updated");
+        console.log(this.message);
     },
     updated() {
         console.log("component updated");
+        console.log(this.message);
     },
     beforeUnmount() {
         console.log("before component unmounted");

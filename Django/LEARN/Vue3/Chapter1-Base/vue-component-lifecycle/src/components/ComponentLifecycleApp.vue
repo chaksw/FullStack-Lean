@@ -17,29 +17,29 @@ export default {
             banner: [],
         };
     },
-    // 不可行，在组件创建之前初始化 data()不存在
     beforeCreate() {
+        // 不可行，在组件创建之前初始化 data()不存在
         // 模拟网络请求
-        this.banner = [
-            {
-                name: "Molecule Man",
-                age: 29,
-                secretIdentity: "Dan Jukes",
-            },
-            {
-                name: "Madame Uppercut",
-                age: 39,
-                secretIdentity: "Jane Wilson",
-            },
-            {
-                name: "Eternal Flame",
-                age: 1000000,
-                secretIdentity: "Unknown",
-            },
-        ];
+        // this.banner = [
+        //     {
+        //         name: "Molecule Man",
+        //         age: 29,
+        //         secretIdentity: "Dan Jukes",
+        //     },
+        //     {
+        //         name: "Madame Uppercut",
+        //         age: 39,
+        //         secretIdentity: "Jane Wilson",
+        //     },
+        //     {
+        //         name: "Eternal Flame",
+        //         age: 1000000,
+        //         secretIdentity: "Unknown",
+        //     },
+        // ];
     },
-    // 可以实现模拟网络请求，但此时UI渲染还未加载完成
     created() {
+        // 可以实现模拟网络请求，但此时UI渲染还未加载完成
         // 模拟网络请求
         // this.banner = [
         //     {
@@ -62,9 +62,9 @@ export default {
     beforeMount() {
         console.log(this.$refs.name); // undefined
     },
-    // 最好的情况：先完成渲染结构，再请求数据
     mounted() {
-        console.log(this.$refs.name);
+        // 最好的情况：先完成渲染结构，再请求数据
+        console.log("name: ",this.$refs.name);
         // 模拟网络请求
         this.banner = [
             {
