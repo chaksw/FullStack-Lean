@@ -1,7 +1,8 @@
+// jsconfig 只对后缀为js的文件起作用，对于 ts，需要配置tsconfig.json
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"] // 配置 @ 符号指向 src 目录及其子目录
     }
   },
   "exclude": ["node_modules", "dist"]
