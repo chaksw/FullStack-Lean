@@ -1,10 +1,14 @@
-Pipfile
-Pipfile.lock
-# do not trace any __pychache__ files
-__pycache__/
-*.pyc
-*.sqlite3
-*.log
-.DS_Store
-.vscode
-venv/*
+# not trace any files below: 
+**/*.pyc
+**/*.sqlite3
+**/*.log
+# not trace any floders below:
+**/__pycache__/
+**/.DS_Store
+**/.vscode 
+**/venv/
+# Other typical entries
+**/node_modules/
+**/dist/
+**/build/
+
