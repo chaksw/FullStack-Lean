@@ -1,18 +1,30 @@
 <!-- Array Change Watchers -->
 <template>
     <h3>Array Change Watchers</h3>
-    <p v-for="(item, index) in names" :key="index"></p>
+    <p
+        v-for="(item, index) in names"
+        :key="index"></p>
     <button @click="addLikstHandle">Add Data</button>
     <ul>
-        <li v-for="(item, index) in names" :key="index">
+        <li
+            v-for="(item, index) in names"
+            :key="index">
             {{ item }}
         </li>
     </ul>
     <button @click="ConcatHandle">Concat Array</button>
     <h3>Array 1</h3>
-    <p v-for="(item, index) in nums1" :key="index">{{ item }}</p>
+    <p
+        v-for="(item, index) in nums1"
+        :key="index">
+        {{ item }}
+    </p>
     <h3>Array 2</h3>
-    <p v-for="(item, index) in nums2" :key="index">{{ item }}</p>
+    <p
+        v-for="(item, index) in nums2"
+        :key="index">
+        {{ item }}
+    </p>
 </template>
 
 <script>
@@ -37,14 +49,14 @@ export default {
         ConcatHandle() {
             // don't use push to concat two array.
             // this.nums1.push(this.nums2);
-            for (let i = 0; i < this.nums2.length; i++){
-                this.nums1.push(this.nums2[i])
+            for (let i = 0; i < this.nums2.length; i++) {
+                this.nums1.push(this.nums2[i]);
             }
-            console.log(this.nums1)
+            console.log(this.nums1);
             // this.nums1.concat(this.nums2);
             // console.log(this.nums1)
             this.nums1 = this.nums1.concat(this.nums2);
-            console.log(this.nums1)
+            console.log(this.nums1);
         },
     },
 };
