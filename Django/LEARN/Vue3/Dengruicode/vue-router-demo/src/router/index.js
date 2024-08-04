@@ -33,6 +33,37 @@ const routes = [
         // ？后的内容会保存在 $route.query中
         component: () => import("@/views/user.vue"),
     },
+    // 嵌套式路由（子路由）结合共享组件
+    {
+        // 1.嵌套路由
+        path: "/vip", // http://localhost:5173/vip
+        component: () => import("@/views/vip.vue"),
+        // 定义子路由，path不需要带‘/’
+        // 要访问子路由，需要在对应的父页面（vip.vue）中添加<router-view></router-view>
+        children: [
+            {
+                // 定义默认页面，将path定义为空 path: ""
+                path: "", // http://localhost:5173/vip/
+                component: () => import("@/views/vip/default.vue"),
+            },
+            {
+                path: "order", // http://localhost:5173/vip/order
+                component: () => import("@/views/vip/order.vue"),
+            },
+            {
+                path: "info", // http://localhost:5173/vip/info
+                component: () => import("@/views/vip/info.vue"),
+            },
+        ],
+        // 2. 共享组件: 共享组件是每个视图公用的，不需要进行路由嵌套，只需要在父组件视图中导入并在template中调用即可
+    },
+    // 重定向：定义 redirect 参数，当访问/svip时，网页会自动跳转至 redirect 定义的路由位置
+    {
+        path: "/svip", // http://localhost:5173/vip
+        // redirect: "vip",
+        // redirect 也可以实现编程式导航 （类似 <router-link></router-link> 和 router.push 所接受的参数）, 这里svip会重定向到 user 页面并传递参数 { id: 300, name: "chaksw" }
+        redirect: { name: "member", params: { id: 300, name: "chaksw" } },
+    },
 ];
 
 // 路由器

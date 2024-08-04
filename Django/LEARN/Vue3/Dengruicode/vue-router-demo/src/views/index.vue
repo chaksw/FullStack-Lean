@@ -58,7 +58,7 @@ import { useRouter } from "vue-router";
 // 使用 push() 方法 代替 'to' 属性
 // const goToStr = () => {
 //     // router.push("/content?id=100&title=邓瑞编程");
-//	   router.push(this.dynamicStrTo);
+//	   router.push(dynamicStrTo);
 // };
 // const goToPath = () => {
 //     // router.push({ name: "member", params: { id: 200, name: "chaksw" } });
