@@ -2,14 +2,14 @@
 > 这个 README.md 作为 Django/LEARN/Django 课程的进阶延伸.
 
 ## 路由匹配模式 （`urls.py` 中的url路径定义方式）
-1. 字符串精准匹配： 定义啥就识别啥
+### 字符串精准匹配： 定义啥就识别啥
 ```python
 # urls.py
 path('hello/', helloWorld), # 只识别 'hello' or 'hello/' 地址
 # name 的定义让我们可以在 template中通过name来访问该路由
 path('acticle/create/', article_create, name='article_create'),  # 只识别 article/create地址
 ```
-2. 路径转换器格式 `<type:value>` 一般用于访问符合特定属性的属性
+### 路径转换器格式 `<type:value>` 一般用于访问符合特定属性的数据
 ```python
 # urls.py
 # 根据转换的类型不同，使用 <type:value> 格式， 如 `article_id` 是 `int`， 这定义为 `<int:article_id>`，访问格式必须满足转换器所定义的数据类型
@@ -29,10 +29,40 @@ path('article/<int:article_id>/<str:title>/', article_detail, name='article_deta
 def article_detail(request, article_id, title):
     return HttpResponse(f'ID of article detail: {article_id}, title: {title}')
 ```
-3. 正则表达式：`re_path` 用于验证 `url` 是否满足特定字符匹配规则
+### 正则表达式：`re_path` 用于验证 `url` 是否满足特定字符匹配规则
 ```python
 # 1. ^: 以什么开始，精准匹配字符
 # 2. (?P<phone_number> 1[3456789]\d{9}) 一个捕获组，名字为phone_number， 必须以数字 1 开头， 第二位必须是 3、4、5、6、7、8 或 9 中的一个数字。 接下来的 9 位必须是数字 (0-9)
 # 3. /$: 以 '/' 结尾
 re_path('^phone/(?P<phone_number>1[3456789]\d{9})/$', phone_detail, name='phone_detail'),
+```
+
+### 路由嵌套模式 - 根据应用将路由拆分
+> 说白了就是将属于各个应用的url定义在各自的`urls.py`下，再引入到项目的`urls.py`中
+
+```py
+# 定义 app01 中的urls
+# app01.urls.py
+from django.urls import path, re_path
+from app01.views import article_create, article_detail, phone_detail
+
+urlpatterns = [
+    path('create/', article_create, name='article_create'),
+    # 路径转换器格式
+    path('<int:article_id>/<str:title>/', article_detail, name='article_detail'),
+    re_path('^phone/(?P<phone_number>1[3456789]\d{9})/$', phone_detail, name='phone_detail'),
+]
+# 用 `include` 导入 app01.urls
+from django.contrib import admin
+from django.urls import path, include
+from app01.views import helloWorld, article_create, article_detail, phone_detail
+
+urlpatterns = [
+    # 精准匹配模式
+    path('hello/', helloWorld),
+    path('article/', include('app01.urls')),
+    path('admin/', admin.site.urls),
+]
+
+# demo.urls.py
 ```
