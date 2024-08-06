@@ -22,6 +22,7 @@ urlpatterns = [
     # 精准匹配模式
     path('hello/', helloWorld),
     path('article/', include('app01.urls')),
+    path('account/', include('account.urls')),
     # path('article/create/', article_create, name='article_create'),
     # # 路径转换器格式
     # path('article/<int:article_id>/<str:title>/', article_detail, name='article_detail'),
