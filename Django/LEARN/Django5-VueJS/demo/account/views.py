@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.views import View
 # Create your views here.
 
 # 接受请求，通过 render 函数引入希望渲染的html文件
@@ -15,3 +16,14 @@ def login(request):
         return HttpResponse(f'login success with {username} and password {password}')
     # 默认是 GET() 请求，渲染 login.html
     return render(request, 'login.html')
+
+
+class RegisterView(View):
+    def get(self, request):
+        return render(request, 'register.html')
+
+    def post(self, request):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        password2 = request.POST.get('password2')
+        return HttpResponse(f'login success with {username} and password {password}')

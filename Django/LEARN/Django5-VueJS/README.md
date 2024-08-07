@@ -71,9 +71,9 @@ urlpatterns = [
 > 视图在 `python` 中本质上就是一个视图函数 (`FBV`) 或者视图类 (`CBV`)，他们接收的永远是一个请求对象 (`request`), 并且返回一个相应对象 (`response`)
 
 ### FBV - Function-Based View
-> 这个章节实现的是一个基于 `FBV` 的用户登录应用 `account`
+> 这个章节是在应用 `account` 中实现的是一个基于 `FBV` 的用户登录功能
 
-要实现视图功能需要一下步骤：
+**要实现 `FBV` 视图功能需要一下步骤：**
 1. 在全局的 `settings.py` 的 `TEMPLATES` 的 `'DIRS'` 元素中定义 `html` 文件所存储的路径，一般为项目根目录的 `tempaltes` 文件夹
 ```py
 TEMPLATES = [
@@ -146,8 +146,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 # Create your views here.
 
+# 接受请求，通过 render 函数引入希望渲染的html文件
 def login(request):
     # post 请求的业务逻辑，只有在提交表达时才会触发
+    # if request.method == 'POST' 等效
     if request.POST:
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -155,5 +157,139 @@ def login(request):
         return HttpResponse(f'login success with {username} and password {password}')
     # 默认是 GET() 请求，渲染 login.html
     return render(request, 'login.html')
+```
+
+4. 在 `urls` 中进行路由和 `FBV` 的匹配
+```py
+# account -> urls.py
+from django.urls import path
+from .views import login
+
+urlpatterns = [
+    path('login/', login)
+]
+
+```
+
+### CBV - Class-Based View
+> 相比起 `FBV` ， `CBV` 提供了更多的自定义配置和可拓展性
+> 这个章节是在应用 `account` 中实现的是一个基于 `CBV` 的用户注册功能
+
+**要实现 `CBV` 视图功能需要的步骤与 `FBV` 出了 `views.py` 内的实现外基本相同：**
+1. 在全局的 `settings.py` 的 `TEMPLATES` 的 `'DIRS'` 元素中定义 `html` 文件所存储的路径，一般为项目根目录的 `tempaltes` 文件夹
+2. 在 `tempaltes` 文件夹下创建 `.html` 文件
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+
+<body>
+    <div>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div>
+                username:
+                <input type="text" name="username">
+            </div>
+            <div>
+                password:
+                <input type="password" name="password">
+            </div>
+            <div>
+                password confirm:
+                <input type="password" name="password2">
+            </div>
+            <button>Register</button>
+        </form>
+    </div>
+</body>
+
+</html>
+```
+
+3. 在应用的 views 中定义 `CBV`，实现：
+   1. `class` 的命名格式一般为驼峰
+   2. `class` 继承于 `django` 的 `View`， `View` 作为父类包含了基于 `HTTP` 协议的交互方法, 这些方法对应不同的数据处理场景自动运行，我们只需要关注它们的业务逻辑实现。
+      - `get(self, request)`：用于请求数据。
+      - `post(self, request)`：用于提交数据以创建新的资源。
+      - `put(self, request)`：用于更新现有资源。
+      - `delete(self, request)`：用于删除资源
+
+```py
+class RegisterView(View):
+    def get(self, request):
+        return render(request, 'register.html')
+
+    def post(self, request):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        password2 = request.POST.get('password2')
+        return HttpResponse(f'login success with {username} and password {password}')
+```
+
+4. 在 `urls` 中进行路由和 `CBV` 的匹配
+```py
+# account -> urls.py
+from django.urls import path
+from .views import RegisterView
+
+urlpatterns = [
+    path("register/", RegisterView.as_view(), name="register")
+]
+
+```
+
+### `FBV` & `CBV` 区别
+**`FBV` 对于基于HTTP协议的交互方法的业务逻辑是通过判断 `request` 的 `http` 方法来展开的，这不利于复杂的业务逻辑，而 `CBV` 继承于 `django` 的 `View`， `View` 作为父类包含了基于 `HTTP` 协议的交互方法, 这些方法对应不同的数据处理场景自动运行，我们只需要关注它们的业务逻辑实现。**
+
+### `HttpRequest` & `HttpResponse` 的一些内容
+#### `HttpRequest` 
+`HttpRequest` 包含两大基本数据
+1. 请求头 `headers`： 一般通过 `HttpRequest.META.get('key')` 或者 `HttpRequest.headers.get('key')` 来获取请求头的对应信息 （`META` 比 `headers` 包含更多信息）
+   
+2. 请求参数： 根据不同的数据，获取方式不同：
+   1. 获取 `GET` 参数: `value = request.GET.get('parameter_name', default_value)`
+   2. 获取 `POST` 参数: `value = request.POST.get('parameter_name', default_value)`
+   3. 获取 `URL` 参数: `value = request.GET.get('parameter_name', default_value)`, 与 `GET` 类似，但`parameter_name` 是 `url` 上的参数 （如 `?name=18&age=8`， 对应的参数为 `name` 和 `age`
+   4. 获取请求体 （`request.body`）中的 `JSON` 参数: 通过 `build-in` 的 `json` 模块获取
+```py
+import json
+
+data = json.loads(request.body) # 获取请求体并转化为json格式
+value = data.get('parameter_name', default_value) # 通过key获取value
+```
+   5. 获取路径参数（即定义路由使用路径转换器是的 `id`）: 通过定义 `FBV` 中添加输入参数获取
+```py
+def my_view(request, parameter_name):
+    # parameter_name 即 url 路径参数
+```
+   6. 获取请求头中的参数： `request.headers.get('parameter_name', default_value)`
+
+#### `HttpResponse`
+可以通过在 `HttpResponse` 添加并更改响应头信息如 `headers`, `content-type` 等将响应数据传输到客户端
+```py 
+...
+headers = {
+    'token': 'Chris',
+}
+return HttpResponse(f'login success with {username} and password {password}', content_type="text/html; charset=utf-8", status=200, headers=headers)
+
+```
+另外的还有一种 `JsonResponse`, 返回的是一个 `dict` 数据，响应数据中的 `content-type` 为 `application/json`
+```py 
+...
+res = {
+    'name': username,
+    'password': password,
+    'status': 200,
+    'message': OK
+}
+return JsonResponse(res)
 
 ```
