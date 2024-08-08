@@ -293,3 +293,8 @@ res = {
 return JsonResponse(res)
 
 ```
+
+## `Tempaltes` 模版
+1. 关于模版引擎和配置关注 `settings.py` 中的 `INSTALLED_APP` 和 `TEMPLATES`
+2. 关于模版的语法知识和继承可以在 `LEARN/Django/README.md` 的 Section 1.2. Template and Django template language 中了解 
+3. 关于 `{% include '*.html'%}` 的用法后续用到后再补充，简单来说就是将一个简单的组件式 `html` 通过 `include` 引入到别的 `html` 中
