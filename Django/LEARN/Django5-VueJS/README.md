@@ -1,15 +1,15 @@
-# Django + Vue Course
+# 1. Django + Vue Course
 > 这个 README.md 作为 Django/LEARN/Django 课程的进阶延伸.
 
-## `URLS` 路由匹配模式 （`urls.py` 中的url路径定义方式）
-### 字符串精准匹配： 定义啥就识别啥
+## 1.1. `URLS` 路由匹配模式 （`urls.py` 中的url路径定义方式）
+### 1.1.1. 字符串精准匹配： 定义啥就识别啥
 ```python
 # urls.py
 path('hello/', helloWorld), # 只识别 'hello' or 'hello/' 地址
 # name 的定义让我们可以在 template中通过name来访问该路由
 path('acticle/create/', article_create, name='article_create'),  # 只识别 article/create地址
 ```
-### 路径转换器格式 `<type:value>` 一般用于访问符合特定属性的数据
+### 1.1.2. 路径转换器格式 `<type:value>` 一般用于访问符合特定属性的数据
 ```python
 # urls.py
 # 根据转换的类型不同，使用 <type:value> 格式， 如 `article_id` 是 `int`， 这定义为 `<int:article_id>`，访问格式必须满足转换器所定义的数据类型
@@ -29,7 +29,7 @@ path('article/<int:article_id>/<str:title>/', article_detail, name='article_deta
 def article_detail(request, article_id, title):
     return HttpResponse(f'ID of article detail: {article_id}, title: {title}')
 ```
-### 正则表达式：`re_path` 用于验证 `url` 是否满足特定字符匹配规则
+### 1.1.3. 正则表达式：`re_path` 用于验证 `url` 是否满足特定字符匹配规则
 ```python
 # 1. ^: 以什么开始，精准匹配字符
 # 2. (?P<phone_number> 1[3456789]\d{9}) 一个捕获组，名字为phone_number， 必须以数字 1 开头， 第二位必须是 3、4、5、6、7、8 或 9 中的一个数字。 接下来的 9 位必须是数字 (0-9)
@@ -37,7 +37,7 @@ def article_detail(request, article_id, title):
 re_path('^phone/(?P<phone_number>1[3456789]\d{9})/$', phone_detail, name='phone_detail'),
 ```
 
-### 路由嵌套模式 - 根据应用将路由拆分
+### 1.1.4. 路由嵌套模式 - 根据应用将路由拆分
 > 说白了就是将属于各个应用的url定义在各自的`urls.py`下，再引入到项目的`urls.py`中
 
 ```py
@@ -67,10 +67,10 @@ urlpatterns = [
 # demo.urls.py
 ```
 
-## `VIEWS` 视图
+## 1.2. `VIEWS` 视图
 > 视图在 `python` 中本质上就是一个视图函数 (`FBV`) 或者视图类 (`CBV`)，他们接收的永远是一个请求对象 (`request`), 并且返回一个相应对象 (`response`)
 
-### FBV - Function-Based View
+### 1.2.1. FBV - Function-Based View
 > 这个章节是在应用 `account` 中实现的是一个基于 `FBV` 的用户登录功能
 
 **要实现 `FBV` 视图功能需要一下步骤：**
@@ -171,7 +171,7 @@ urlpatterns = [
 
 ```
 
-### CBV - Class-Based View
+### 1.2.2. CBV - Class-Based View
 > 相比起 `FBV` ， `CBV` 提供了更多的自定义配置和可拓展性
 > 这个章节是在应用 `account` 中实现的是一个基于 `CBV` 的用户注册功能
 
@@ -245,11 +245,11 @@ urlpatterns = [
 
 ```
 
-### `FBV` & `CBV` 区别
+### 1.2.3. `FBV` & `CBV` 区别
 **`FBV` 对于基于HTTP协议的交互方法的业务逻辑是通过判断 `request` 的 `http` 方法来展开的，这不利于复杂的业务逻辑，而 `CBV` 继承于 `django` 的 `View`， `View` 作为父类包含了基于 `HTTP` 协议的交互方法, 这些方法对应不同的数据处理场景自动运行，我们只需要关注它们的业务逻辑实现。**
 
-### `HttpRequest` & `HttpResponse` 的一些内容
-#### `HttpRequest` 
+### 1.2.4. `HttpRequest` & `HttpResponse` 的一些内容
+#### 1.2.4.1. `HttpRequest` 
 `HttpRequest` 包含两大基本数据
 1. 请求头 `headers`： 一般通过 `HttpRequest.META.get('key')` 或者 `HttpRequest.headers.get('key')` 来获取请求头的对应信息 （`META` 比 `headers` 包含更多信息）
    
@@ -271,7 +271,7 @@ def my_view(request, parameter_name):
 ```
    6. 获取请求头中的参数： `request.headers.get('parameter_name', default_value)`
 
-#### `HttpResponse`
+#### 1.2.4.2. `HttpResponse`
 可以通过在 `HttpResponse` 添加并更改响应头信息如 `headers`, `content-type` 等将响应数据传输到客户端
 ```py 
 ...
@@ -294,7 +294,396 @@ return JsonResponse(res)
 
 ```
 
-## `Tempaltes` 模版
+## 1.3. `Tempaltes` 模版
 1. 关于模版引擎和配置关注 `settings.py` 中的 `INSTALLED_APP` 和 `TEMPLATES`
 2. 关于模版的语法知识和继承可以在 `LEARN/Django/README.md` 的 Section 1.2. Template and Django template language 中了解 
 3. 关于 `{% include '*.html'%}` 的用法后续用到后再补充，简单来说就是将一个简单的组件式 `html` 通过 `include` 引入到别的 `html` 中
+
+
+## 1.4. `Model` 数据模型
+
+### 1.4.1. 关键概念：对象关系映射 - ORM (Object Relational Mapping) 
+
+> `FullStack-Lean/Django/PRACTICE/Django-REST-API/README.md` section 1.3 中也有记录
+Django 运用`ORM - Object relational mapping` 来将`python`对象映射到数据库实例中，在`Django`中，每一个`models.Model`的 `subclass` 对应一个数据库中的数据表格, 每一个类的对象对应着一个数据行，对该 `subclass` 对象的low level的操作（`create`, `update`, `retrieve`等）对应对数据库的SQL语句操作。
+### 1.4.2. 对应关系
+1. 数据表 - 类
+2. 数据行 - 对象
+3. 字段 - 对象属性
+### 1.4.3. 数据库 `mysql` 的配置和创建
+#### 1.4.3.1. 前期配置 
+```bash
+# 1. 安装
+brew install mysql # 也可以通过安装包安装
+# 1.1 如果出现 Can't connect to local MySQL server through socket '/tmp/mysql.sock' 执行1.2-1.4
+# 1.2 获取sock路径(用于与服务器通信的套接字文件)，输出为/tmp/mysql.sock，按往后实际为准
+mysql_config --socket 
+# 1.3 分配读写，执行权限
+sudo chmod 2777 /tmp/mysql.sock # 
+# 1.4 验证更改
+ls -l /tmp/mysql.sock # 输出为 s-w-rwxrwx  1 RunshengWU  wheel  0 10 aoû 10:22 /tmp/mysql.sock
+# 2. 链接 mysql 初次链接用户名为 root, 密码为空(直接 enter 即可)
+mysql -u root -p
+```
+#### 1.4.3.2. 配置
+> `Django` 默认使用的是 `sqlite3`
+
+```py
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
+        'NAME': 'django_demo',  # 数据库名称
+        'HOST': '127.0.0.1',  # 主机名
+        'USER': 'root',  # 用户名
+        'PASSWORD': '',  # 密码
+    }
+}
+```
+
+#### 1.4.3.3. 创建
+```bash
+# 链接 mysql 初次链接用户名为 root, 密码为空(直接 enter 即可)
+mysql -u root -p
+# 创建 django_demo
+create database django_demo;
+```
+
+#### ~~1.4.3.4. 使用数据库引擎 `PyMySQL` 链接数据库~~
+> NOTE: (课程步骤有错误无法运行)
+```bash
+pip install pymysql
+```
+
+```py
+# __init__.py 
+import pymysql
+pymysql.install_as_MySQLdb()
+```
+#### 1.4.3.5. 使用数据库引擎 `mysqlclient` 链接数据库 
+> NOTE: (重要：`PyMySQL` `mysqlclient` 只能有一个安装在pip上 )
+```bash
+pip install mysqlclient # 先确保PyMySQL已经卸载且项目上没有pymysql.install_as_MySQLdb()
+``` 
+#### 1.4.3.6. 执行数据库迁移
+```bash
+python manage.py migrate
+# 输出：
+# Operations to perform:
+#   Apply all migrations: admin, auth, contenttypes, sessions
+# Running migrations:
+#   Applying contenttypes.0001_initial... OK
+#   Applying auth.0001_initial... OK
+#   Applying admin.0001_initial... OK
+#   Applying admin.0002_logentry_remove_auto_add... OK
+#   Applying admin.0003_logentry_add_action_flag_choices... OK
+#   Applying contenttypes.0002_remove_content_type_name... OK
+#   Applying auth.0002_alter_permission_name_max_length... OK
+#   Applying auth.0003_alter_user_email_max_length... OK
+#   Applying auth.0004_alter_user_username_opts... OK
+#   Applying auth.0005_alter_user_last_login_null... OK
+#   Applying auth.0006_require_contenttypes_0002... OK
+#   Applying auth.0007_alter_validators_add_error_messages... OK
+#   Applying auth.0008_alter_user_username_max_length... OK
+#   Applying auth.0009_alter_user_last_name_max_length... OK
+#   Applying auth.0010_alter_group_name_max_length... OK
+#   Applying auth.0011_update_proxy_permissions... OK
+#   Applying auth.0012_alter_user_first_name_max_length... OK
+#   Applying sessions.0001_initial... OK
+```
+
+#### 1.4.3.7. 验证表格是否创建
+```bash
+mysql -u root -p # 进入mysql
+
+use django_demo # 调用数据库
+
+show tables; # 显示创建的表格
+# 输出：
+# table名字为 app_tablename: 如 auth_user为 auth 应用下的 user
++----------------------------+
+| Tables_in_django_demo      |
++----------------------------+
+| auth_group                 |
+| auth_group_permissions     |
+| auth_permission            |
+| auth_user                  |
+| auth_user_groups           |
+| auth_user_user_permissions |
+| django_admin_log           |
+| django_content_type        |
+| django_migrations          |
+| django_session             |
++----------------------------+
+10 rows in set (0,01 sec)
+
+```
+
+### `models.py`
+> NOTE: 要应用模型数据，需要先确保 `INSTALLED_APP` 中有对应模型的应用
+
+#### 字段类型
+<img src='/Users/Chaksw/Web-Dev/FullStack-Lean/Django/LEARN/Django5-VueJS/assets/imgs/字段类型1.png' alt='字段类型'>
+<img src='/Users/Chaksw/Web-Dev/FullStack-Lean/Django/LEARN/Django5-VueJS/assets/imgs/字段类型2.png' alt='字段类型'>
+
+
+#### 创建模型
+> 代码见下章 节- 设置 `meta` 元数据
+
+#### 执行并应用数据迁移
+> 迁移文件的创建让项目的迁移更方便，在别的机器上运行该项目时，只需要直接运行应用迁移文件的命令就可以创建一个相同的数据库了
+1. 创建迁移文件
+```bash
+python manage.py makemigration
+```
+2. 应用迁移文件
+```bash
+python manage.py migrate
+```
+
+#### 设置 `meta` 元数据 (基础应用)
+1. 创建一个 `baseModel` 用于创建基础共用字段，需要共用字段的模型可以继承于这个模型，base表只需要被继承，不需要创建在数据库中，所以设置元数据 abstract = True
+```py
+# in utils.py 
+from django.db import models
+
+
+class BaseModel(models.Model):
+    # auto_now_add 自动填入目前时间
+    # editable: 控制是否可编辑
+    create_at = models.DateTimeField('createTime', auto_now_add=True, editable=True)
+    update_at = models.DateTimeField('updateTime', auto_now_add=True, editable=True)
+
+    # Base表只需要被继承，不需要创建在数据库中，所以设置元数据 abstract = True
+    class Meta:
+        abstract = True
+```
+
+```py
+# account.models.py
+from django.db import models
+from utils.basemodels import BaseModel
+# Create your models here.
+
+
+class User(BaseModel):
+    class Meta:
+        db_table = 'user'  # 表名
+        verbose_name = 'userInfo'  # 别名
+    # AutoField 自增
+    id = models.AutoField(primary_key=True)
+    # verbose_name： 别名，页面显示时的名字
+    # null 控制是否允许在数据库上为空
+    # blank 控制是否允许在页面显示时为空
+    # unique 控制值是否唯一
+    username = models.CharField(verbose_name='username', max_length=30, null=True, blank=True, unique=True)
+    passworkd = models.CharField(verbose_name='password', max_length=30)
+    email = models.EmailField(verbose_name='email', null=True, blank=True, unique=True)
+
+```
+
+```py
+# app01.models.py
+from django.db import models
+from account.models import User
+from utils.basemodels import BaseModel
+
+# Create your models here.
+
+
+class Article(BaseModel):
+    class Meta:
+        db_table = 'article'  # 设置表名
+        verbose_name = 'articleInfo'  # 别名
+        ordering = ['-publish_date']  # 以publish_date 降序， 发布越晚越靠前
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(verbose_name='title', max_length=120)
+    content = models.TextField()
+    publish_date = models.DateTimeField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+```
+
+```bash
+# 添加 meta后的 tables
++----------------------------+
+| Tables_in_django_demo      |
++----------------------------+
+| article                    |
+| auth_group                 |
+| auth_group_permissions     |
+| auth_permission            |
+| auth_user                  |
+| auth_user_groups           |
+| auth_user_user_permissions |
+| django_admin_log           |
+| django_content_type        |
+| django_migrations          |
+| django_session             |
+| user                       |
++----------------------------+
+12 rows in set (0,00 sec)
+```
+
+#### ORM 增删改查 - CRUD
+- C - create
+- R - read
+- U - update
+- D - delete
+
+#### 使用 `shell` 进行 `django` 数据的 `CRUD`
+```bash
+python manage.py shell # 进入 shell
+```
+#### ORM 新增｜插入数据
+- C - Create：新增数据方式
+   1. 保存 `save()`
+   2. 新增数据 `create()`
+   3. 批量新增数据 `bulk_create()`
+1. `save()`
+```bash
+# 使用 shell 演示：
+>>> from account.models import User # 导入 User 模型
+>>> user_obj = User(username='chris', password='123456', email='test@email.com') # 创建数据行
+>>> user_obj.save() # 保存
+```
+2. `create()`
+```bash
+>>> user2 = User.objects.create(username='chaksw', password='123456', email='test2@email.com')
+```
+3. `bulk_create()`
+```bash
+>>> user4 = User(username='chris4', password='123456', email='test4@email.com')
+>>> user5 = User(username='chris5', password='123456', email='test5@email.com')
+>>> user_list = [user4, user5]
+>>> User.objects.bulk_create(user_list) # bulk_create()
+[<User: User object (None)>, <User: User object (None)>]
+```
+4. 创建包含外键 `ForeignKey` 的数据 
+创建包含外键 `ForeignKey` 的数据时，需要指定外键
+```bash
+>>> from app01.models import Article
+# 导入 datetime 使用 datetime.now()
+>>> from datetime import datetime
+# 指定外键 user=user_obj
+>>> article1 = Article(title='first article', content='the first article', publish_date=datetime.now(), user=user_obj)
+>>> article1.save()
+```
+
+#### ORM 查询数据
+- R - Read: 查询数据方式
+  1. 返回所有数据 `all()`
+  2. 按照查询条件返回单条数据 `get(**kwargs)`
+  3. 按照查询条件返回多条数据 `filter(**kwargs)`
+  4. 返回最晚｜最早一条记录 `latest(*fields)`/`earlist(*fields)`
+  5. 返回第一条｜最后一条记录 `first()`/`last()`
+1. `all()`
+```bash
+>>> from account.models import User
+>>> user = User.objects.all() # 使用 all() 获取所有数据
+>>> user
+<QuerySet [<User: User object (1)>, <User: User object (2)>, <User: User object (3)>, <User: User object (4)>, <User: User object (5)>]>
+```
+
+2. `get(**kwargs)`
+> NOTE：如果查询记录不存在或是返回数据大于1条，会报错
+```bash
+# 根据 username 查询
+>>> user = User.objects.get(username='chris')
+>>> user.id, user.username, user.password, user.email
+# 输出
+(1, 'chris', '123456', 'test@email.com')
+# 根据 id 查询
+>>> user = User.objects.get(id=2)
+>>> user.id, user.username, user.password, user.email
+(2, 'chaksw', '123456', 'test2@email.com')
+```
+
+3. `filter(**kwargs)`
+```bash
+# id__gt: id 大于 1， filter返回的是一个object list（QuerySet）
+>>> User.objects.filter(id__gt=1)
+<QuerySet [<User: User object (2)>, <User: User object (3)>, <User: User object (4)>, <User: User object (5)>]>
+```
+
+4. `latest(*fields)`/`earlist(*fields)`
+```bash
+# 没有演示。。。
+```
+
+5. `first()`/`last()`
+```bash
+# first()
+>>> user = User.objects.first()
+>>> user.username
+'chris'
+# last()
+>>> user = User.objects.last()
+>>> user.username
+'chris5'
+```
+
+#### ORM 查询条件
+- Conditional Search
+1. 相等/等于/布尔条件 
+   1. `field__exact`/`field__iexact()`
+   2. `field__gt`/`field__gte`/`field__lt`/`field__lte`，通常比较的是数值字段
+   3. `filed__isnull`
+2. 是否包含**字符串 `field__icontains`/`field__contains`/`field__in`
+3. 以**开始/结束 `field__startswith`/`field__endswith`/`field__istartswith`/`field__iendswith`
+4. 日期及时间 `create_at`/`update_at` 拼接 `__year`/`__month`/`__day`/`__hour/minute/second`/`__week/week_day`
+5. 外键关联
+
+6. 相等/等于/布尔条件
+```bash
+# field__exact
+>>> User.objects.get(id__exact=2)
+<User: User object (2)>
+# field__iexact， 不区分大小写
+>>> user = User.objects.get(username__iexact='Chris')
+>>> user.username
+'chris'
+# field__lte
+>>> User.objects.filter(id__lte=3)
+<QuerySet [<User: User object (1)>, <User: User object (2)>, <User: User object (3)>]
+# filed__isnull
+>>> User.objects.filter(username__isnull=True)
+<QuerySet []>
+# field__in
+>>> User.objects.filter(id__in=[2,4,6])
+<QuerySet [<User: User object (2)>, <User: User object (4)>]>
+```
+
+1. 是否包含**字符串
+```bash
+# field__contains
+>>> User.objects.filter(username__contains='ch')
+<QuerySet [<User: User object (1)>, <User: User object (2)>, <User: User object (3)>, <User: User object (4)>, <User: User object (5)>]>
+# field__icontains： 不区分大小写
+>>> User.objects.filter(username__icontains='Ch')
+<QuerySet [<User: User object (1)>, <User: User object (2)>, <User: User object (3)>, <User: User object (4)>, <User: User object (5)>]>
+```
+
+3. 以**开始/结束
+```bash
+# field__startwith
+>>> User.objects.filter(username__startswith='ch')
+<QuerySet [<User: User object (1)>, <User: User object (2)>, <User: User object (3)>, <User: User object (4)>, <User: User object (5)>]>
+```
+
+4. 日期及时间
+```bash
+# create_at__year
+>>> User.objects.filter(create_at__year=2024)
+<QuerySet [<User: User object (1)>, <User: User object (2)>, <User: User object (3)>, <User: User object (4)>, <User: User object (5)>]>
+```
+
+5. 外键关联
+```bash
+# 通过外键名__外键字段查询，如果是filter返回的是一个object list（QuerySet）
+article1 = Article.objects.filter(user__username='chris')
+>>> article1
+<QuerySet [<Article: Article object (1)>]>
+# 如果是 get 返回的是一个 object
+article1 = Article.objects.get(user__username='chris')
+>>> article1
+<Article: Article object (1)>
+```

@@ -16,7 +16,7 @@
     - [1.4.3. Updating Models, Entries (add | delete)](#143-updating-models-entries-add--delete)
   - [1.5. Connecting Tempaltes and Database Models](#15-connecting-tempaltes-and-database-models)
 - [2. Django Admin](#2-django-admin)
-  - [2.1. Model admin object class](#21-model-admin-object-class)
+  - [2.1. Model min object class](#21-model-min-object-class)
   - [2.2. Resigter model in to admin](#22-resigter-model-in-to-admin)
   - [2.3. ModelAdmin Class example](#23-modeladmin-class-example)
 - [3. Django Form](#3-django-form)
@@ -212,7 +212,7 @@ python manager.py createsuperuser
 # enter username, email and password
 ```
 
-## 2.1. Model admin object class
+## 2.1. Model min object class
 
 ## 2.2. Resigter model in to admin
 
