@@ -811,3 +811,154 @@ AttributeError: 'User' object has no attribute 'update'
 ```bash
 # 没演示。。。
 ```
+
+### `Django` 的管理后台 `admin`
+1. 关于Django` 的管理后台 `admin 的知识可以在 `LEARN/Django/README.md` 的 Section2. Django Admin 中了解
+2. 这里结合点 1 做一些补充的记录
+3. 
+#### 创建超级管理员
+```bash
+python manager.py createsuperuser
+# enter username, email and password
+```
+
+#### 配置页面为中文及中国时区（可选）
+```py
+# 在 `settings.py` 中
+# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
+
+# TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
+
+```
+
+#### 创建 `admin` 数据模型并绑定模型
+> 代码见后台配置章节
+
+### 后台配置 
+1. 更好后台的 app 名称（增加别名）
+```py
+# account.apps.py
+# 使用 verbose_name
+from django.apps import AppConfig
+
+class AccountConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'account'
+    verbose_name = 'Account Management'
+```
+2. 更改后台数据模型名称
+```py
+# account.models.py
+# 使用 verbose_name_plural
+...
+class User(BaseModel):
+    class Meta:
+        db_table = 'user'  # 表名
+        verbose_name = 'userInfo'  # 别名
+        verbose_name_plural = 'User Information' # 后台模型名称
+   ...
+
+```
+3. 设置只读字段 `readonly_fields`
+4. 为字段设置可到详情页的链接 （默认只有 `id` 字段可以跳转）`list_display_links`
+5. 设置直接修改功能（不需要跳转到详情页再修改） `list_editable`
+**注意：对于同一个字段不能同时设置 `list_display_links` 和 `list_editable`**
+```py
+# account.admin.py
+from django.contrib import admin
+from account.models import User
+# Register your models here.
+
+# 创建 admin 数据模型， class 名字一般为 ModelNameAdmin
+# 继承于 ModelAdmin 的类已经实现了 CRUD 功能
+class UserAdmin(admin.ModelAdmin):
+    # 定义显示显示在 admin 页面的字段
+    list_display = ('id', 'username', 'email')
+    # 配置可供过滤的字段
+    list_filter = ('username', 'email')
+    # 配置搜索框，定义可供搜索的字段
+    search_fields = ('username', 'email')
+    # 在当前 django 版本中 id 默认只读，所以 comment 掉
+    # readonly_fields = ('id',)
+    # 设置可跳转到详情页的字段
+    list_display_links = ('id', 'username')
+    # 设置直接修改功能
+    list_editable = ('email',)
+
+
+# 将数据模型与admin数据模型绑定
+admin.site.register(User, UserAdmin)
+```
+
+```py
+# app01.admin.py
+# 使用 readonly_fields 设置只读字段
+# 使用 list_display_links 设置可跳转到详情页的字段
+# 使用 list_editable 设置直接修改功能（不需要跳转到详情页再修改） 
+from django.contrib import admin
+from app01.models import Article
+# Register your models here.
+
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'content', 'user')
+    # 配置可供过滤的字段
+    list_filter = ('title', 'content', 'user')
+    # 配置搜索框，定义可供搜索的字段，注意外键不能作为可供搜索的字段
+    search_fields = ('title', 'content')
+    # 在当前 django 版本中 id 默认只读，所以 comment 掉
+    # readonly_fields = ('id',)
+    # 设置可跳转到详情页的字段
+    list_display_links = ('id', 'title')
+    # 设置直接修改功能
+    list_editable = ('content',)
+
+
+admin.site.register(Article, ArticleAdmin)
+```
+
+### 自定义函数增加字段
+自定义函数，将 `Article` 的外键 `user` 的字段 `username` 作为新的字段 `author`
+```py
+# app01.admin.py
+from django.contrib import admin
+from app01.models import Article
+# Register your models here.
+
+
+# 自定义函数，返回外键的 username user.username
+def get_author(obj):
+    return obj.user.username
+
+
+class ArticleAdmin(admin.ModelAdmin):
+    # 将函数作为字段写入后台显示
+    # django 会在使用 list_display 时给 get_author 传递 ArticleAdmin 的实例对象
+    list_display = ('id', get_author, 'title', 'content', 'user')
+    # 配置可供过滤的字段
+    list_filter = ('title', 'content', 'user')
+    # 配置搜索框，定义可供搜索的字段，注意外键不能作为可供搜索的字段
+    search_fields = ('title', 'content')
+    # 设置可跳转到详情页的字段
+    list_display_links = ('id', 'title')
+    # 设置直接修改功能
+    list_editable = ('content',)
+
+
+# 使用 short_description 将 get_author 的字段 header 更名为 'author'
+get_author.short_description = 'author'
+admin.site.register(Article, ArticleAdmin)
+```
+
+### 补充：更改外键在编辑（详情）页的显示
+```py
+# account.admin.py
+...
+class User(BaseModel):
+    ...
+    # 设置 __str__, 当需要输出（显示）User 实例时，会自动调用，显示对应 return 的值
+    def __str__(self):
+        return self.username
+
+```

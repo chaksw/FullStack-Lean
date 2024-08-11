@@ -16,7 +16,7 @@
     - [1.4.3. Updating Models, Entries (add | delete)](#143-updating-models-entries-add--delete)
   - [1.5. Connecting Tempaltes and Database Models](#15-connecting-tempaltes-and-database-models)
 - [2. Django Admin](#2-django-admin)
-  - [2.1. Model min object class](#21-model-min-object-class)
+  - [2.1. Model admin object class](#21-model-admin-object-class)
   - [2.2. Resigter model in to admin](#22-resigter-model-in-to-admin)
   - [2.3. ModelAdmin Class example](#23-modeladmin-class-example)
 - [3. Django Form](#3-django-form)
@@ -202,7 +202,7 @@ Operators are also available in Django (`& |`) by referring `Q()` object class
 
 # 2. Django Admin
 
-Take Project [car](./04-Django-Admin-Portal/my_car_site/) as an example, inside which apply all previous learning
+Take Project [car](./04-Django-Admin-Portal/my_car_site/) as an example, inside which apply all previous learning.
 One of the MOST POWERFUL FEATURES of Django, able to automatically create an Admin interface, to have a graphical interface for interacting with data and users on the site.
 Django has pre-built admin paths in site `urls.py` file(`'/admin'`) as well as indications of an existing Django Admin app (`"django.contrib.admin"`).
 Admin panel is meant for a manager of the website. so we need to **create a 'superuser'**
@@ -212,7 +212,7 @@ python manager.py createsuperuser
 # enter username, email and password
 ```
 
-## 2.1. Model min object class
+## 2.1. Model admin object class
 
 ## 2.2. Resigter model in to admin
 

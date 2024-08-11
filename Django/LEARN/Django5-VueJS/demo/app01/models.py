@@ -9,6 +9,7 @@ class Article(BaseModel):
     class Meta:
         db_table = 'article'  # 设置表名
         verbose_name = 'articleInfo'  # 别名
+        verbose_name_plural = 'Article Information'
         ordering = ['-publish_date']  # 以publish_date 降序， 发布越晚越靠前
     id = models.AutoField(primary_key=True)
     title = models.CharField(verbose_name='title', max_length=120)
