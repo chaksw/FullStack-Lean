@@ -535,8 +535,8 @@ python manage.py shell # 进入 shell
 ```
 #### ORM 新增｜插入数据
 - C - Create：新增数据方式
-   1. 保存 `save()`
-   2. 新增数据 `create()`
+   1. 保存一条数据 `save()`
+   2. 新增一条数据 `create()`
    3. 批量新增数据 `bulk_create()`
 1. `save()`
 ```bash
@@ -621,8 +621,8 @@ python manage.py shell # 进入 shell
 'chris5'
 ```
 
-#### ORM 查询条件
-- Conditional Search
+#### ORM 查询条件1: 基础
+- Conditional Search 1
 1. 相等/等于/布尔条件 
    1. `field__exact`/`field__iexact()`
    2. `field__gt`/`field__gte`/`field__lt`/`field__lte`，通常比较的是数值字段
@@ -678,7 +678,7 @@ python manage.py shell # 进入 shell
 
 5. 外键关联
 ```bash
-# 通过外键名__外键字段查询，如果是filter返回的是一个object list（QuerySet）
+# 通过关联外键名__外键字段查询，如果是filter返回的是一个object list（QuerySet）
 article1 = Article.objects.filter(user__username='chris')
 >>> article1
 <QuerySet [<Article: Article object (1)>]>
@@ -686,4 +686,128 @@ article1 = Article.objects.filter(user__username='chris')
 article1 = Article.objects.get(user__username='chris')
 >>> article1
 <Article: Article object (1)>
+```
+
+#### ORM 查询条件2: 多条件查询
+- Conditional Search 2
+    1. 使用 `filter()` 时指定多个条件 （仅支持 `&`）
+    2. `Q()` 函数，支持 `&` 和 `｜`
+1. 使用 `filter()` 时指定多个条件 （仅支持 `&`）
+```bash 
+# 方式1: 使用多个filter()
+>>> User.objects.filter(create_at__month=8).filter(username__contains='ch')
+<QuerySet [<User: User object (1)>, <User: User object (2)>, <User: User object (3)>, <User: User object (4)>, <User: User object (5)>]>
+# 方式2: 用 & 串联两个 objects.filter()
+>>> User.objects.filter(create_at__month=8)&User.objects.filter(username__contains='ris')
+<QuerySet [<User: User object (1)>, <User: User object (4)>, <User: User object (5)>]>
+```
+
+2. `Q()` 函数，支持 `&` 和 `｜`
+```bash 
+# Q() 函数是 Django 的一个便捷函数
+>>> from django.db.models import Q
+# 创建一个 query (过滤条件)
+>>> query = Q(create_at__month=8) & Q(username__contains='ris')
+# 使用 query
+>>> User.objects.filter(query)
+<QuerySet [<User: User object (1)>, <User: User object (4)>, <User: User object (5)>]>
+# 使用 |
+>>> query = Q(create_at__month=8) | Q(username__contains='ris')
+>>> User.objects.filter(query)
+<QuerySet [<User: User object (1)>, <User: User object (2)>, <User: User object (3)>, <User: User object (4)>, <User: User object (5)>]>
+```
+
+#### ORM 修改数据
+- U - Update: 修改数据方式
+   1. 修改单条数据 `save()`
+   2. 批量修改数据 `update()`
+   3. 批量修改数据 `bulk_update()`
+
+1. 修改单条数据 `save()`
+```bash
+# 获取要修改的数据
+>>> user = User.objects.get(username='chris')
+>>> user.email
+'test@email.com'
+# 修改数据
+>>> user.email = 'chris@email.com'
+# 保存修改
+>>> user.save()
+# 验证修改
+>>> user.email
+'chris@email.com'
+```
+
+2. 批量修改数据 `update()`
+```bash
+# 先使用 filter 获取 QuerySet 数据，要用update进行修改，如果修改成功返回 1
+>>> status = User.objects.filter(id=2).update(password='33333', email='idis2@email.com')
+>>> status
+1
+# 可以将获取数据和修改数据两步拆分
+>>> user = User.objects.filter(id=2)
+>>> user
+<QuerySet [<User: User object (2)>]>
+>>> user.update(password='444444')
+1
+>>> user[0].password
+'444444'
+# 对于 update() 不能使用 get 获取数据
+>>> user = User.objects.get(id=2).update(password='33333', email='idis2@email.com')
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'User' object has no attribute 'update'
+
+# 修改外键同理
+>>> article = Article.objects.get(id=1)
+>>> article.user
+<User: User object (1)>
+>>> user2 = User.objects.get(id=2)
+# user 为外键关联字段名
+>>> Article.objects.filter(id=1).update(user=user2)
+1
+```
+
+3. 批量修改数据 `bulk_update()`
+```bash
+# 没演示，听说不常用
+```
+
+#### ORM 删除数据
+- D - Delete
+    1. 物理删除 `delete()`
+    2. 逻辑删除，为数据增加状态属性，如果属性为1就显示，为0则不显示，但实际数据没有删除，所以准确来说是控制显示
+1. 物理删除 `delete()`
+```bash
+# 用filter()获取数据
+>>> user5 = User.objects.filter(id=5)
+# 执行删除
+>>> user5.delete()
+(1, {'account.User': 1}) #不知道为啥会出现
+# 也可以用 get() 获取数据
+>>> user4 = User.objects.get(id=4)
+# 执行删除
+>>> user4.delete()
+(1, {'account.User': 1})
+# 也可以删除多条
+>>> users = User.objects.all()
+# 原本有3个数据
+>>> users
+<QuerySet [<User: User object (1)>, <User: User object (2)>, <User: User object (3)>]>
+# 获取 username 包含 'w‘ 的要删除的数据
+>>> usersToDelete = User.objects.filter(username__contains='w')
+>>> usersToDelete
+<QuerySet [<User: User object (2)>, <User: User object (3)>]>
+# 执行删除
+>>> usersToDelete.delete()
+(3, {'app01.Article': 1, 'account.User': 2})
+# 验证删除
+>>> users = User.objects.all()
+>>> users
+<QuerySet [<User: User object (1)>]>
+```
+
+2. 逻辑删除
+```bash
+# 没演示。。。
 ```
