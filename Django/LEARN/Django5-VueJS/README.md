@@ -962,3 +962,26 @@ class User(BaseModel):
         return self.username
 
 ```
+
+### 补充：重命名项目名称
+如果要更改项目名称：如 `website` 项目中将包含 `settings.py` 的 `website` 文件夹重命名为 `config`，出了文件夹名字更改外，还需要将：
+```py
+# in settings.py 
+# ROOT_URLCONF = 'website.urls' 更改为：
+ROOT_URLCONF = 'config.urls'
+# WSGI_APPLICATION = 'website.wsgi.application' 更改为：
+WSGI_APPLICATION = 'config.wsgi.application'
+
+# in asgi.py
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'website.settings') 更改为:
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings'):
+
+
+# in wsgi.py
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'website.settings') 更改为：
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+
+# manage.py
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'website.settings' 更改为：
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings'
+```
