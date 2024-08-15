@@ -1,0 +1,429 @@
+<!-- 允许加载 static 文件夹下文件 -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="{% static 'libs/scrollReveal/scrollreveal.min.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'css/font.css' %}">
+  <link rel="stylesheet" href="{% static 'libs/glide/glide.core.min.css' %}">
+  <link rel="stylesheet" href="{% static 'libs/glide/glide.theme.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+  <title>网络科技</title>
+</head>
+
+<body>
+
+  <!-- 导航 -->
+  <header>
+    <div class="logo">网络科技</div>
+    <nav>
+      <a href="#home">首页</a>
+      <a href="#about-us">关于我们</a>
+      <a href="#showcases">成功案例</a>
+      <a href="#service">服务流程</a>
+      <a href="#team-intro">团队介绍</a>
+      <a href="#company-activities">资讯中心</a>
+      <i class="fa fa-search"></i>
+    </nav>
+    <!-- 小屏幕按钮 -->
+    <div class="burger">
+      <div class="burger-line1"></div>
+      <div class="burger-line2"></div>
+      <div class="burger-line3"></div>
+    </div>
+  </header>
+
+  <!-- 轮播图 -->
+  <div id="home" class="glide">
+    <div class="glide__track" data-glide-el="track">
+      <div class="glide__slides">
+        <!-- 第一张轮播图 -->
+        <div class="glide__slide">
+          <div class="slide-caption">
+            <h1>十五年卓越科技服务，用智慧引领未来，让技术成就梦想。</h1>
+            <h3>
+              智能科技新纪元，未来生活的驱动引擎。依靠技术突破实现经济腾飞。用智慧引领未来，让技术成就梦想。
+            </h3>
+            <button class="explore-btn">探索更多</button>
+          </div>
+          <!-- 遮罩层 -->
+          <div class="backdrop"></div>
+          <img src="{% static 'images/bg1.jpg' %}" alt="">
+        </div>
+        <div class="glide__slide">
+          <div class="slide-caption">
+            <h1>二十年专注科技创新，用专业铸就辉煌，让梦想触手可及。</h1>
+            <h3>
+              科技引领新潮流，智能生活的开创者。凭借技术革新推动社会进步。用专业铸就辉煌，让梦想触手可及。
+            </h3>
+            <button class="explore-btn">探索更多</button>
+          </div>
+          <!-- 遮罩层 -->
+          <div class="backdrop"></div>
+          <img src="{% static 'images/bg.jpg' %}" alt="">
+        </div>
+        <!-- 第二张轮播 -->
+        <div class="glide__slide">
+          <div class="slide-caption left">
+            <h1>技术引领未来</h1>
+            <h3>
+              坚持科学发展，注重自主创新。加速技术进步，为全球经济和社会发展提供强大支持。汇聚科技创意，实现创新愿景。
+            </h3>
+            <button class="explore-btn">探索更多</button>
+          </div>
+          <!-- 遮罩层 -->
+          <div class="backdrop"></div>
+          <img src="{% static 'images/15.jpg' %}" alt="">
+        </div>
+      </div>
+    </div>
+    <!-- 切换按钮 -->
+    <div class="glide__arrows" data-glide-el="controls">
+      <button class="glide__arrow glide__arrow--left" data-glide-dir="<">
+        < </button>
+          <button class="glide__arrow glide__arrow--right" data-glide-dir=">">
+            >
+          </button>
+    </div>
+    <!-- 控制圆点 -->
+    <div class="glide__bullets" data-glide-el="controls[nav]">
+      <button class="glide__bullet" data-glide-dir="=0"></button>
+      <button class="glide__bullet" data-glide-dir="=1"></button>
+      <button class="glide__bullet" data-glide-dir="=2"></button>
+    </div>
+  </div>
+
+  <!-- 关于我们 -->
+  <div class="container-wrapper">
+    <section id="about-us" class="about-us">
+      <h2 class="title1">关于我们</h2>
+      <p class="intro">
+        我们是一家致力于科技创新的专业公司，汇聚了一流的设计团队和程序开发团队。我们的业务范围包括软件开发、系统集成和技术咨询，为企业提供全方位的科技服务，助力企业实现数字化转型和业务增长。
+      </p>
+      <div class="features">
+        <div class="feature">
+          <i class="fa fa-lightbulb-o"></i>
+          <h4 class="feature-title">品牌创意</h4>
+          <p class="feature-content">让各知名行业门户脱颖而出,从满足预期到走向卓越。为企业设计独特的并能完美呈现企业价值观的视觉。</p>
+        </div>
+        <div class="feature">
+          <i class="fa fa-line-chart"></i>
+          <h4 class="feature-title">整合营销</h4>
+          <p class="feature-content">通过市场进入分析，指定网络营销战略，网络营销实施。</p>
+        </div>
+        <div class="feature">
+          <i class="fa fa-shopping-cart"></i>
+          <h4 class="feature-title">电子商务</h4>
+          <p class="feature-content">根据企业需求，开发不同的销售渠道，通过网上直销</p>
+        </div>
+        <div class="feature">
+          <i class="fa fa-desktop"></i>
+          <h4 class="feature-title">网页设计</h4>
+          <p class="feature-content">企业官网专属的高端定制化服务
+            解决方案，全面满足建设核心与运行管理
+            并提升企业品牌的有效传播。</p>
+        </div>
+        <div class="feature">
+          <i class="fa fa-tachometer"></i>
+          <h4 class="feature-title">网站优化</h4>
+          <p class="feature-content">先分析后合作，先排名后付费，整站SEO优化让您的网站有更多关键词的自然排名，长期稳定共赢</p>
+        </div>
+        <div class="feature">
+          <i class="fa fa-lightbulb-o"></i>
+          <h4 class="feature-title">网站架设</h4>
+          <p class="feature-content">从策划到设计制作，每一步都追求做到细腻，结合搜索引擎优化与用户体验优化，制作可持续发展的企业网站</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 成功案例 -->
+    <section id="showcases" class="showcases section-bg">
+      <h2 class="title1">成功案例</h2>
+      <!-- 筛选按钮 -->
+      <div class="filter-btns">
+        <button class="filter-btn active" data-filter="*">全部</button>
+        <button class="filter-btn" data-filter=".web">建筑设计</button>
+        <button class="filter-btn" data-filter=".mobile">人物设计</button>
+        <button class="filter-btn" data-filter=".science">场景设计</button>
+      </div>
+      <!-- 筛选图片 -->
+      <div class="cases">
+        <div class="case-item web science">
+          <img src="{% static 'images/场景设计01.png' %}" alt="">
+        </div>
+        <div class="case-item web">
+          <img src="{% static 'images/人物设计01.png' %}" alt="">
+        </div>
+        <div class="case-item mobile science">
+          <img src="{% static 'images/建筑设计01.png' %}" alt="">
+        </div>
+        <div class="case-item web mobile">
+          <img src="{% static 'images/建筑设计02.png' %}" alt="">
+        </div>
+        <div class="case-item mobile science">
+          <img src="{% static 'images/人物设计02.png' %}" alt="">
+        </div>
+        <div class="case-item web science">
+          <img src="{% static 'images/建筑设计03.png' %}" alt="">
+        </div>
+        <div class="case-item science web mobile">
+          <img src="{% static 'images/场景设计02.png' %}" alt="">
+        </div>
+        <div class="case-item mobile science">
+          <img src="{% static 'images/建筑设计04.png' %}" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- 服务 -->
+    <section id="service" class="service">
+      <h2 class="title1">服务流程</h2>
+      <p class="intro">
+        我们提供全方位的科技服务，包括基础服务（如域名注册、主机托管、企业邮箱）以及增值服务（如软件开发、系统优化、技术支持）。我们的目标是为客户提供高效、可靠的技术解决方案，助力企业提升竞争力。
+      </p>
+      <div class="services">
+        <div class="service-item">
+          <i class="fa fa-comments"></i>
+          <h2 class="service-title">需求沟通</h2>
+          <p class="service-content">
+            客户提出网站建设基本需求，包括设计要求及功能要求。
+          </p>
+        </div>
+        <div class="service-item">
+          <i class="fa fa-sign-in"></i>
+          <h2 class="service-title">项目评估</h2>
+          <p class="service-content">
+            根据客户提出的需求进行评估，估算出相应的时间与费用。
+          </p>
+        </div>
+        <div class="service-item">
+          <i class="fa fa-signal"></i>
+          <h2 class="service-title">签订合同</h2>
+          <p class="service-content">
+            合作双方确认费用，工期，合作要求的基础上，双方共同签订合同。
+          </p>
+        </div>
+        <div class="service-item">
+          <i class="fa fa-user"></i>
+          <h2 class="service-title">提案阶段</h2>
+          <p class="service-content">
+            完成网站初稿设计，包括首页风格，内页风格页面。
+          </p>
+        </div>
+        <div class="service-item">
+          <i class="fa fa-thumb-tack"></i>
+          <h2 class="service-title">制作阶段</h2>
+          <p class="service-content">
+            完成所有网页的设计，进行程序开发以及前后台的页面整合。
+          </p>
+        </div>
+        <div class="service-item">
+          <i class="fa fa-check-circle"></i>
+          <h2 class="service-title">网站验收</h2>
+          <p class="service-content">
+            根据合同条款进行网站验收，并签署网站验收确认单。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 团队介绍 -->
+    <section id="team-intro" class="team-intro section-bg">
+      <h2 class="title1">团队介绍</h2>
+      <div class="team-members">
+        <div class="team-member">
+          <div class="profile-image">
+            <img src="{% static 'images/董事长.png' %}" alt="">
+          </div>
+          <h4 class="name">马老师</h4>
+          <p class="position">董事长</p>
+          <ul class="social-links">
+            <li><i class="fa fa-weixin"></i></li>
+            <li><i class="fa fa-weibo"></i></li>
+            <li><i class="fa fa-github"></i></li>
+            <li><i class="fa fa-linkedin-square "></i></li>
+          </ul>
+        </div>
+        <div class="team-member">
+          <div class="profile-image">
+            <img src="{% static 'images/ceo.png' %}" alt="">
+          </div>
+          <h4 class="name">CEO</h4>
+          <p class="position">Andy</p>
+          <ul class="social-links">
+            <li><i class="fa fa-weixin"></i></li>
+            <li><i class="fa fa-weibo"></i></li>
+            <li><i class="fa fa-github"></i></li>
+            <li><i class="fa fa-linkedin-square"></i></li>
+          </ul>
+        </div>
+        <div class="team-member">
+          <div class="profile-image">
+            <img src="{% static 'images/文艺部长.png' %}" alt="">
+          </div>
+          <h4 class="name">赵四</h4>
+          <p class="position">文艺部长</p>
+          <ul class="social-links">
+            <li><i class="fa fa-weixin"></i></li>
+            <li><i class="fa fa-weibo"></i></li>
+            <li><i class="fa fa-github"></i></li>
+            <li><i class="fa fa-linkedin-square "></i></li>
+          </ul>
+        </div>
+        <div class="team-member">
+          <div class="profile-image">
+            <img src="{% static 'images/hr.png' %}" alt="">
+          </div>
+          <h4 class="name">张三</h4>
+          <p class="position">HR</p>
+          <ul class="social-links">
+            <li><i class="fa fa-weixin"></i></li>
+            <li><i class="fa fa-weibo"></i></li>
+            <li><i class="fa fa-github"></i></li>
+            <li><i class="fa fa-linkedin-square "></i></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 数据区域 -->
+    <section class="data-section">
+      <div class="data-price">
+        <i class="fa fa-code"></i>
+        <div class="num">280万</div>
+        <div class="data-desc">行代码</div>
+      </div>
+      <div class="data-price">
+        <i class="fa fa-trophy"></i>
+        <div class="num">168</div>
+        <div class="data-desc">个奖项</div>
+      </div>
+      <div class="data-price">
+        <i class="fa fa-male"></i>
+        <div class="num">2969</div>
+        <div class="data-desc">位客户</div>
+      </div>
+      <div class="data-price">
+        <i class="fa fa-folder"></i>
+        <div class="num">684</div>
+        <div class="data-desc">个项目</div>
+      </div>
+    </section>
+
+    <!-- 公司动态 -->
+    <section id="company-activities" class="company-activities">
+      <h2 class="title1">资讯中心</h2>
+      <p class="intro">关注公司动态，获取一手信息</p>
+      <div class="activities">
+        <div class="activity">
+          <div class="act-image-wrapper">
+            <img src="{% static 'images/23.png' %}" alt="">
+          </div>
+          <div class="meta">
+            <p class="date-published">
+              <i class="fa fa-calendar"></i> 2090年3月5日
+            </p>
+            <p class="comments"><i class="fa fa-comments"></i> 29条评论</p>
+          </div>
+          <h2 class="act-title">网站建设中常见的五大问题</h2>
+          <article>网站建设过程中会遇到许多问题...</article>
+          <button class="readmore-btn">阅读更多</button>
+        </div>
+        <div class="activity">
+          <div class="act-image-wrapper">
+            <img src="{% static 'images/19.png' %}" alt="">
+          </div>
+          <div class="meta">
+            <p class="date-published">
+              <i class="fa fa-calendar"></i> 2090年2月18日
+            </p>
+            <p class="comments"><i class="fa fa-comments"></i> 65条评论</p>
+          </div>
+          <h2 class="act-title">人物设计的方法</h2>
+          <article>人物设计的方法...</article>
+          <button class="readmore-btn">阅读更多</button>
+        </div>
+        <div class="activity">
+          <div class="act-image-wrapper">
+            <img src="{% static 'images/21.png' %}" alt="">
+          </div>
+          <div class="meta">
+            <p class="date-published">
+              <i class="fa fa-calendar"></i> 2090年2月8日
+            </p>
+            <p class="comments"><i class="fa fa-comments"></i> 45条评论</p>
+          </div>
+          <h2 class="act-title">什么是Django</h2>
+          <article>Django是一个开源的Web框架，使用Python语言编写...</article>
+          <button class="readmore-btn">阅读更多</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+  <!-- 尾部 -->
+  <footer>
+    <div class="footer-menus">
+      <div class="contact-us">
+        <p class="menu-title">联系我们</p>
+        <p>地址:北京市XXXX</p>
+        <p>电话:1234567890</p>
+        <p>传真:1234567890</p>
+        <p>电子邮箱:1234567890@qq.com</p>
+      </div>
+      <div class="service-menu footer-menu">
+        <p class="menu-title">服务概览</p>
+        <ul class="menu-items">
+          <li><a href="#">网站建设</a></li>
+          <li><a href="#">域名购买</a></li>
+          <li><a href="#">网页设计</a></li>
+          <li><a href="#">移动应用</a></li>
+        </ul>
+      </div>
+      <div class="service-menu footer-menu">
+        <p class="menu-title">成功案例</p>
+        <ul class="menu-items">
+          <li><a href="#">桌面网站</a></li>
+          <li><a href="#">移动网站</a></li>
+          <li><a href="#">科研项目</a></li>
+          <li><a href="#">软件应用</a></li>
+        </ul>
+      </div>
+      <div class="service-menu footer-menu">
+        <p class="menu-title">资讯中心</p>
+        <ul class="menu-items">
+          <li><a href="#">信息公开</a></li>
+          <li><a href="#">最近新闻</a></li>
+          <li><a href="#">最新博客</a></li>
+        </ul>
+      </div>
+      <div class="service-menu footer-menu">
+        <p class="menu-title">帮助与支持</p>
+        <ul class="menu-items">
+          <li><a href="#">帮助中心</a></li>
+          <li><a href="#">联系客服</a></li>
+          <li><a href="#">文档资源</a></li>
+        </ul>
+      </div>
+      <p class="icp-info">京ICP备案 12345567890 号</p>
+      <p class="rights">
+        &copy; 2090 XX科技 - 响应式网站 版权所有
+      </p>
+      <p class="scrollToTop">
+        <a href="#home"><i class="fa fa-chevron-up"></i></a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="{% static 'libs/anime/anime.min.js' %}"></script>
+  <script src="{% static 'libs/glide/glide.min.js' %}"></script>
+  <script src="{% static 'libs/isotope/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'libs/smooth-scroll/smooth-scroll.polyfills.min.js' %}"></script>
+  <script src="{% static 'js/index.js' %}"></script>
+</body>
+
+</html>
