@@ -58,8 +58,8 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 'DIRS': [BASE_DIR / 'templates'],
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [BASE_DIR / 'templates'],
+        # 'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -129,11 +129,21 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
-
+# 作用是能通过url直接访问在项目中的静态文件
 STATIC_URL = 'static/'
+# 它的定义是告诉 django， 首先在 STATICFILES_DIRS 搜寻静态文件，其次再到各个app的 static文件夹里面找
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# media setting
+# 用于拼接静态文件的存储路径，后续在 views.py 中进行相应设置，可让 media 下的静态文件暴露在前端中供客户访问
+MEDIA_URL = '/media/'
+# 静态文件的存储路径，与 MEDIA_URL 相对应，当客户访问 media 相关的 url 时，实际是在该路径下读取相关的静态文件
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# 要达到上述效果，需要在 views.py中设置
+# from django.conf import settings
+# from django.conf.urls.static import static
+# urlpatterns += static(settings.MEDIA_URL, document_roort=settings.MEDIA_ROOT)

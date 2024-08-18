@@ -1,0 +1,15 @@
+{% for team in teams %}
+<div class="team-member">
+    <div class="profile-image">
+        <img src="media/{{team.avatar}}" alt="">
+    </div>
+    <h4 class="name">{{ team.name }}</h4>
+    <p class="position">{{ team.title }}</p>
+    <ul class="social-links">
+        <li><i class="fa fa-weixin"></i></li>
+        <li><i class="fa fa-weibo"></i></li>
+        <li><i class="fa fa-github"></i></li>
+        <li><i class="fa fa-linkedin-square "></i></li>
+    </ul>
+</div>
+{% endfor %}

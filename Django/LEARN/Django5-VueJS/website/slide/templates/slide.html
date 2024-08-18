@@ -1,0 +1,12 @@
+<!-- 第一张轮播图 -->
+{% for slide in slides %}
+<div class="glide__slide">
+    <div class="slide-caption">
+        <h1>{{ slide.title }}</h1>
+        <h3>{{ slide.content }}</h3>
+        <button class="explore-btn">探索更多</button>
+    </div>
+    <!-- 遮罩层 -->
+    <div class="backdrop"></div>
+    <img src="media/{{ slide.image }}" alt="">
+</div>

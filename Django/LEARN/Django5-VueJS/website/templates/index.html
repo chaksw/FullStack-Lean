@@ -40,44 +40,19 @@
   <div id="home" class="glide">
     <div class="glide__track" data-glide-el="track">
       <div class="glide__slides">
-        <!-- 第一张轮播图 -->
+        <!-- 轮播图 -->
+        {% for slide in slides %}
         <div class="glide__slide">
           <div class="slide-caption">
-            <h1>十五年卓越科技服务，用智慧引领未来，让技术成就梦想。</h1>
-            <h3>
-              智能科技新纪元，未来生活的驱动引擎。依靠技术突破实现经济腾飞。用智慧引领未来，让技术成就梦想。
-            </h3>
+            <h1>{{ slide.title }}</h1>
+            <h3>{{ slide.content }}</h3>
             <button class="explore-btn">探索更多</button>
           </div>
           <!-- 遮罩层 -->
           <div class="backdrop"></div>
-          <img src="{% static 'images/bg1.jpg' %}" alt="">
+          <img src="media/{{ slide.image }}" alt="">
         </div>
-        <div class="glide__slide">
-          <div class="slide-caption">
-            <h1>二十年专注科技创新，用专业铸就辉煌，让梦想触手可及。</h1>
-            <h3>
-              科技引领新潮流，智能生活的开创者。凭借技术革新推动社会进步。用专业铸就辉煌，让梦想触手可及。
-            </h3>
-            <button class="explore-btn">探索更多</button>
-          </div>
-          <!-- 遮罩层 -->
-          <div class="backdrop"></div>
-          <img src="{% static 'images/bg.jpg' %}" alt="">
-        </div>
-        <!-- 第二张轮播 -->
-        <div class="glide__slide">
-          <div class="slide-caption left">
-            <h1>技术引领未来</h1>
-            <h3>
-              坚持科学发展，注重自主创新。加速技术进步，为全球经济和社会发展提供强大支持。汇聚科技创意，实现创新愿景。
-            </h3>
-            <button class="explore-btn">探索更多</button>
-          </div>
-          <!-- 遮罩层 -->
-          <div class="backdrop"></div>
-          <img src="{% static 'images/15.jpg' %}" alt="">
-        </div>
+        {% endfor %}
       </div>
     </div>
     <!-- 切换按钮 -->
@@ -234,12 +209,13 @@
     <section id="team-intro" class="team-intro section-bg">
       <h2 class="title1">团队介绍</h2>
       <div class="team-members">
+        {% for team in teams %}
         <div class="team-member">
           <div class="profile-image">
-            <img src="{% static 'images/董事长.png' %}" alt="">
+            <img src="media/{{team.avatar}}" alt="">
           </div>
-          <h4 class="name">马老师</h4>
-          <p class="position">董事长</p>
+          <h4 class="name">{{ team.name }}</h4>
+          <p class="position">{{ team.title }}</p>
           <ul class="social-links">
             <li><i class="fa fa-weixin"></i></li>
             <li><i class="fa fa-weibo"></i></li>
@@ -247,45 +223,7 @@
             <li><i class="fa fa-linkedin-square "></i></li>
           </ul>
         </div>
-        <div class="team-member">
-          <div class="profile-image">
-            <img src="{% static 'images/ceo.png' %}" alt="">
-          </div>
-          <h4 class="name">CEO</h4>
-          <p class="position">Andy</p>
-          <ul class="social-links">
-            <li><i class="fa fa-weixin"></i></li>
-            <li><i class="fa fa-weibo"></i></li>
-            <li><i class="fa fa-github"></i></li>
-            <li><i class="fa fa-linkedin-square"></i></li>
-          </ul>
-        </div>
-        <div class="team-member">
-          <div class="profile-image">
-            <img src="{% static 'images/文艺部长.png' %}" alt="">
-          </div>
-          <h4 class="name">赵四</h4>
-          <p class="position">文艺部长</p>
-          <ul class="social-links">
-            <li><i class="fa fa-weixin"></i></li>
-            <li><i class="fa fa-weibo"></i></li>
-            <li><i class="fa fa-github"></i></li>
-            <li><i class="fa fa-linkedin-square "></i></li>
-          </ul>
-        </div>
-        <div class="team-member">
-          <div class="profile-image">
-            <img src="{% static 'images/hr.png' %}" alt="">
-          </div>
-          <h4 class="name">张三</h4>
-          <p class="position">HR</p>
-          <ul class="social-links">
-            <li><i class="fa fa-weixin"></i></li>
-            <li><i class="fa fa-weibo"></i></li>
-            <li><i class="fa fa-github"></i></li>
-            <li><i class="fa fa-linkedin-square "></i></li>
-          </ul>
-        </div>
+        {% endfor %}
       </div>
     </section>
 
