@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    {% for item in news_list %}
+
+    <h2>
+        <a href="/news/{{ item.id }}">
+            {{ item.title}}
+        </a>
+
+    </h2>
+    <!-- <div class="activity">
+        <div class="act-image-wrapper">
+            <img src="../../media/{{item.cover}}" alt="">
+        </div>
+        <div class="meta">
+            <p class="date-published">
+                <i class="fa fa-calendar"></i> {{ item.updated_at}}
+            </p>
+            <p class="comments"><i class="fa fa-comments"></i> {{ item.comment }}条评论</p>
+        </div>
+        <h2 class="act-title">{{ item.title }}</h2>
+        <article>{{ item.content }}</article>
+        <button class="readmore-btn" ">阅读更多</button>
+    </div> -->
+    {% endfor %}
+</body>
+
+</html>

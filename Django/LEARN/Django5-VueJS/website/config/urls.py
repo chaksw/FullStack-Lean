@@ -17,11 +17,13 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from mysite import views
+from news import urls
 
 urlpatterns = [
     path('', views.index),
+    path('news/', include('news.urls')),
     path('admin/', admin.site.urls),
 ]
 # 由于 media 静态文件存储路径作为 MEDIA_URL 暴露在客户端

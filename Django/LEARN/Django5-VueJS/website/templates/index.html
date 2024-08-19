@@ -256,48 +256,22 @@
       <h2 class="title1">资讯中心</h2>
       <p class="intro">关注公司动态，获取一手信息</p>
       <div class="activities">
+        {% for item in news %}
         <div class="activity">
           <div class="act-image-wrapper">
-            <img src="{% static 'images/23.png' %}" alt="">
+            <img src="media/{{news.cover}}" alt="">
           </div>
           <div class="meta">
             <p class="date-published">
-              <i class="fa fa-calendar"></i> 2090年3月5日
+              <i class="fa fa-calendar"></i> {{ news.updated_at}}
             </p>
-            <p class="comments"><i class="fa fa-comments"></i> 29条评论</p>
+            <p class="comments"><i class="fa fa-comments"></i> {{ news.comment }}条评论</p>
           </div>
-          <h2 class="act-title">网站建设中常见的五大问题</h2>
-          <article>网站建设过程中会遇到许多问题...</article>
+          <h2 class="act-title">{{ news.title }}</h2>
+          <article>{{ news.content }}</article>
           <button class="readmore-btn">阅读更多</button>
         </div>
-        <div class="activity">
-          <div class="act-image-wrapper">
-            <img src="{% static 'images/19.png' %}" alt="">
-          </div>
-          <div class="meta">
-            <p class="date-published">
-              <i class="fa fa-calendar"></i> 2090年2月18日
-            </p>
-            <p class="comments"><i class="fa fa-comments"></i> 65条评论</p>
-          </div>
-          <h2 class="act-title">人物设计的方法</h2>
-          <article>人物设计的方法...</article>
-          <button class="readmore-btn">阅读更多</button>
-        </div>
-        <div class="activity">
-          <div class="act-image-wrapper">
-            <img src="{% static 'images/21.png' %}" alt="">
-          </div>
-          <div class="meta">
-            <p class="date-published">
-              <i class="fa fa-calendar"></i> 2090年2月8日
-            </p>
-            <p class="comments"><i class="fa fa-comments"></i> 45条评论</p>
-          </div>
-          <h2 class="act-title">什么是Django</h2>
-          <article>Django是一个开源的Web框架，使用Python语言编写...</article>
-          <button class="readmore-btn">阅读更多</button>
-        </div>
+        {% endfor %}
       </div>
     </section>
   </div>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="activity">
+        <div class="act-image-wrapper">
+            <img src="../../media/{{news.cover}}" alt="">
+        </div>
+        <div class="meta">
+            <p class="date-published">
+                <i class="fa fa-calendar"></i> {{ news.updated_at}}
+            </p>
+            <p class="comments"><i class="fa fa-comments"></i> {{ news.comment }}条评论</p>
+        </div>
+        <h2 class="act-title">{{ news.title }}</h2>
+        <article>{{ news.content }}</article>
+        <button class="readmore-btn" ">阅读更多</button>
+    </div>
+</body>
+
+</html>
