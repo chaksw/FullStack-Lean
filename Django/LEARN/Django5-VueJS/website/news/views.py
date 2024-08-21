@@ -18,6 +18,7 @@ def detail(request, id):
         context = {
             'news': news,
         }
-        return render(request, 'detail.html', context)
+        print(context)
+        return render(request, 'detail.html', context=context)
     except:
         return render(request, '404.html')

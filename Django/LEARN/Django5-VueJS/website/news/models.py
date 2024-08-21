@@ -1,5 +1,6 @@
 from django.db import models
-from datetime import datetime
+from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 # Create your models here.
 
 
@@ -20,9 +21,12 @@ class News(models.Model):
     id = models.AutoField(primary_key=True)
     cover = models.ImageField('cover', upload_to='news', blank=True, null=True, help_text='best size: 515x262')
     title = models.CharField('title', max_length=100)
-    content = models.TextField('content')
+    # content = models.TextField('content')
+    # 使用 RichTextUploadingField 时，还需要配置对应的路由
+    # path('ckeditor/', include('ckeditor_uploader.urls')),
+    content = RichTextUploadingField()
     comment = models.IntegerField('comment', default=0)
-    create_at = models.DateTimeField('create_time', auto_now_add=True, editable=True)
+    created_at = models.DateTimeField('create_time', auto_now_add=True, editable=True)
     updated_at = models.DateTimeField('updated_time', auto_now_add=True, editable=True)
     category = models.ForeignKey(to=Category, on_delete=models.CASCADE)
 

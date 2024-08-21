@@ -120,13 +120,23 @@
       <!-- 筛选按钮 -->
       <div class="filter-btns">
         <button class="filter-btn active" data-filter="*">全部</button>
-        <button class="filter-btn" data-filter=".web">建筑设计</button>
-        <button class="filter-btn" data-filter=".mobile">人物设计</button>
-        <button class="filter-btn" data-filter=".science">场景设计</button>
+        <!-- data-filter 让button 点击是显示下方对应 class 的 图片 -->
+        <!-- 这里自定义 class 为 category_item.category.id -->
+        <button class="filter-btn" data-filter=".category_2">建筑设计</button>
+        <button class="filter-btn" data-filter=".category_3">人物设计</button>
+        <button class="filter-btn" data-filter=".category_4">场景设计</button>
       </div>
       <!-- 筛选图片 -->
       <div class="cases">
-        <div class="case-item web science">
+        {% for item in cases %}
+        <!-- 定义 class 为 category_{{ item.category.id }} -->
+        <div class="case-item category_{{ item.category.id }}">
+          <a href="/news/{{ item.id }}">
+            <img src=" media/{{ item.cover }}" alt="">
+          </a>
+        </div>
+        {% endfor %}
+        <!-- <div class="case-item web science">
           <img src="{% static 'images/场景设计01.png' %}" alt="">
         </div>
         <div class="case-item web">
@@ -149,7 +159,7 @@
         </div>
         <div class="case-item mobile science">
           <img src="{% static 'images/建筑设计04.png' %}" alt="">
-        </div>
+        </div> -->
       </div>
     </section>
 
@@ -259,27 +269,36 @@
         {% for item in news %}
         <div class="activity">
           <div class="act-image-wrapper">
-            <img src="media/{{news.cover}}" alt="">
+            <img src="media/{{ item.cover }}" alt="">
           </div>
           <div class="meta">
             <p class="date-published">
-              <i class="fa fa-calendar"></i> {{ news.updated_at}}
+              <i class="fa fa-calendar"></i> {{ item.created_at }}
             </p>
-            <p class="comments"><i class="fa fa-comments"></i> {{ news.comment }}条评论</p>
+            <p class="comments"><i class="fa fa-comments"></i> {{ item.comment }}条评论</p>
           </div>
-          <h2 class="act-title">{{ news.title }}</h2>
-          <article>{{ news.content }}</article>
-          <button class="readmore-btn">阅读更多</button>
+          <h2 class="act-title">{{ item.title }}</h2>
+          <article>{{ item.content|slice:20|safe}}</article>
+          <a href=" /news/{{ item.id }}">
+            <button class="readmore-btn" ">
+            阅读更多
+          </button>
+          </a>
         </div>
         {% endfor %}
       </div>
+      <div>
+        <a href=" /news/list">
+              <button class=" readmore-btn">查看全部新闻</button>
+          </a>
+        </div>
     </section>
   </div>
 
 
   <!-- 尾部 -->
   <footer>
-    <div class="footer-menus">
+    <div class=" footer-menus">
       <div class="contact-us">
         <p class="menu-title">联系我们</p>
         <p>地址:北京市XXXX</p>

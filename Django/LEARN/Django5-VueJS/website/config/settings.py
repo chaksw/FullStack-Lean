@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ckeditor',
+    'ckeditor_uploader',
     'news',
     'slide',
     'team',
@@ -139,11 +141,18 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # media setting
-# 用于拼接静态文件的存储路径，后续在 views.py 中进行相应设置，可让 media 下的静态文件暴露在前端中供客户访问
+# 用于拼接静态文件的存储路径，后续在 views.py 中进行相应设置，可让 media 下的静态文件暴露在前端中, 通过 url 进行对应的静态文件访问
 MEDIA_URL = '/media/'
-# 静态文件的存储路径，与 MEDIA_URL 相对应，当客户访问 media 相关的 url 时，实际是在该路径下读取相关的静态文件
+# 静态文件的存储路径，与 MEDIA_URL 相对应，当html需要链接对应静态文件时，可通过静态文件对应的变量如： 'media/{{ data.images }}来定义静态文件的 url。当客户访问 media 相关的 url 时，实际是在该路径下读取相关的静态文件，
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # 要达到上述效果，需要在 views.py中设置
 # from django.conf import settings
 # from django.conf.urls.static import static
 # urlpatterns += static(settings.MEDIA_URL, document_roort=settings.MEDIA_ROOT)
+
+# 配置 ckeditor 富文本，就是 rtf 格式文档， rtf文档中可以潜入图像，链接等文件格式。富文本的引用可以让我们在后台编辑数据是有更丰富的选择，同时前端也会像是相应的字体，图片，链接等富文本样式
+CKEDITOR_UPLOAD_PATH = 'upload/'  # 富文本文件的上传路径
+CKEDITOR_IMAGE_BACKEND = 'pillow'  # 富文件上传图片的后台
+# 对应的 models 中使用富文本可以导入并使用 RichTextField，如果需要上传图片，则导入并使用 RichTextUploadingField
+# from ckeditor.fields import RichTextField
+# from ckeditor_uploader.fields import RichTextUploadingField

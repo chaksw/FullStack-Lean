@@ -1,27 +1,111 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <script src="{% static 'libs/scrollReveal/scrollreveal.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/font.css' %}">
+    <link rel="stylesheet" href="{% static 'libs/glide/glide.core.min.css' %}">
+    <link rel="stylesheet" href="{% static 'libs/glide/glide.theme.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <title>网络科技</title>
 </head>
 
 <body>
-    <div class="activity">
-        <div class="act-image-wrapper">
-            <img src="../../media/{{news.cover}}" alt="">
+
+    <!-- 导航 -->
+    <header style="background-color: black;">
+        <div class="logo">网络科技</div>
+        <nav>
+            <a href="#home">首页</a>
+            <a href="#about-us">关于我们</a>
+            <a href="#showcases">成功案例</a>
+            <a href="#service">服务流程</a>
+            <a href="#team-intro">团队介绍</a>
+            <a href="#company-activities">资讯中心</a>
+            <i class="fa fa-search"></i>
+        </nav>
+        <!-- 小屏幕按钮 -->
+        <div class="burger">
+            <div class="burger-line1"></div>
+            <div class="burger-line2"></div>
+            <div class="burger-line3"></div>
         </div>
-        <div class="meta">
-            <p class="date-published">
-                <i class="fa fa-calendar"></i> {{ news.updated_at}}
-            </p>
-            <p class="comments"><i class="fa fa-comments"></i> {{ news.comment }}条评论</p>
-        </div>
-        <h2 class="act-title">{{ news.title }}</h2>
-        <article>{{ news.content }}</article>
-        <button class="readmore-btn" ">阅读更多</button>
+    </header>
+    <div class="container-wrapper">
+        <section id="about-us" class="about-us">
+            <h2 class="title1" style="padding: 10px 0;">{{ news.title }}</h2>
+            <p>{{ news.created_at }} </p>
+            <div style="padding: 6px 0;">
+                <p class="intro">
+                    {{ news.content|safe}}
+                </p>
+
+            </div>
+        </section>
     </div>
+
+    <!-- 尾部 -->
+    <footer>
+        <div class=" footer-menus">
+            <div class="contact-us">
+                <p class="menu-title">联系我们</p>
+                <p>地址:北京市XXXX</p>
+                <p>电话:1234567890</p>
+                <p>传真:1234567890</p>
+                <p>电子邮箱:1234567890@qq.com</p>
+            </div>
+            <div class="service-menu footer-menu">
+                <p class="menu-title">服务概览</p>
+                <ul class="menu-items">
+                    <li><a href="#">网站建设</a></li>
+                    <li><a href="#">域名购买</a></li>
+                    <li><a href="#">网页设计</a></li>
+                    <li><a href="#">移动应用</a></li>
+                </ul>
+            </div>
+            <div class="service-menu footer-menu">
+                <p class="menu-title">成功案例</p>
+                <ul class="menu-items">
+                    <li><a href="#">桌面网站</a></li>
+                    <li><a href="#">移动网站</a></li>
+                    <li><a href="#">科研项目</a></li>
+                    <li><a href="#">软件应用</a></li>
+                </ul>
+            </div>
+            <div class="service-menu footer-menu">
+                <p class="menu-title">资讯中心</p>
+                <ul class="menu-items">
+                    <li><a href="#">信息公开</a></li>
+                    <li><a href="#">最近新闻</a></li>
+                    <li><a href="#">最新博客</a></li>
+                </ul>
+            </div>
+            <div class="service-menu footer-menu">
+                <p class="menu-title">帮助与支持</p>
+                <ul class="menu-items">
+                    <li><a href="#">帮助中心</a></li>
+                    <li><a href="#">联系客服</a></li>
+                    <li><a href="#">文档资源</a></li>
+                </ul>
+            </div>
+            <p class="icp-info">京ICP备案 12345567890 号</p>
+            <p class="rights">
+                &copy; 2090 XX科技 - 响应式网站 版权所有
+            </p>
+            <p class="scrollToTop">
+                <a href="#home"><i class="fa fa-chevron-up"></i></a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="{% static 'libs/anime/anime.min.js' %}"></script>
+    <script src="{% static 'libs/glide/glide.min.js' %}"></script>
+    <script src="{% static 'libs/isotope/isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'libs/smooth-scroll/smooth-scroll.polyfills.min.js' %}"></script>
+    <script src="{% static 'js/index.js' %}"></script>
 </body>
 
 </html>

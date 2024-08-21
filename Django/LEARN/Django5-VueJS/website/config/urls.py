@@ -24,6 +24,7 @@ from news import urls
 urlpatterns = [
     path('', views.index),
     path('news/', include('news.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     path('admin/', admin.site.urls),
 ]
 # 由于 media 静态文件存储路径作为 MEDIA_URL 暴露在客户端

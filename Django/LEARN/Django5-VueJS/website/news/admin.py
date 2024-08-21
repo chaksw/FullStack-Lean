@@ -11,7 +11,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'comment', 'create_at', 'category')
+    list_display = ('id', 'title', 'comment', 'created_at', 'category')
     list_filter = ('title', 'category')
     search_fields = ('title', 'category')
     list_editable = ('category', 'comment')
