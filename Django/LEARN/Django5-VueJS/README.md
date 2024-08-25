@@ -467,8 +467,8 @@ from utils.basemodels import BaseModel
 
 class User(BaseModel):
     class Meta:
-        db_table = 'user'  # 表名
-        verbose_name = 'userInfo'  # 别名
+        db_table = 'user'  # 表名 (数据表中显示的名称)
+        verbose_name = 'userInfo'  # 别名 
     # AutoField 自增
     id = models.AutoField(primary_key=True)
     # verbose_name： 别名，页面显示时的名字
@@ -492,8 +492,8 @@ from utils.basemodels import BaseModel
 
 class Article(BaseModel):
     class Meta:
-        db_table = 'article'  # 设置表名
-        verbose_name = 'articleInfo'  # 别名
+        db_table = 'article'  # 设置表名 (数据表中显示的名称)
+        verbose_name = 'articleInfo'  # 别名 
         ordering = ['-publish_date']  # 以publish_date 降序， 发布越晚越靠前
     id = models.AutoField(primary_key=True)
     title = models.CharField(verbose_name='title', max_length=120)
@@ -846,18 +846,18 @@ from django.apps import AppConfig
 class AccountConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'account'
-    verbose_name = 'Account Management'
+    verbose_name = 'Account Management' # admin 后台显示的 title 名称
 ```
-2. 更改后台数据模型名称
+2. 更改 admin 后台数据模型名称
 ```py
 # account.models.py
 # 使用 verbose_name_plural
 ...
 class User(BaseModel):
     class Meta:
-        db_table = 'user'  # 表名
-        verbose_name = 'userInfo'  # 别名
-        verbose_name_plural = 'User Information' # 后台模型名称
+        db_table = 'user'  # 表名 (数据表中显示的名称)
+        verbose_name = 'userInfo'  # 别名 
+        verbose_name_plural = 'User Information' # 后台模型名称 (admin 后台显示的表名称)
    ...
 
 ```
@@ -963,7 +963,31 @@ class User(BaseModel):
 
 ```
 
-### 补充：重命名项目名称
+## 补充：
+
+## 在当前目录下创建项目
+假设已有文件夹 project，当运行：
+```bash
+django-admin startproject project
+```
+会在 project 文件夹下创建：
+```bash
+- project # 已有文件夹
+    - project # startproject project 对应的文件夹
+        - project # 包含settings.py 等文件
+        - manage.py
+```
+如果希望以 project 为项目根路径，创建如下结构：
+```bash
+- project # 已有文件夹
+    - config # 包含settings.py 等文件 (名为 config)
+    - manage.py
+```
+可以使用:
+```bash
+django-admin startproject config .
+```
+### 重命名项目名称
 如果要更改项目名称：如 `website` 项目中将包含 `settings.py` 的 `website` 文件夹重命名为 `config`，出了文件夹名字更改外，还需要将：
 ```py
 # in settings.py 
@@ -983,5 +1007,38 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
 # manage.py
 # os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'website.settings' 更改为：
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings'
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+```
+
+### 静态文件的相关配置
+```py
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.0/howto/static-files/
+# STATIC 路径主要用于处理项目需要引用的静态文件
+# 作用是能通过url直接访问在项目中的静态文件 (CSS, JavaScript, 图片等)
+STATIC_URL = 'static/'
+# 它的定义是告诉 django， 首先在 STATICFILES_DIRS 搜寻静态文件，其次再到各个app的 static文件夹里面找
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# media setting
+# MEDIA 路径主要用于处理用户上传的媒体文件（图片，视频，文档等)
+# 用于拼接静态文件的存储路径，后续在 views.py 中进行相应设置，可让 media 下的静态文件暴露在前端中, 通过 url 进行对应的静态文件访问
+MEDIA_URL = '/media/'
+# 静态文件的存储路径，与 MEDIA_URL 相对应，当html需要链接对应静态文件时，可通过静态文件对应的变量如： 'media/{{ data.images }}来定义静态文件的 url。当客户访问 media 相关的 url 时，实际是在该路径下读取相关的静态文件，
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# 要达到上述效果，需要在 views.py中设置
+# from django.conf import settings
+# from django.conf.urls.static import static
+# urlpatterns += static(settings.MEDIA_URL, document_roort=settings.MEDIA_ROOT)
+
+# 配置 ckeditor 富文本，就是 rtf 格式文档， rtf文档中可以潜入图像，链接等文件格式。富文本的引用可以让我们在后台编辑数据是有更丰富的选择，同时前端也会像是相应的字体，图片，链接等富文本样式
+CKEDITOR_UPLOAD_PATH = 'upload/'  # 富文本文件的上传路径
+CKEDITOR_IMAGE_BACKEND = 'pillow'  # 富文件上传图片的后台
+# 对应的 models 中使用富文本可以导入并使用 RichTextField，如果需要上传图片，则导入并使用 RichTextUploadingField
+# from ckeditor.fields import RichTextField
+# from ckeditor_uploader.fields import RichTextUploadingField
 ```
