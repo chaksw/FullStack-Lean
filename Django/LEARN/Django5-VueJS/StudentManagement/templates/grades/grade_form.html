@@ -4,26 +4,35 @@
 <link rel="stylesheet" href="{% static 'css/form.css' %}">
 <div class=bottom>
     <div class=container>
-        <h1 style="text-align: center;">新增班级</h1>
+        <h1 style="text-align: center;">
+            <!-- 在 Django 的基于类的视图（Class-Based Views, CBVs）中，object 变量是指在处理对象相关的视图时，传递给模板的上下文数据。这些对象通常是数据库模型的实例。 -->
+            {% if object %}
+            编辑班级
+            {% else %}
+            新增班级
+            {% endif %}
+
+        </h1>
         <form method=post>
+            {% csrf_token %}
+            {% for field in form %}
             <div class=form-group>
-                <label for=id_grade_name> 班级名称:</label>
-                <input type=text name=grade_name maxlength=50 required id=id_grade_name value>
+                <!-- id_for_label 是 Django class form 字段对象的一个属性，用于获取与字段关联的唯一 ID，这个 ID 通常用于生成 <label> 标签的 for 属性值。它在模板中帮助你确保表单标签正确地与对应的输入字段相关联，从而提升用户体验和页面的可访问性。 -->
+                <!-- 对于 class form，由于它是基于数据模型 model 定义的表单，其 label 跟 数据模型 model 的 verbose_name 对应 -->
+                <label for={{ field.id_for_label }}> {{ field.label }}: </label>
+                <!-- {{ field.label_tag }} -->
+                {{ field }}
                 <ul class=errors>
-
+                    <!-- 如果表单数据有错误（如和已有数据重复，数据类型错误等，会产生错误信息存储在每个字段的的 errors 中 -->
+                    {% for error in field.errors %}
+                    <li>{{ error }} </li>
+                    {% endfor %}
                 </ul>
             </div>
-
-            <div class=form-group>
-                <label for=id_grade_number> 班级编号:</label>
-                <input type=text name=grade_number maxlength=10 required id=id_grade_number value>
-                <ul class=errors>
-
-                </ul>
-            </div>
-
+            {% endfor %}
 
             <div class=handleButton>
+                <!-- 当 type='sumbit' 的按钮按下后，会触发提交表单，产生一个 post 请求，将表单发送到服务器，后续进行数据验证和重定向（见 views.py) -->
                 <button type=submit id=saveButton>保存</button>
             </div>
         </form>

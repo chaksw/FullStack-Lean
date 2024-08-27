@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.db.models import Q
+from django.urls import reverse_lazy
 from .models import Grade
 from .forms import GradeForm
 # Create your views here.
@@ -34,7 +35,7 @@ class GradeListView(ListView):
         queryset = super().get_queryset()
         # 获取搜索的关键词：
         # 1. 表单为 GET 请求 所以数据存储在 request.GET 下
-        # 2. 数据来源于 text 元素下 attribute name='search' 的内容，所以在 request.GET 下获取  'search' 的内容
+        # 2. 数据来源于 input 元素下 attribute name='search' 的内容，所以在 request.GET 下获取  'search' 的内容
         search = self.request.GET.get('search')
         if search:
             query = Q(grade_name__icontains=search) | Q(grade_number__icontains=search)
@@ -42,12 +43,31 @@ class GradeListView(ListView):
         return queryset
 
 
+# 结合 表单类创建 新增表单
 class GradeCreateView(CreateView):
     model = Grade
-    template_name = 'grades/grade_form.html'
     # 创建数据需要定义表单类
     form_class = GradeForm
+    template_name = 'grades/grade_form.html'
+    # 当 type='sumbit' 的按钮按下后，会提交表单，产生一个 post 请求，将表单数据发送到服务器
+    # 服务器接收到数据后，CreateView 会调用 form.is_valid() 方法来验证数据是否合法
+    # 如果数据有效，会自动调用 form.save() 将数据保存到数据库中
+    # 如果数据保存，会重定向到 success_url 中指定的页面
+    success_url = reverse_lazy('grades_list')
 
 
+# 更新视图和创建视图基本相同，，因为都是处理同个数据模型的表单的 POST 请求，（更新也可以是 PUT 请求，但是 django CBV 不直接支持 PUT 请求，但可以使用 Django REST Framework 来实现）。
+# 区别在于，更新视图是更新已有数据，可以在更新页面中需要接受和显示对应的数据，接受数据在编辑按钮中的 url 添加对应的pk来实现，而显示对应数据则是 form 表单中的 {{ field }}
 class GradeUpdateView(UpdateView):
     model = Grade
+    # 创建数据需要定义表单类
+    form_class = GradeForm
+    template_name = 'grades/grade_form.html'
+    success_url = reverse_lazy('grades_list')
+
+
+# 删除视图比新增/更新很类似，他们都是以处理表单数据，同样是发送 post 请求，跟更新数据一样需要接受对应的数据，因为不需要对数据进行编辑或者新建，所以不需要输入框。
+class GradeDeleteView(DeleteView):
+    model = Grade
+    template_name = 'grades/grade_delete_confirm.html'
+    success_url = reverse_lazy('grades_list')

@@ -5,8 +5,8 @@ from django.db import models
 
 class Grade(models.Model):
     id = models.AutoField(primary_key=True)
-    grade_name = models.CharField(verbose_name='Grade Name', max_length=120, unique=True)
-    grade_number = models.CharField(verbose_name='Grade Number', max_length=10, unique=True)
+    grade_name = models.CharField(verbose_name='班级名称', max_length=120, unique=True)
+    grade_number = models.CharField(verbose_name='班级编号', max_length=10, unique=True)
 
     def __str__(self):
         return self.grade_name
