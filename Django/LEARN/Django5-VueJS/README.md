@@ -468,7 +468,7 @@ from utils.basemodels import BaseModel
 class User(BaseModel):
     class Meta:
         db_table = 'user'  # 表名 (数据表中显示的名称)
-        verbose_name = 'userInfo'  # 别名 
+        verbose_name = 'userInfo'  # 显示在前端的名称
     # AutoField 自增
     id = models.AutoField(primary_key=True)
     # verbose_name： 别名，页面显示时的名字
@@ -493,7 +493,7 @@ from utils.basemodels import BaseModel
 class Article(BaseModel):
     class Meta:
         db_table = 'article'  # 设置表名 (数据表中显示的名称)
-        verbose_name = 'articleInfo'  # 别名 
+        verbose_name = 'articleInfo'  # 显示在前端的名称
         ordering = ['-publish_date']  # 以publish_date 降序， 发布越晚越靠前
     id = models.AutoField(primary_key=True)
     title = models.CharField(verbose_name='title', max_length=120)
@@ -856,7 +856,7 @@ class AccountConfig(AppConfig):
 class User(BaseModel):
     class Meta:
         db_table = 'user'  # 表名 (数据表中显示的名称)
-        verbose_name = 'userInfo'  # 别名 
+        verbose_name = 'userInfo'  # 显示在前端的名称
         verbose_name_plural = 'User Information' # 后台模型名称 (admin 后台显示的表名称)
    ...
 
