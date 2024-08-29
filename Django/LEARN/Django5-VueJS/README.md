@@ -1042,3 +1042,6 @@ CKEDITOR_IMAGE_BACKEND = 'pillow'  # 富文件上传图片的后台
 # from ckeditor.fields import RichTextField
 # from ckeditor_uploader.fields import RichTextUploadingField
 ```
+
+### 使用 `fetch` 实现异步请求
+> 通过使用 `fetch` 实现异步请求，是的新的请求不会阻塞页面（同步请求需要我们跳转到新的页面），同时它能更精细的控制请求的细节（请求头，请求方法，请求体等），这样可以实现 `CURD` 时不加载新的页面，而是弹出悬浮框。
