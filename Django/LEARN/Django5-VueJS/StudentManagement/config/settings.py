@@ -136,3 +136,7 @@ STATICFILES_DIRS = ['static']
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# X_FRAME_OPTIONS = 'SAMEORIGIN' 是 Django 的一个设置选项，它用于控制是否允许浏览器在 <iframe> 中加载你的网页内容。这是一个用于防御点击劫持（Clickjacking）攻击的安全设置。
+# 默认情况下，Django 会将 X-Frame-Options 头设置为 'DENY'，从而完全禁止页面在任何 <iframe> 中加载。如果你需要嵌入页面到同一域名的其他页面中，可以将其设置为 'SAMEORIGIN'。
+X_FRAME_OPTIONS = 'SAMEORIGIN'

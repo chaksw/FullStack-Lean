@@ -13,5 +13,5 @@ class Grade(models.Model):
 
     class Meta:
         db_table = 'grade'
-        verbose_name = 'Grade'
+        verbose_name = '班级'
         verbose_name_plural = 'Grade Information'

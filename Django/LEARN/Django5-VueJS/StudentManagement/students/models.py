@@ -22,7 +22,7 @@ class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     # 一个班级对应多个学生
-    grade = models.ForeignKey(Grade, on_delete=models.CASCADE, related_name='students')
+    grade = models.ForeignKey(Grade, on_delete=models.CASCADE, related_name='students', verbose_name='班级')
 
     def __str__(self):
         return self.user.username
