@@ -36,66 +36,64 @@
 {% endif %}
 <script src="{% static 'js/sweetalert2.js' %}"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.querySelector('form');
-        const url = actionUrl
+    // 监听 DOM 是否有内容加载完成
+    document.addEventListener('DOMContentLoaded', () => {
+        // 选择 html 中的第一个 form 元素
+        const form = document.querySelector('form')
+        // 定义 CURD 对应的 url 
+        const url = "{% url 'student_create' %}"
+        // 监听 form 的 submit 事件
         form.addEventListener('submit', function (e) {
-            e.preventDefault(); // 阻止表单默认提交
+            e.preventDefault(); // 阻止默认提交
+            // 获取表单数据
             let formData = new FormData(form)
-            // 使用fetch发送请求
+            // 使用 fetch 发送请求 （以定义更多自定义内容）
             fetch(url, {
                 method: 'POST',
                 body: formData,
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                    // 添加 csrf-token 以防报错
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')
                 }
-            }).then(response => response.json())
-                .then(data => {
+                // fetch 会返回以一个 'Promise', 通过 then() 方法可以处理服务器的响应
+            }).then(response => response.json()) // 将响应解析为 JSON 格式
+                .then(data => { // 通过另一个 then() 会调处理解析后的数据
+                    // 发送的服务器后，服务器，也就是django views 中会运行 form_valid() 等函数进行数据验证操作，在 form_valid中，我们可以自定义数据验证（见 StudentCreateView() 中的 form_valid）的操作，并定义响应的内容（如 status, messages 等）
                     if (data.status === 'success') {
                         Swal.fire({
                             icon: 'success',
                             title: data.messages,
                             text: '数据已成功提交'
-                        }).then((result) => {
-                            if (result.value) {
-                                // 刷新父页面
-                                window.parent.location.reload()
-                            }
                         })
                     } else {
-                        // 解析嵌套的 JSON 字符串
-                        const errors = JSON.parse(data.messages);
-                        // 构造错误信息的文本
+                        // 接受错误信息
+                        // 解析嵌套的 JSON 字符串为 errors 对象
+                        const errors = JSON.parse(data.messages)
+                        // errors 结构为：["student_name": ["message": "...", "code": "..."], ...]
+                        // 构造错误文本
                         let errorMessage = '';
-                        for (const field in errors) {
+                        // 遍历 errors 对象的每一个属性
+                        for (const field in errors) { // filed 为 ["student_name":[], "student_number": [], ...]
+                            // errors.hasOwnProperty(field) 确保这个字段是对象的直接属性，而不是继承自原型链。
                             if (errors.hasOwnProperty(field)) {
-                                errors[field].forEach(error => {
-                                    errorMessage += `<li style="color:red;text-align:left;margin-left: 100px;"> ${error.message} </li>`;
-                                });
+                                // 处理每个错误字段，每个字段 errors[field] 是一个数组，包含了与该字段相关的所有错误信息
+                                errors[field].forEach(error => { // error 为 ["message": "...", "code": "..."]
+                                    errorMessage += `<li style="color:red;text-align:left;margin-left:100px;"> ${error.message} </li>`
+                                })
                             }
                         }
-                        // 使用 SweetAlert2 显示错误信息
                         Swal.fire({
-                            icon: 'error',
-                            title: '提交错误',
+                            icon: "error",
+                            title: "提交错误",
                             html: errorMessage,
-                            confirmButtonText: '关闭'
-                        });
+                            confirmButtonText: "关闭"
+                        })
+                        console(data)
+                        console(data.messages)
                     }
-
-                }).catch(error => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: '网络请求失败',
-                        text: '无法连接到服务器，请稍后再试',
-                        confirmButtonText: '关闭'
-                    })
                 })
         })
-
-
     })
-
 
 </script>

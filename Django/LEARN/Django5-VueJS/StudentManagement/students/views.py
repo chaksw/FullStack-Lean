@@ -26,11 +26,19 @@ class StudentCreateView(CreateView):
     template_class = 'students/student_form.html'
     # success_url = reverse_lazy('student_list')
 
+    # 表单字段验证
     def form_valid(self, form):
-        # 表单字段验证
 
         # 返回 json 相应
         return JsonResponse({
             'status': 'success',
             'messages': '操作成功'
-        })
+        }, status=200)
+
+    # 重写父类方法，定义表单验证失败时的逻辑
+    def form_invalid(self, form):
+        errors = form.errors.as_json()
+        return JsonResponse({
+            'status': 'error',
+            'messages': errors
+        }, status=400)

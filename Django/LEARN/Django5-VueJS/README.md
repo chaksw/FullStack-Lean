@@ -1042,6 +1042,136 @@ CKEDITOR_IMAGE_BACKEND = 'pillow'  # 富文件上传图片的后台
 # from ckeditor.fields import RichTextField
 # from ckeditor_uploader.fields import RichTextUploadingField
 ```
+### 表单悬浮窗口实现以及表单数据验证流程
+1. 定义 `models.py`，建立数据表
+2. 定义 `urls.py`, 建立创建数据对应的 url
+3. 定义 `views.py` 中 `CreateView` | `UpdateView` 的 model view，与 url 进行绑定（`as_view()`），并定义表单验证成功 `form_valid()` 以及失败 `form_invalid()` 方法，返回对应的 `Response` 数据。
+4. 定义 `forms.py` 建立对应的数据表对应的表单模型，并通过定义 `clean_<field_name>` 创建每个字段的验证方法。
+5. 定义 `<model>_form.html`，建立表单的前端显示页面
+6. 在 `<model>_list.html` 中给定新建按钮跳转路径为给定 url，并通过 `sweetalter2` 实现浮窗效果
+7. 在 `modelView`，中定义 `model`, `form_class`, `template_class`，将数据表，表单，前端显示页面绑定
+8. 在 `<model>_form.html` 中，使用 `fetch` 实现 `submit` 异步请求，并对 model view 中成功 `form_valid()` 以及失败 `form_invalid()` 所返回的数据进行处理，将相关数据以特定方式显示在前端。
 
-### 使用 `fetch` 实现异步请求
+### 关于 `ModelForm`
+- ModelForm 根据与之关联的模型自动生成表单字段。每个模型字段都对应一个表单字段。例如，CharField 转换为 forms.CharField，DateField 转换为 forms.DateField，等等。
+- ModelForm 自动继承并执行模型定义中的验证逻辑，如字段的 max_length、unique、blank、null 等约束条件。
+- ModelForm 提供了 clean() 方法，可以对整个表单的数据进行验证和清理。你还可以为特定字段定义 clean_<fieldname>() 方法，以对单个字段进行自定义验证和清理。
+- ModelForm 提供了 save() 方法，允许你轻松将表单数据保存到数据库。默认情况下，它会将表单数据保存为与模型关联的新对象，或者更新现有对象。
+```py
+# 例子：student_management 中的 student->forms.py
+import datetime
+from django import forms
+from django.core.exceptions import ValidationError
+from .models import Student
+from grades.models import Grade
+
+
+class StudentForm(forms.ModelForm):
+    # 重写 form 的 __init__ 方法
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # 重新定义 外键 grade 为 Grade 的 object，并以 grade_number 进行排序（默认升序）
+        self.fields.get('grade').queryset = Grade.objects.all().order_by('grade_number')
+    # 定义字段验证方法： clean_<field_name>
+
+    def clean_student_name(self):
+        # self.cleaned_data 为提交的全部表单信息
+        student_name = self.cleaned_data.get('student_name')
+        if len(student_name) < 2 or len(student_name) > 50:
+            raise ValidationError('请填写正确的学生名')
+        return student_name
+
+    def clean_student_number(self):
+        student_number = self.cleaned_data.get('student_number')
+        if len(student_number) != 19:
+            raise ValidationError('请填写正确的学籍号（长度应为19位）')
+        return student_number
+
+    def clean_birthday(self):
+        birthday = self.cleaned_data.get('birthday')
+        if not isinstance(birthday, datetime.date):
+            raise ValidationError('生日日期格式错误，正确格式为如：2024-05-01')
+        if birthday > datetime.date.today():
+            raise ValidationError('生日日期不能大于今天')
+
+    def clean_contact_number(self):
+        contact_number = self.cleaned_data.get('contact_number')
+        if len(contact_number) != 11:
+            raise ValidationError('请填写正确的手机号（长度应为11位）')
+        return contact_number
+
+    class Meta:
+        model = Student
+        # fields = '__all__'
+        fields = ['student_name', 'student_number', 'grade', 'gender', 'birthday', 'contact_number', 'address']
+
+```
+
+### 使用 `fetch` 实现 `submit` 异步请求
 > 通过使用 `fetch` 实现异步请求，是的新的请求不会阻塞页面（同步请求需要我们跳转到新的页面），同时它能更精细的控制请求的细节（请求头，请求方法，请求体等），这样可以实现 `CURD` 时不加载新的页面，而是弹出悬浮框。
+
+```js
+// student_management 中的 student_form.html
+
+// 监听 DOM 是否有内容加载完成
+document.addEventListener('DOMContentLoaded', () => {
+    // 选择 html 中的第一个 form 元素
+    const form = document.querySelector('form')
+    // 定义 CURD 对应的 url 
+    const url = "{% url 'student_create' %}"
+    // 监听 form 的 submit 事件
+    form.addEventListener('submit', function (e) {
+        e.preventDefault(); // 阻止默认提交
+        // 获取表单数据
+        let formData = new FormData(form)
+        // 使用 fetch 发送请求 （以定义更多自定义内容）
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                // 添加 csrf-token 以防报错
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            }
+            // fetch 会返回以一个 'Promise', 通过 then() 方法可以处理服务器的响应
+        }).then(response => response.json()) // 将响应解析为 JSON 格式
+            .then(data => { // 通过另一个 then() 会调处理解析后的数据
+                // 发送的服务器后，服务器，也就是django views 中会运行 form_valid() 等函数进行数据验证操作，在 form_valid中，我们可以自定义数据验证（见 StudentCreateView() 中的 form_valid）的操作，并定义响应的内容（如 status, messages 等）
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: data.messages,
+                        text: '数据已成功提交'
+                    })
+                } else {
+                    // 接受错误信息
+                    // 解析嵌套的 JSON 字符串为 errors 对象
+                    const errors = JSON.parse(data.messages)
+                    // errors 结构为：["student_name": ["message": "...", "code": "..."], ...]
+                    // 构造错误文本
+                    let errorMessage = '';
+                    // 遍历 errors 对象的每一个属性
+                    for (const field in errors) { // filed 为 ["student_name":[], "student_number": [], ...]
+                        // errors.hasOwnProperty(field) 确保这个字段是对象的直接属性，而不是继承自原型链。
+                        if (errors.hasOwnProperty(field)) {
+                            // 处理每个错误字段，每个字段 errors[field] 是一个数组，包含了与该字段相关的所有错误信息
+                            errors[field].forEach(error => { // error 为 ["message": "...", "code": "..."]
+                                errorMessage += `<li style="color:red;text-align:left;margin-left:100px;"> ${error.message} </li>`
+                            })
+                        }
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "提交错误",
+                        html: errorMessage,
+                        confirmButtonText: "关闭"
+                    })
+                    console(data)
+                    console(data.messages)
+                }
+            })
+    })
+})
+```
+
+
