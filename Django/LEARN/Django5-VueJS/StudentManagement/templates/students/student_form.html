@@ -65,7 +65,13 @@
                             icon: 'success',
                             title: data.messages,
                             text: '数据已成功提交'
+                        }).then((result) => {
+                            if (result.value) {
+                                // 提交成功后，回到窗口父页面并刷新
+                                window.parent.location.reload()
+                            }
                         })
+
                     } else {
                         // 接受错误信息
                         // 解析嵌套的 JSON 字符串为 errors 对象
@@ -89,9 +95,14 @@
                             html: errorMessage,
                             confirmButtonText: "关闭"
                         })
-                        console(data)
-                        console(data.messages)
                     }
+                }).catch((error) => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '网络请求失败',
+                        text: '无法连接到服务器，请稍后再试',
+                        confirmButtonText: '关闭'
+                    })
                 })
         })
     })

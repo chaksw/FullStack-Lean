@@ -1052,7 +1052,56 @@ CKEDITOR_IMAGE_BACKEND = 'pillow'  # 富文件上传图片的后台
 7. 在 `modelView`，中定义 `model`, `form_class`, `template_class`，将数据表，表单，前端显示页面绑定
 8. 在 `<model>_form.html` 中，使用 `fetch` 实现 `submit` 异步请求，并对 model view 中成功 `form_valid()` 以及失败 `form_invalid()` 所返回的数据进行处理，将相关数据以特定方式显示在前端。
 
-### 关于 `ModelForm`
+
+### `CreateView`
+```py
+class StudentCreateView(CreateView):
+    model = Student
+    form_class = StudentForm
+    template_class = 'students/student_form.html'
+    # success_url = reverse_lazy('students_list')
+    # 当 type='sumbit' 的按钮按下后，会提交表单，产生一个 post 请求，将表单数据发送到服务器
+    # 服务器接收到数据后，CreateView 会调用 ModelForm 中的各种方法，包括 form.is_valid(), clean_<field_name> 方法来验证数据是否合法
+    #
+    # 如果数据有效，默认情况下 form_valid() 会被执行， 其中会自动调用 form.save() 将数据保存到数据库中，（如果重写了 form_valid()，则不会自动调用 form.save(), 而需要显示调用)
+    # 如果数据保存，会重定向到 success_url 中指定的页面
+    # 表单字段验证
+
+    def form_valid(self, form):
+        # 接收字段
+        student_name = form.cleaned_data.get('student_name')
+        student_number = form.cleaned_data.get('student_number')
+        # 写入 auth_user 表，username为 student_name + student_number, 密码为 student_number 后6位
+        username = f"{student_name}_{student_number}"
+        password = student_number[-6:]
+        users = User.objects.filter(username=username)
+        if users.exists():
+            # 如果已存在相同 username 的 user
+            user = users.first()
+        else:
+            # 如果不存在，使用 django 自带的 User.objects.create_user(), 该方法会自动对密码进行加密
+            user = User.objects.create_user(username=username, password=password)
+        # 将用户写入 student, 模型实例关联
+        form.instance.user = user
+        form.save()
+        # 返回 json 相应
+        return JsonResponse({
+            'status': 'success',
+            'messages': '操作成功'
+        }, status=200)
+
+    # 重写父类方法，定义表单验证失败时的逻辑
+    def form_invalid(self, form):
+        errors = form.errors.as_json()
+        return JsonResponse({
+            'status': 'error',
+            'messages': errors
+        }, status=400)
+
+```
+
+
+### `ModelForm`
 - ModelForm 根据与之关联的模型自动生成表单字段。每个模型字段都对应一个表单字段。例如，CharField 转换为 forms.CharField，DateField 转换为 forms.DateField，等等。
 - ModelForm 自动继承并执行模型定义中的验证逻辑，如字段的 max_length、unique、blank、null 等约束条件。
 - ModelForm 提供了 clean() 方法，可以对整个表单的数据进行验证和清理。你还可以为特定字段定义 clean_<fieldname>() 方法，以对单个字段进行自定义验证和清理。
@@ -1093,6 +1142,7 @@ class StudentForm(forms.ModelForm):
             raise ValidationError('生日日期格式错误，正确格式为如：2024-05-01')
         if birthday > datetime.date.today():
             raise ValidationError('生日日期不能大于今天')
+        return birthday
 
     def clean_contact_number(self):
         contact_number = self.cleaned_data.get('contact_number')
@@ -1142,7 +1192,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         icon: 'success',
                         title: data.messages,
                         text: '数据已成功提交'
+                    }).then((result) => {
+                        if (result.value) {
+                            // 提交成功后，回到窗口父页面并刷新
+                            window.parent.location.reload()
+                        }
                     })
+
                 } else {
                     // 接受错误信息
                     // 解析嵌套的 JSON 字符串为 errors 对象
@@ -1166,9 +1222,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         html: errorMessage,
                         confirmButtonText: "关闭"
                     })
-                    console(data)
-                    console(data.messages)
                 }
+            }).catch((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: '网络请求失败',
+                    text: '无法连接到服务器，请稍后再试',
+                    confirmButtonText: '关闭'
+                })
             })
     })
 })

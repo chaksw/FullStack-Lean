@@ -32,6 +32,7 @@ class StudentForm(forms.ModelForm):
             raise ValidationError('生日日期格式错误，正确格式为如：2024-05-01')
         if birthday > datetime.date.today():
             raise ValidationError('生日日期不能大于今天')
+        return birthday
 
     def clean_contact_number(self):
         contact_number = self.cleaned_data.get('contact_number')

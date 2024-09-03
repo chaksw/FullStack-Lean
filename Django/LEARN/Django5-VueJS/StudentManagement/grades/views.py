@@ -52,7 +52,7 @@ class GradeCreateView(CreateView):
     form_class = GradeForm
     template_name = 'grades/grade_form.html'
     # 当 type='sumbit' 的按钮按下后，会提交表单，产生一个 post 请求，将表单数据发送到服务器
-    # 服务器接收到数据后，CreateView 会调用 ModelForm 中的各种方法，包括 form.is_valid() 方法来验证数据是否合法
+    # 服务器接收到数据后，CreateView 会调用 ModelForm 中的各种方法，包括 form.is_valid(), clean_<field_name> 方法来验证数据是否合法
     # 如果数据有效，会自动调用 form.save() 将数据保存到数据库中
     # 如果数据保存，会重定向到 success_url 中指定的页面
     success_url = reverse_lazy('grades_list')
