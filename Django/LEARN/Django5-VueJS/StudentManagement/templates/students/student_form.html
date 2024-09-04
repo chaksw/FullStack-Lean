@@ -24,7 +24,7 @@
         </div>
     </form>
 </div>
-
+<!-- 定义 CURD 对应的 url, 新增和编辑对应不同的url -->
 {% if student.pk %}
 <script>
     var actionUrl = "{% url 'student_update' student.pk %}";
@@ -40,15 +40,13 @@
     document.addEventListener('DOMContentLoaded', () => {
         // 选择 html 中的第一个 form 元素
         const form = document.querySelector('form')
-        // 定义 CURD 对应的 url 
-        const url = "{% url 'student_create' %}"
         // 监听 form 的 submit 事件
         form.addEventListener('submit', function (e) {
             e.preventDefault(); // 阻止默认提交
             // 获取表单数据
             let formData = new FormData(form)
             // 使用 fetch 发送请求 （以定义更多自定义内容）
-            fetch(url, {
+            fetch(actionUrl, {
                 method: 'POST',
                 body: formData,
                 headers: {

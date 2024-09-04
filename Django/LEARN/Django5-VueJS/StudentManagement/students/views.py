@@ -1,5 +1,6 @@
 from django.db.models.query import QuerySet
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.http import JsonResponse
@@ -50,6 +51,39 @@ class StudentCreateView(CreateView):
         # 将用户写入 student, 模型实例关联
         form.instance.user = user
         form.save()
+        # 返回 json 相应
+        return JsonResponse({
+            'status': 'success',
+            'messages': '操作成功'
+        }, status=200)
+
+    # 重写父类方法，定义表单验证失败时的逻辑
+    def form_invalid(self, form):
+        errors = form.errors.as_json()
+        return JsonResponse({
+            'status': 'error',
+            'messages': errors
+        }, status=400)
+
+
+class StudentUpdateView(UpdateView):
+    model = Student
+    form_class = StudentForm
+    template_class = 'students/student_form.html'
+
+    def form_valid(self, form):
+        # 获取学生对象实例, commont=False: 表示暂时不将实例保存到数据库中
+        student = form.save(commit=False)
+        # form.changed_data 返回一个包含表单中已更改字段名称的列表
+        if 'studnet_name' in form.changed_data or 'student_number' in form.changed_data:
+            # 更改 user username & password
+            student_name = form.cleaned_data.get('student_name')
+            student_number = form.cleaned_data.get('student_number')
+            student.user.username = f"{student_name}_{student_number}"
+            # 使用 make_password 对修改的密码进行加密 （create 时是使用 User.objects.create_user，这里面会调用 make_password
+            student.user.password = make_password(student_number[-6:])
+            student.user.save()  # 保存更改
+        student.save()
         # 返回 json 相应
         return JsonResponse({
             'status': 'success',
