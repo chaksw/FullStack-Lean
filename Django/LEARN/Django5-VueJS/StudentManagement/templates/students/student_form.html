@@ -46,6 +46,8 @@
             // 获取表单数据
             let formData = new FormData(form)
             // 使用 fetch 发送请求 （以定义更多自定义内容）
+            // fetch 操作的请求对象为 actionUrl，请求方法为 POST，请求体的 body FormData
+            // actionUrl 对应的是 StudentCreateView， 服务器后台中 StudentCreateView，会运行 form_valid() 等函数进行数据验证操作，在 form_valid中，我们可以自定义数据验证（见 StudentCreateView() 中的 form_valid）的操作，并定义响应的内容（如 status, messages 等）
             fetch(actionUrl, {
                 method: 'POST',
                 body: formData,
@@ -54,10 +56,11 @@
                     // 添加 csrf-token 以防报错
                     'X-CSRFToken': formData.get('csrfmiddlewaretoken')
                 }
+                // form_valid）的运行完毕后，会返回 response 数据
                 // fetch 会返回以一个 'Promise', 通过 then() 方法可以处理服务器的响应
             }).then(response => response.json()) // 将响应解析为 JSON 格式
-                .then(data => { // 通过另一个 then() 会调处理解析后的数据
-                    // 发送的服务器后，服务器，也就是django views 中会运行 form_valid() 等函数进行数据验证操作，在 form_valid中，我们可以自定义数据验证（见 StudentCreateView() 中的 form_valid）的操作，并定义响应的内容（如 status, messages 等）
+                .then(data => { // 通过另一个 then() 会调出理解析后的数据
+                    // 
                     if (data.status === 'success') {
                         Swal.fire({
                             icon: 'success',

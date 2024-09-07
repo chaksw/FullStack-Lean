@@ -73,7 +73,8 @@
                     <td>{{ student.contact_number}}</td>
                     <td>
                         <a href="{% url 'student_update' student.pk %}" class="btn btn-primary btn-sm edit">编辑</a>
-                        <a href=http://127.0.0.1:8000/students/48/delete/ class="btn btn-danger btn-sm del">删除</a>
+                        <a href="{% url 'student_delete' student.pk %}" class="btn btn-danger btn-sm del"
+                            id="del">删除</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -98,6 +99,30 @@
 </div>
 
 <script>
+    // 选中所有学生
+    // 监听 DOM 是否有内容加载完成
+    document.addEventListener('DOMContentLoaded', () => {
+        // 获取 select-all 元素
+        const selectAllCheckBox = document.getElementById('select-all');
+
+        // 监听全选复选框的点击事件
+        selectAllCheckBox.addEventListener('click', () => {
+            // 查询页面中所有名字为 "student_ids" 的复选框
+            // 'input[name="student_ids"]'： 查找所有 <input> 元素，它们的 name 属性值必须是 "student_ids"。
+            const studentCheckBoxs = document.querySelectorAll('input[name="student_ids"]');
+
+            // 根据全选复选框的选中状态设置每个学生复选框的状态
+            // 对于每个复选框 checkbox， 定义函数 function
+            // studentCheckBoxs.forEach(function (checkbox) {
+            //     checkbox.checked = selectAllCheckBox.checked
+            // })
+            studentCheckBoxs.forEach((checkbox) => {
+                checkbox.checked = selectAllCheckBox.checked
+            })
+        })
+    })
+
+
     // 新增
     document.getElementById('add').addEventListener('click', () => {
         Swal.fire({
@@ -118,7 +143,7 @@
             e.preventDefault(); // 阻止跳转
             // 获取 button 的 href 属性
             url = this.getAttribute('href')
-            console.log(url);
+            // console.log(url);
             Swal.fire({
                 position: 'top-end',
                 // url 为被点击的 button 对应的 url
@@ -130,6 +155,103 @@
 
             });
         })
+    })
+
+    // 删除 获取所有 id 为 del的元素
+    document.querySelectorAll('#del').forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            url = this.getAttribute('href')
+            Swal.fire({
+                // 删除弹窗定义
+                title: "确认删除?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '删除',
+                confirmButtonColor: '#d33'
+            }).then((result) => {
+                // 获取弹窗的结果，如果为 confirm 按钮（即删除按钮）
+                if (result.isConfirmed) {
+                    // 向后台发送 DELETE 操作, fetch 操作的请求对象为对应url，请求方法为 DELETE
+                    // url 对应的是 StudentDeleteView, 所以服务器后台会运行 StudentDeleteView 中的 delete() 方法
+                    fetch(url, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            // 添加 csrf-token 以防报错
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        }
+                        // delete () 方法运行完毕后，会返回 response 数据
+                    }).then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                Swal.fire("Deleted!", data.messages, "success");
+                                window.location.reload();
+                            } else {
+                                Swal.fire("Error!", data.meesages, 'error')
+                            }
+                        })
+                }
+            }).catch((err) => {
+
+            });
+        })
+    })
+
+
+    // 批量删除
+    document.getElementById('del-all').addEventListener('click', () => {
+        // 获取当前为选中状态的复选框
+        const checkboxes = document.querySelectorAll('input[name="student_ids"]:checked');
+        // 没有被选中的复选框 -> 弹出错误
+        if (checkboxes.length === 0) {
+            Swal.fire({
+                title: '错误',
+                text: '请先选择要删除的学生信息',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            })
+            return
+        } else {
+            // 如果有被选中的复选框
+            // 进一步确认
+            Swal.fire({
+                title: '确定要删除选中的数据？',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '删除',
+                confirmButtonColor: '#d33',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // 获取所有被选中的学生数据
+                    const formData = new FormData()
+                    // 遍历所有被选择的数据
+                    checkboxes.forEach(checkbox => {
+                        // 创建一个表单数据，每个数据包含一个键值对 [student_ids: student_id]
+                        formData.append('student_ids', checkbox.value)
+                    })
+                    fetch("{% url 'student_bulk_delete' %}", {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            // 添加 csrf-token 以防报错
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        }
+                    }).then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                Swal.fire("Deleted!", data.messages, "success");
+                                window.location.reload();
+                            } else {
+                                Swal.fire("Error!", data.meesages, 'error')
+                            }
+                        })
+                }
+            })
+            // fetch 发送请求
+        }
+
     })
 
 </script>

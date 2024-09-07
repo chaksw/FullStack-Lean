@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.http import JsonResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from .forms import StudentForm
 from .models import Student
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -97,3 +97,57 @@ class StudentUpdateView(UpdateView):
             'status': 'error',
             'messages': errors
         }, status=400)
+
+
+class StudentDeleteView(DeleteView):
+    model = Student
+    # form_class = StudentForm
+    success_url = reverse_lazy('students_list')
+
+    # 重写父类 delete() 方法
+    def delete(self, request, *args, **kwargs):
+        # 获取要删除的对象数据
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            return JsonResponse({
+                'status': 'success',
+                'messages': '删除成功',
+            }, status=200)
+        except Exception as e:
+            return JsonResponse({
+                'status': 'error',
+                'messages': '删除失败:' + str(e)
+            }, status=500)
+
+
+class StudentBulkDeleteView(DeleteView):
+    model = Student
+    success_url = reverse_lazy('students_list')
+
+    def post(self, request, *args, **kwargs):
+        selected_ids = request.POST.getlist('student_ids')
+        if not selected_ids:
+            return JsonResponse({
+                'status': 'error',
+                'messages': '请选择要删除的学生信息'
+            }, status=400)
+        # self.get_queryset() 是从 视图类（通常是 Django 的类视图，如 ListView 或 DetailView）中获取的查询集。它调用视图中的 get_queryset() 方法，通常用于获取视图中默认使用的查询集。
+        # 这是面向对象编程的方式，依赖于类视图的上下文。如果你在类视图中重写了 get_queryset() 方法，你可以灵活地改变查询集的来源。
+        # 适合在类视图中使用，因为类视图通常可以处理通用查询，而 get_queryset() 提供了灵活性。
+        self.object_list = self.get_queryset().filter(id__in=selected_ids)
+        # Student.objects.filter() 是直接使用 Django 的模型管理器 objects，它会从数据库中直接查询 Student 模型，返回所有符合条件的记录。
+        # 这是直接从模型进行查询，与类视图的上下文无关，通常适用于函数视图或者你不需要动态改变查询集的情况下。
+        # selected_students = Student.objects.filter(id__in=selected_ids)
+        try:
+            # 删除该视图所处理的查询集中的所有对象
+            self.object_list.delete()
+            return JsonResponse({
+                'status': 'success',
+                'messages': '删除成功'
+            }, status=200)
+        except Exception as e:
+            return JsonResponse({
+                'status': 'error',
+                'messages': '删除失败' + str(e)
+            }, status=500)
