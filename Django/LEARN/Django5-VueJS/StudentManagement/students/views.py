@@ -1,3 +1,6 @@
+from pathlib import Path
+import datetime
+
 from django.db.models.query import QuerySet
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
@@ -6,10 +9,13 @@ from django.urls import reverse_lazy
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from .forms import StudentForm
 from .models import Student
+from grades.models import Grade
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-
+from utils.handle_excel import ReadExcel, WriteExcel
 
 # Create your views here.
+
+
 class StudentListView(ListView):
     model = Student
     template_name = 'students/students_list.html'
@@ -43,7 +49,7 @@ class StudentCreateView(CreateView):
         password = student_number[-6:]
         users = User.objects.filter(username=username)
         if users.exists():
-            # 如果已存在相同 username 的 user
+            # 如果已存在相同 username 的 user，直接将存在的user赋给创建的 student 数据
             user = users.first()
         else:
             # 如果不存在，使用 django 自带的 User.objects.create_user(), 该方法会自动对密码进行加密
@@ -151,3 +157,81 @@ class StudentBulkDeleteView(DeleteView):
                 'status': 'error',
                 'messages': '删除失败' + str(e)
             }, status=500)
+
+
+def upload_student(request):
+    """Upload student data from excel file
+
+    Args:
+        request (Request): request include file path from front-end
+    """
+    if request.method == 'POST':
+        file = request.FILES.get('excel_file')
+        if not file:
+            return JsonResponse({
+                'status': 'error',
+                'messages': '请上传excel文件'
+            }, status=400)
+        # 判断是否为excel类型
+        ext = Path(file.name).suffix
+        # print(f'ext: {ext}')
+        if ext.lower() != '.xlsx':
+            return JsonResponse({
+                'status': 'error',
+                'messages': '文件类型错误， 请上传.xlsx格式的文件'
+            }, status=400)
+        read_excel = ReadExcel(file)
+        read_excel.get_data()
+        print(read_excel.data[0])
+        if read_excel.data[0] != ['班级', '姓名', '学号', '性别', '出生日期', '联系电话', '家庭住址']:
+            return JsonResponse({
+                'status': 'error',
+                'messages': 'Excel中学生信息不是指定的格式'
+            }, status=400)
+        for row in read_excel.data[1:]:
+            grade, student_name, student_number, gender, birthday, contact_number, address = row
+            # 判断班级是否存在
+            grade_name = Grade.objects.filter(grade_name=grade).first()
+            if not grade_name:
+                return JsonResponse({
+                    'status': 'error',
+                    'messages': f'上传数据中包含不存在的班级: {grade}'
+                }, status=400)
+            # 学生名不能为空
+            if not student_name:
+                return JsonResponse({'status': 'error', 'messages': '学生姓名不能为空'}, status=400)
+            # 学籍号不能为空，且长度为19位
+            if not student_number or len(student_number) != 19:
+                return JsonResponse({'status': 'error', 'messages': '学籍号不能为空，且长度应为19位'}, status=400)
+            # 学籍号不能和已存在的相同
+            if Student.objects.filter(student_number=student_number).exists():
+                return JsonResponse({'status': 'error', 'messages': f'学籍号：{student_number}已经存在'}, status=400)
+            # 检查日期格式
+            if not isinstance(birthday, datetime.datetime):
+                return JsonResponse({'status': 'error', 'messages': '出生日期格式错误'}, status=400)
+            # 写入数据
+            try:
+                username = f'{student_name}_{student_number}'
+                pasword = student_number[-6:]
+                users = User.objects.filter(username=username)
+                if users.exists():
+                    user = users.first()
+                else:
+                    user = User.objects.create_user(username=username, password=pasword)
+                Student.objects.create(
+                    student_name=student_name,
+                    student_number=student_number,
+                    gender='M' if gender == '男' else 'F',
+                    birthday=birthday,
+                    contact_number=contact_number,
+                    address=address,
+                    grade=grade_name,
+                    user=user
+                )
+
+            except Exception as e:
+                return JsonResponse({'status': 'error', 'messages': '上传失败' + str(e)}, status=500)
+        return JsonResponse({
+            'status': 'success',
+            'messages': '上传成功',
+        }, status=200)
