@@ -1,5 +1,6 @@
 import openpyxl
 import datetime
+from io import BytesIO
 
 
 class ReadExcel():
@@ -28,6 +29,23 @@ class WriteExcel():
         for row in self.data:
             self.worksheet.append(row)
         self.workbook.save(self.file_path)
+
+
+class ExportExcel():
+    def __init__(self, data):
+        self.wb = openpyxl.Workbook()
+        self.ws = self.wb.active
+        self.data = data
+
+    def export_to_execel(self):
+        first_column = ['班级', '姓名', '学号', '性别', '出生日期', '联系电话', '家庭住址']
+        self.ws.append(first_column)
+        for row in self.data:
+            self.ws.append(row)
+        excel_file = BytesIO()
+        self.wb.save(excel_file)
+        self.wb.close()
+        return excel_file
 
 # student_data_path = "/Users/Chaksw/Web-Dev/Django课程资料包/StudentManagement/1年1班学生信息.xlsx"
 # wb = openpyxl.load_workbook(student_data_path)

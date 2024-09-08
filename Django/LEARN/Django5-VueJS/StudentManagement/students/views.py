@@ -1,6 +1,8 @@
 from pathlib import Path
 import datetime
-
+import openpyxl
+from io import BytesIO
+import json
 from django.db.models.query import QuerySet
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
@@ -11,7 +13,7 @@ from .forms import StudentForm
 from .models import Student
 from grades.models import Grade
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from utils.handle_excel import ReadExcel, WriteExcel
+from utils.handle_excel import ReadExcel, WriteExcel, ExportExcel
 
 # Create your views here.
 
@@ -24,14 +26,20 @@ class StudentListView(ListView):
 
     paginate_by = 10
 
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
+    # 在原始context(student)的基础上，添加 grade 数据到上下文(context)
+    def get_context_data(self):
+        context = super().get_context_data()
+        # 获取所有班级，并添加到上下文
+        context['grades'] = Grade.objects.all().order_by('grade_number')
+        # 尝试获取当前请求中被选中的班级信息，如果没有返回 ''
+        context['current_grade'] = self.request.GET.get('grade', '')
+        return context
 
 
 class StudentCreateView(CreateView):
     model = Student
     form_class = StudentForm
-    template_class = 'students/student_form.html'
+    template_name = 'students/student_form.html'
     # success_url = reverse_lazy('students_list')
     # 当 type='sumbit' 的按钮按下后，会提交表单，产生一个 post 请求，将表单数据发送到服务器
     # 服务器接收到数据后，CreateView 会调用 ModelForm 中的各种方法，包括 form.is_valid(), clean_<field_name> 方法来验证数据是否合法
@@ -75,7 +83,7 @@ class StudentCreateView(CreateView):
 class StudentUpdateView(UpdateView):
     model = Student
     form_class = StudentForm
-    template_class = 'students/student_form.html'
+    template_name = 'students/student_form.html'
 
     def form_valid(self, form):
         # 获取学生对象实例, commont=False: 表示暂时不将实例保存到数据库中
@@ -235,3 +243,52 @@ def upload_student(request):
             'status': 'success',
             'messages': '上传成功',
         }, status=200)
+
+
+def export_excel(request):
+    """export stduent data with selected grade name
+
+    Args:
+        request (_type_): _description_
+    """
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        grade_id = data.get('grade')
+        # 判断传入的值是否为空
+        if not grade_id:
+            return JsonResponse({'status': 'error', 'messages': '班级数据缺失'}, status=400)
+        # 判断班级是否存在
+        try:
+            grade = Grade.objects.get(id=grade_id)
+        except Grade.DoesNotExist:
+            return JsonResponse({'status': 'error', 'messages': '班级不存在'}, status=404)
+        students = Student.objects.filter(grade=grade)
+        if not students.exists():
+            return JsonResponse({'status': 'error', 'messages': '找不到指定班级的学生信息'}, status=400)
+        # export_data = []
+
+        # for student in students:
+        #     row_data = [student.grade.grade_name, student.student_name,
+        #                 student.student_number, student.gender, student.birthday, student.contact_number, student.address]
+        #     export_data.append(row_data)
+        # export_excel = ExportExcel(export_data)
+        # excel_file = export_excel.export_to_execel()
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        first_column = ['班级', '姓名', '学号', '性别', '出生日期', '联系电话', '家庭住址']
+        ws.append(first_column)
+        for student in students:
+            gender = '男' if student.gender == 'M' else '女'
+            row_data = [student.grade.grade_name, student.student_name,
+                        student.student_number, gender, student.birthday, student.contact_number, student.address]
+            ws.append(row_data)
+        excel_file = BytesIO()
+        wb.save(excel_file)
+        wb.close()
+        # 重置文件位置
+        excel_file.seek(0)
+        #
+        response = HttpResponse(
+            excel_file.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename="students.xlsx"'
+        return response
