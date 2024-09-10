@@ -36,8 +36,9 @@ class GradeListView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         # 获取搜索的关键词：
-        # 1. 表单为 GET 请求 所以数据存储在 request.GET 下
-        # 2. 数据来源于 input 元素下 attribute name='search' 的内容，所以在 request.GET 下获取  'search' 的内容
+        # 1. 在 grades_list.html 的表单元素 <form> 中，attribute action 对应的 grades_list 视图，也就是当触发sumbit的时候，该表单中的信息就会提交到 grades_list url 所对应的视图中，也就是GradeListView
+        # 2. 表单为 method 为 GET 请求 所以数据存储在 request.GET 下
+        # 3. 数据来源于 input 元素下 attribute name='search' 的内容，所以在 request.GET 下获取  'search' 的内容
         search = self.request.GET.get('search')
         if search:
             query = Q(grade_name__icontains=search) | Q(grade_number__icontains=search)

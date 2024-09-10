@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+
+{% load url_utils %}
 {% block content %}
 
 <div class=right>
@@ -11,29 +13,11 @@
                 <select name=grade>
                     <option value selected>请选择班级</option>
                     {% for grade in grades %}
-                    <option value="{{ grade.id }}">
-                        {{ grade.grade_name }}
-                    </option>
+                        <!-- stringformat:"s" 将数据转化为字符串 -->
+                        <option value="{{ grade.pk }}" {% if grade.pk|stringformat:"s" == current_grade %} selected {% endif %}>
+                            {{ grade.grade_name }}
+                        </option>
                     {% endfor %}
-                    <!-- <option value=8>
-                        1年1班
-                    </option>
-
-                    <option value=6>
-                        1年2班
-                    </option>
-
-                    <option value=7>
-                        1年3班
-                    </option>
-
-                    <option value=9>
-                        1年4班
-                    </option>
-
-                    <option value=10>
-                        1年5班
-                    </option> -->
 
                 </select>
                 <span>姓名/学号:</span>
@@ -89,16 +73,16 @@
             <span class=step-links>
                 <span class=step-links>
                     {% if page_obj.has_previous %}
-                    <a href="?page=1">&laquo; 首页</a>
-                    <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+                    <a href="?{% search_url request page=1 %}">&laquo; 首页</a>
+                    <a href="?{% search_url request page=page_obj.previous_page_number%}">上一页</a>
                     {% endif %}
                     <span class="current">
                         {{ page_obj.number}} / {{ page_obj.paginator.num_pages }}
                     </span>
 
                     {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">下一页</a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}">尾页 &raquo</a>
+                    <a href="?{% search_url request page=page_obj.next_page_number %}">下一页</a>
+                    <a href="?{% search_url request page=page_obj.paginator.num_pages %}">尾页 &raquo</a>
                     {% endif %}
                     <!-- <span class=current>
                         1 / 2

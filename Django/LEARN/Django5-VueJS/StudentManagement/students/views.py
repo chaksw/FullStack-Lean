@@ -3,6 +3,7 @@ import datetime
 import openpyxl
 from io import BytesIO
 import json
+from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
@@ -34,6 +35,23 @@ class StudentListView(ListView):
         # 尝试获取当前请求中被选中的班级信息，如果没有返回 ''
         context['current_grade'] = self.request.GET.get('grade', '')
         return context
+
+    # 搜索特定班级下包含特定姓名｜学号 部分的学生信息
+    # 获取搜索的关键词：
+        # 1. 在 students_list 的表单元素 <form> 中，attribute action 对应的 students_list 视图，也就是当触发sumbit的时候，该表单中的信息就会提交到 students_list url 所对应的视图中，也就是 StudentListView
+        # 2. 表单为 method 为 GET 请求 所以数据存储在 request.GET 下
+        # 3. 数据来源于 input 元素下 attribute name='search' 的内容，所以在 request.GET 下获取  'search' 的内容
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        keyword = self.request.GET.get('search')
+        grade_id = self.request.GET.get('grade')
+        # 获取所有特定班级的学生信息
+        if grade_id:
+            queryset = queryset.filter(grade__pk=grade_id)
+        if keyword:
+            query = Q(student_name__icontains=keyword) | Q(student_number__icontains=keyword)
+            queryset = queryset.filter(query)
+        return queryset
 
 
 class StudentCreateView(CreateView):
