@@ -7,6 +7,7 @@ from urllib.parse import urlencode
 register = template.Library()
 
 
+# 创建自定义模版标签 search_url
 @register.simple_tag
 def search_url(request, **kwargs):
     query_params = QueryDict(request.META['QUERY_STRING'], mutable=True)
