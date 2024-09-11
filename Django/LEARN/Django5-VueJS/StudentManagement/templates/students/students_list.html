@@ -13,10 +13,11 @@
                 <select name=grade>
                     <option value selected>请选择班级</option>
                     {% for grade in grades %}
-                        <!-- stringformat:"s" 将数据转化为字符串 -->
-                        <option value="{{ grade.pk }}" {% if grade.pk|stringformat:"s" == current_grade %} selected {% endif %}>
-                            {{ grade.grade_name }}
-                        </option>
+                    <!-- stringformat:"s" 将数据转化为字符串 -->
+                    <option value="{{ grade.pk }}" {% if grade.pk|stringformat:"s"==current_grade %} selected {% endif
+                        %}>
+                        {{ grade.grade_name }}
+                    </option>
                     {% endfor %}
 
                 </select>
@@ -73,6 +74,7 @@
             <span class=step-links>
                 <span class=step-links>
                     {% if page_obj.has_previous %}
+                    <!-- 相当于调用 search_url(request, [page: 1])，将request中的 -->
                     <a href="?{% search_url request page=1 %}">&laquo; 首页</a>
                     <a href="?{% search_url request page=page_obj.previous_page_number%}">上一页</a>
                     {% endif %}
