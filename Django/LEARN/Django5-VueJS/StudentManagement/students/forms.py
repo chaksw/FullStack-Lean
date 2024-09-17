@@ -9,10 +9,11 @@ class StudentForm(forms.ModelForm):
     # 重写 form 的 __init__ 方法
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # 重新定义 外键 grade 为 Grade 的 object，并以 grade_number 进行排序（默认升序）
+        # 为前端下拉框重新定义 grade的排序法昂时
+        # 重新定义 外键 grade 为 Grade 的 object 的排序方式，并以 grade_number 进行排序（默认升序）
         self.fields.get('grade').queryset = Grade.objects.all().order_by('grade_number')
-    # 定义字段验证方法： clean_<field_name>
 
+    # 定义字段验证方法： clean_<field_name>
     def clean_student_name(self):
         # self.cleaned_data 为提交的全部表单信息
         student_name = self.cleaned_data.get('student_name')
@@ -41,6 +42,8 @@ class StudentForm(forms.ModelForm):
         return contact_number
 
     class Meta:
+        # 定义相关模型
         model = Student
         # fields = '__all__'
+        # 定义前端表单中显示的字段
         fields = ['student_name', 'student_number', 'grade', 'gender', 'birthday', 'contact_number', 'address']

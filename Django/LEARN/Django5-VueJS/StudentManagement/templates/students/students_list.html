@@ -14,8 +14,7 @@
                     <option value selected>请选择班级</option>
                     {% for grade in grades %}
                     <!-- stringformat:"s" 将数据转化为字符串 -->
-                    <option value="{{ grade.pk }}" {% if grade.pk|stringformat:"s"==current_grade %} selected {% endif
-                        %}>
+                    <option value="{{ grade.pk }}" {% if grade.pk|stringformat:"s" == current_grade %} selected {% endif %}>
                         {{ grade.grade_name }}
                     </option>
                     {% endfor %}

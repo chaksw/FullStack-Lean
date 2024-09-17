@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse
 from .forms import StudentForm
 from .models import Student
 from grades.models import Grade
@@ -23,10 +23,12 @@ class StudentListView(ListView):
     model = Student
     template_name = 'students/students_list.html'
     # fields = []
+    # context_object_name 用于指定传递给模板的上下文变量的名称。
     context_object_name = 'students'
 
     paginate_by = 10
 
+    # 搜索功能： 基于所在班级进行搜索
     # 在原始context(student)的基础上，添加 grade 数据到上下文(context)
     def get_context_data(self):
         context = super().get_context_data()
@@ -36,7 +38,7 @@ class StudentListView(ListView):
         context['current_grade'] = self.request.GET.get('grade', '')
         return context
 
-    # 搜索特定班级下包含特定姓名｜学号 部分的学生信息
+    # 搜索功能： 搜索特定班级下包含特定姓名｜学号 部分的学生信息
     # 获取搜索的关键词：
         # 1. 在 students_list 的表单元素 <form> 中，attribute action 对应的 students_list 视图，也就是当触发sumbit的时候，该表单中的信息就会提交到 students_list url 所对应的视图中，也就是 StudentListView
         # 2. 表单为 method 为 GET 请求 所以数据存储在 request.GET 下
@@ -59,11 +61,11 @@ class StudentCreateView(CreateView):
     form_class = StudentForm
     template_name = 'students/student_form.html'
     # success_url = reverse_lazy('students_list')
-    # 当 type='sumbit' 的按钮按下后，会提交表单，产生一个 post 请求，将表单数据发送到服务器
-    # 服务器接收到数据后，CreateView 会调用 ModelForm 中的各种方法，包括 form.is_valid(), clean_<field_name> 方法来验证数据是否合法
+    # 1.当 type='sumbit' 的按钮按下后，会提交表单，产生一个 post 请求，将表单数据发送到服务器
+    # 2.服务器接收到数据后，CreateView 会调用 ModelForm 中的各种方法，包括 form.is_valid(), clean_<field_name> 方法来验证数据是否合法
     #
-    # 如果数据有效，默认情况下 form_valid() 会被执行， 其中会自动调用 form.save() 将数据保存到数据库中，（如果重写了 form_valid()，则不会自动调用 form.save(), 而需要显示调用)
-    # 如果数据保存，会重定向到 success_url 中指定的页面
+    # 3.如果数据有效，默认情况下 form_valid() 会被执行， 其中会自动调用 form.save() 将数据保存到数据库中，（如果重写了 form_valid()，则不会自动调用 form.save(), 而需要显示调用)
+    # 4.如果数据保存，会重定向到 success_url 中指定的页面
     # 表单字段验证
 
     def form_valid(self, form):

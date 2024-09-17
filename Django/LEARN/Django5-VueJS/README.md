@@ -1046,10 +1046,10 @@ CKEDITOR_IMAGE_BACKEND = 'pillow'  # 富文件上传图片的后台
 1. 定义 `models.py`，建立数据表
 2. 定义 `urls.py`, 建立创建数据对应的 url
 3. 定义 `views.py` 中 `CreateView` | `UpdateView` 的 model view，与 url 进行绑定（`as_view()`），并定义表单验证成功 `form_valid()` 以及失败 `form_invalid()` 方法，返回对应的 `Response` 数据。
-4. 定义 `forms.py` 建立对应的数据表对应的表单模型，并通过定义 `clean_<field_name>` 创建每个字段的验证方法。
-5. 定义 `<model>_form.html`，建立表单的前端显示页面
-6. 在 `<model>_list.html` 中给定新建按钮跳转路径为给定 url，并通过 `sweetalter2` 实现浮窗效果
-7. 在 `modelView`，中定义 `model`, `form_class`, `template_class`，将数据表，表单，前端显示页面绑定
+4. 在 `modelView`，中定义 `model`, `form_class`, `template_class`，将数据表，表单，前端显示页面绑定
+5. 定义 `forms.py` 建立对应的数据表对应的表单模型，并通过定义 `clean_<field_name>` 创建每个字段的验证方法。
+6. 定义 `<model>_form.html`，建立表单的前端显示页面
+7. 在 `<model>_list.html` 中给定新建按钮跳转路径为给定 url，并通过 `sweetalter2` 实现浮窗效果
 8. 在 `<model>_form.html` 中，使用 `fetch` 实现 `submit` 异步请求，并对 model view 中成功 `form_valid()` 以及失败 `form_invalid()` 所返回的数据进行处理，将相关数据以特定方式显示在前端。
 
 
