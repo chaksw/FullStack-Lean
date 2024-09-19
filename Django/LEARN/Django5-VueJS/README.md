@@ -1158,7 +1158,7 @@ class StudentForm(forms.ModelForm):
 ```
 
 ### 使用 `fetch` 实现 `submit` 异步请求
-> 通过使用 `fetch` 实现异步请求，是的新的请求不会阻塞页面（同步请求需要我们跳转到新的页面），同时它能更精细的控制请求的细节（请求头，请求方法，请求体等），这样可以实现 `CURD` 时不加载新的页面，而是弹出悬浮框。
+> 通过使用 `fetch` 实现异步请求，使得新的请求不会阻塞页面（同步请求需要我们跳转到新的页面），同时它能更精细的控制请求的细节（请求头，请求方法，请求体等），这样可以实现 `CURD` 时不加载新的页面，而是弹出悬浮框。
 
 ```js
 // student_management 中的 student_form.html
@@ -1175,6 +1175,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 获取表单数据
         let formData = new FormData(form)
         // 使用 fetch 发送请求 （以定义更多自定义内容）
+        // 在fetch中定义了发送request的目标（url,以及请求（request)信息
         fetch(url, {
             method: 'POST',
             body: formData,
