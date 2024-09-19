@@ -88,11 +88,29 @@
             width: 600,
             showConfirmButton: false,
         })
-    }
+    };
+
+    const updateTeacher = function (){
+        // 获取button的 href数据
+        const updateUrl = this.getAttribute('href');
+        const html = `<iframe src="${updateUrl}" width="100%", height="800px", frameborder="0"></iframe>`;
+        console.log(updateUrl);
+        Swal.fire({
+            position: 'top-end',
+            html: html,
+            width: 600,
+            showConfirmButton: false,
+        })
+    };
 
     
-    document.getElementById('add').addEventListener('click', createTeacher)
-
+    document.getElementById('add').addEventListener('click', createTeacher);
+    document.querySelectorAll('.edit').forEach(button => {
+        button.addEventListener('click', (e) =>{
+            e.preventDefault();
+            updateTeacher(this)
+        })
+    })
 </script>
 
 {% endblock content %}

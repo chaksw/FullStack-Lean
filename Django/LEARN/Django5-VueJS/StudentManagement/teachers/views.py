@@ -83,6 +83,7 @@ class TeacherCreateView(BaseTeacherView, CreateView):
     
 class TeacherUpdateView(BaseTeacherView, UpdateView):
     template_name = "teachers/teacher_form.html"
+    form_class = TeacherForm
 
 
 class TeacherDeleteView(BaseTeacherView, DeleteView):

@@ -4,7 +4,6 @@ import openpyxl
 from io import BytesIO
 import json
 from django.db.models import Q
-from django.db.models.query import QuerySet
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render
