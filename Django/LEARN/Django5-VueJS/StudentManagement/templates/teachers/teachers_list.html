@@ -90,9 +90,9 @@
         })
     };
 
-    const updateTeacher = function (){
+    const updateTeacher = function (button){
         // 获取button的 href数据
-        const updateUrl = this.getAttribute('href');
+        const updateUrl = button.getAttribute('href');
         const html = `<iframe src="${updateUrl}" width="100%", height="800px", frameborder="0"></iframe>`;
         console.log(updateUrl);
         Swal.fire({
@@ -108,7 +108,7 @@
     document.querySelectorAll('.edit').forEach(button => {
         button.addEventListener('click', (e) =>{
             e.preventDefault();
-            updateTeacher(this)
+            updateTeacher(button);
         })
     })
 </script>
