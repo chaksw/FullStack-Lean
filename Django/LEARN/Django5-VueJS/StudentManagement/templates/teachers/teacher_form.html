@@ -1,81 +1,107 @@
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+<link rel="stylesheet" href="{% static 'css/sweetalert2.css' %}">
+<div class="container">
+    <!-- 如果是是由编辑按钮跳转至此，上下文会带有 teacher.pk -->
+    {% if teacher.pk %}
+    <h2>编辑教师信息</h2>
+    {% else %}
+    <h2>添加教师信息</h2>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+            {{ field }}
+            {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <div class="handleButton">
+            <button type="submit" id="saveButton">保存</button>
+            <button type="button" id="cancelButton" onclick="window.parent.Swal.close();">取消</button>
+        </div>
+    </form>
+        
+</div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大熊课堂校园管理系统</title>
-    <link rel="stylesheet" href="static/css/base.css">
-    <link rel="stylesheet" href="static/css/index.css">
-    <link rel="stylesheet" href="static/css/iconfont.css">
-    <link rel="stylesheet" href="static/css/sweetalert2.css">
-    <link rel="stylesheet" href="static/css/form.css">
-    <script src="static/js/sweetalert2.js"></script>
 
-</head>
-
-<body>
-    <div class=container>
-
-        <h2>添加老师信息</h2>
-
-        <form method=post>
-
-
-            <div class=form-group>
-                <label for=id_teacher_name>老师姓名:</label>
-                <input type=text name=teacher_name maxlength=50 required id=id_teacher_name value>
-
-            </div>
-
-            <div class=form-group>
-                <label for=id_grade>管理班级:</label>
-                <select name=grade required id=id_grade>
-                    <option value selected>请选择班级</option>
-
-                    <option value=8>1年1班</option>
-
-                    <option value=6>1年2班</option>
-
-                    <option value=7>1年3班</option>
-
-                    <option value=9>1年4班</option>
-
-                    <option value=10>1年5班</option>
-
-                </select>
-
-            </div>
-
-            <div class=form-group>
-                <label for=id_phone_number>手机号:</label>
-                <input type=text name=phone_number maxlength=11 required id=id_phone_number value>
-
-            </div>
-
-            <div class=form-group>
-                <label for=id_gender>性别:</label>
-                <select name=gender id=id_gender>
-                    <option value=M selected>男</option>
-
-                    <option value=F>女</option>
-
-                </select>
-
-            </div>
-
-            <div class=form-group>
-                <label for=id_birthday>出生日期:</label>
-                <input type=text name=birthday required aria-describedby=id_birthday_helptext id=id_birthday value>
-
-                <small class="form-text text-muted">格式例如：2020-05-01</small>
-
-            </div>
-
-            <div class=handleButton>
-                <button type=submit id=saveButton>保存</button>
-                <button type=button id=cancelButton>取消</button>
-            </div>
-        </form>
-    </div>
+{% if teacher.pk %}
+    <script>
+        let actionUrl = "{% url 'teacher_update' teacher.pk %}"
+    </script>
+{% else %}
+<script>
+    let actionUrl = "{% url 'teacher_create' %}"
+</script>
+{% endif %}
+<script src="{% static 'js/sweetalert2.js' %}" ></script>
+<script>
+    // 等待浮窗加载完成
+    document.addEventListener('DOMContentLoaded', () =>{
+        // 找到 form 元素
+        const form = document.querySelector('form')
+        // 添加 submit 监听事件
+        form.addEventListener('submit', (e) =>{
+            e.preventDefault(); // 阻止默认提交
+            // 获取表单数据
+            let formData = new FormData(form)
+            
+            fetch(actionUrl, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                }
+            }).then(response => response.json())
+            .then(data => {
+                if (data.status === 'success'){
+                    Swal.fire({
+                        icon: 'success',
+                        title: data.messages,
+                        text: '数据已成功提交'
+                    }).then((result) => {
+                        if (result.value) {
+                            // 提交成功后，回到窗口父页面并刷新
+                            window.parent.location.reload()
+                        }
+                    })
+                } else {
+                    // 接受错误信息
+                    // 解析嵌套的 JSON 字符串为 errors 对象
+                    const errors = JSON.parse(data.messages)
+                    // errors 结构为：["teacher_name": ["message": "...", "code": "..."], ...]
+                    // 构造错误文本
+                    let errorMessage = '';
+                    // 遍历 errors 对象的每一个属性
+                    for (const field in errors) { // filed 为 ["teacher_name":[], "phone_number": [], ...]
+                        // errors.hasOwnProperty(field) 确保这个字段是对象的直接属性，而不是继承自原型链。
+                        if (errors.hasOwnProperty(field)) {
+                            // 处理每个错误字段，每个字段 errors[field] 是一个数组，包含了与该字段相关的所有错误信息
+                            errors[field].forEach(error => { // error 为 ["message": "...", "code": "..."]
+                                errorMessage += `<li style="color:red;text-align:left;margin-left:100px;"> ${error.message} </li>`
+                            })
+                        }
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "提交错误",
+                        html: errorMessage,
+                        confirmButtonText: "关闭"
+                    })
+                }
+            }).catch((error) =>{
+                Swal.fire({
+                    icon: 'error',
+                    title: '网络请求失败',
+                    text: '无法连接到服务器，请稍后再试',
+                    confirmButtonText: '关闭'
+                })
+            })
+        })
+    })
+</script>

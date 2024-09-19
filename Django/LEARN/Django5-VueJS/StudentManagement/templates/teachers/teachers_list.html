@@ -10,31 +10,19 @@
                 <span>班级:</span>
                 <select name="grade">
                     <option value="" selected>请选择班级</option>
-
-                    <option value="8">
-                        1年1班
-                    </option>
-
-                    <option value="6">
-                        1年2班
-                    </option>
-
-                    <option value="7">
-                        1年3班
-                    </option>
-
-                    <option value="9">
-                        1年4班
-                    </option>
-
-                    <option value="10">
-                        1年5班
-                    </option>
+                    
+                    {% for grade in grades %}
+                        <option value="{{ grade.pk }}" 
+                        {% if grade.pk|stringformat:"s" == current_grade %} 
+                            selected
+                        {% endif %}>
+                        {{ grade.grade_name }}</option>
+                    {% endfor %}
 
                 </select>
                 <span>姓名/电话:</span>
-                <input type="text" name="search">
-                <input type="submit" value="搜索">
+                <input type="text" name="search" placeholder="姓名/电话:">
+                <input type="submit" value="搜索" >
                 <!-- <a href="{% url 'teacher_create' %}">
                     <button type="button" class="add" id="add">新增</button>
                 </a> -->
@@ -58,32 +46,21 @@
             </tr>
         </thead>
         <tbody>
-
+            
+            {% for teacher in teachers %}
             <tr>
-                <td><input type="checkbox" name="teacher_ids" value="2"></td>
-                <td>1年1班</td>
-                <td>张三</td>
-                <td>男</td>
-                <td>13312345678</td>
-                <td>2020-05-01</td>
+                <td><input type="checkbox" name="teacher_ids" value="{{ teacher.pk }}"></td>
+                <td>{{ teacher.grade.grade_name }}</td>
+                <td>{{ teacher.teacher_name }}</td>
+                <td>{{ teacher.gender }}</td>
+                <td>{{ teacher.phone_number }}</td>
+                <td>{{ teacher.birthday }}</td>
                 <td>
-                    <a href="/teachers/teacher/2/update/" class="btn btn-primary btn-sm edit">编辑</a>
-                    <a href="/teachers/teacher/2/delete/" class="btn btn-danger btn-sm del">删除</a>
+                    <a href="{% url 'teacher_update' teacher.pk %}" class="btn btn-primary btn-sm edit">编辑</a>
+                    <a href="{% url 'teacher_delete' teacher.pk %}" class="btn btn-danger btn-sm del">删除</a>
                 </td>
             </tr>
-
-            <tr>
-                <td><input type="checkbox" name="teacher_ids" value="3"></td>
-                <td>1年2班</td>
-                <td>李四</td>
-                <td>男</td>
-                <td>13512345678</td>
-                <td>2020-05-01</td>
-                <td>
-                    <a href="/teachers/teacher/3/update/" class="btn btn-primary btn-sm edit">编辑</a>
-                    <a href="/teachers/teacher/3/delete/" class="btn btn-danger btn-sm del">删除</a>
-                </td>
-            </tr>
+            {% endfor %}
 
         </tbody>
     </table>
@@ -111,8 +88,9 @@
             width: 600,
             showConfirmButton: false,
         })
-        console.log("get in ");
     }
+
+    
     document.getElementById('add').addEventListener('click', createTeacher)
 
 </script>
