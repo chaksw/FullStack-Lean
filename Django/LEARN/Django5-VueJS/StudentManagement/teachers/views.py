@@ -1,6 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import render
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
 from django.urls import reverse_lazy
 from django.http import HttpResponse, JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -79,11 +80,34 @@ class TeacherCreateView(BaseTeacherView, CreateView):
             'status': 'error',
             'messages': errors
         }, status=400)
-    
-    
+
+
 class TeacherUpdateView(BaseTeacherView, UpdateView):
     template_name = "teachers/teacher_form.html"
     form_class = TeacherForm
+
+    def form_valid(self, form):
+        teacher = form.save(commit=False)
+        if 'teacher_name' in form.changed_data or 'phone_number' in form.changed_data:
+            teacher_name = form.cleaned_data.get('teacher_name')
+            phone_number = form.cleaned_data.get('phone_number')
+            teacher.user.username = f'{teacher_name}_{phone_number}'
+            teacher.user.password = make_password(phone_number[-6:])
+            teacher.user.save()
+        teacher.save()
+        response = {
+            'status': 'success',
+            'messages': '操作成功'
+        }
+        return JsonResponse(response, status=200)
+
+    def form_invalid(self, form):
+        errors = form.errors.as_json()
+        response = {
+            'status': 'error',
+            'messages': errors
+        }
+        return JsonResponse(response, status=400)
 
 
 class TeacherDeleteView(BaseTeacherView, DeleteView):

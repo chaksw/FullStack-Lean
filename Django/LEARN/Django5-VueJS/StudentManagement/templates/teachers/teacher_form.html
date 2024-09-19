@@ -10,13 +10,13 @@
     {% endif %}
     <form method="post">
         {% csrf_token %}
-        
+
         {% for field in form %}
         <div class="form-group">
             <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
             {{ field }}
             {% if field.help_text %}
-                <small class="form-text text-muted">{{ field.help_text }}</small>
+            <small class="form-text text-muted">{{ field.help_text }}</small>
             {% endif %}
         </div>
         {% endfor %}
@@ -25,41 +25,32 @@
             <button type="button" id="cancelButton" onclick="window.parent.Swal.close();">取消</button>
         </div>
     </form>
-        
+
 </div>
 
 
 {% if teacher.pk %}
-    <script>
-        let actionUrl = "{% url 'teacher_update' teacher.pk %}"
-    </script>
+<script>
+    var actionUrl = "{% url 'teacher_update' teacher.pk %}"
+</script>
 {% else %}
 <script>
-    let actionUrl = "{% url 'teacher_create' %}"
+    var actionUrl = "{% url 'teacher_create' %}"
 </script>
 {% endif %}
-<script src="{% static 'js/sweetalert2.js' %}" ></script>
+<script src="{% static 'js/sweetalert2.js' %}"></script>
 <script>
-    // 等待浮窗加载完成
-    document.addEventListener('DOMContentLoaded', () =>{
-        // 找到 form 元素
-        const form = document.querySelector('form')
-        // 添加 submit 监听事件
-        form.addEventListener('submit', (e) =>{
-            e.preventDefault(); // 阻止默认提交
-            // 获取表单数据
-            let formData = new FormData(form)
-            
-            fetch(actionUrl, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')
-                }
-            }).then(response => response.json())
+    const fetchData = function (url, formData) {
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            }
+        }).then(response => response.json())
             .then(data => {
-                if (data.status === 'success'){
+                if (data.status === 'success') {
                     Swal.fire({
                         icon: 'success',
                         title: data.messages,
@@ -94,7 +85,7 @@
                         confirmButtonText: "关闭"
                     })
                 }
-            }).catch((error) =>{
+            }).catch((error) => {
                 Swal.fire({
                     icon: 'error',
                     title: '网络请求失败',
@@ -102,6 +93,18 @@
                     confirmButtonText: '关闭'
                 })
             })
+    }
+    // 等待浮窗加载完成
+    document.addEventListener('DOMContentLoaded', () => {
+        // 找到 form 元素
+        const form = document.querySelector('form')
+        // 添加 submit 监听事件
+        // create 和 update submit 的处理逻辑是一样的
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); // 阻止默认提交
+            // 获取表单数据
+            let formData = new FormData(form)
+            fetchData(actionUrl, formData)
         })
     })
 </script>
