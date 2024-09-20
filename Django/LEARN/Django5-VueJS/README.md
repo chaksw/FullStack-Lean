@@ -348,7 +348,7 @@ mysql -u root -p
 create database django_demo;
 ```
 
-#### ~~1.4.3.4. 使用数据库引擎 `PyMySQL` 链接数据库~~
+#### 1.4.3.4. 使用数据库引擎 `PyMySQL` 链接数据库(错误操作请忽略)
 > NOTE: (课程步骤有错误无法运行)
 ```bash
 pip install pymysql
@@ -418,18 +418,18 @@ show tables; # 显示创建的表格
 
 ```
 
-### `models.py`
+### 1.4.4. `models.py`
 > NOTE: 要应用模型数据，需要先确保 `INSTALLED_APP` 中有对应模型的应用
 
-#### 字段类型
+#### 1.4.4.1. 字段类型
 <img src='/Users/Chaksw/Web-Dev/FullStack-Lean/Django/LEARN/Django5-VueJS/assets/imgs/字段类型1.png' alt='字段类型'>
 <img src='/Users/Chaksw/Web-Dev/FullStack-Lean/Django/LEARN/Django5-VueJS/assets/imgs/字段类型2.png' alt='字段类型'>
 
 
-#### 创建模型
+#### 1.4.4.2. 创建模型
 > 代码见下章 节- 设置 `meta` 元数据
 
-#### 执行并应用数据迁移
+#### 1.4.4.3. 执行并应用数据迁移
 > 迁移文件的创建让项目的迁移更方便，在别的机器上运行该项目时，只需要直接运行应用迁移文件的命令就可以创建一个相同的数据库了
 1. 创建迁移文件
 ```bash
@@ -440,7 +440,7 @@ python manage.py makemigration
 python manage.py migrate
 ```
 
-#### 设置 `meta` 元数据 (基础应用)
+#### 1.4.4.4. 设置 `meta` 元数据 (基础应用)
 1. 创建一个 `baseModel` 用于创建基础共用字段，需要共用字段的模型可以继承于这个模型，base表只需要被继承，不需要创建在数据库中，所以设置元数据 abstract = True
 ```py
 # in utils.py 
@@ -523,17 +523,17 @@ class Article(BaseModel):
 12 rows in set (0,00 sec)
 ```
 
-#### ORM 增删改查 - CRUD
+#### 1.4.4.5. ORM 增删改查 - CRUD
 - C - create
 - R - read
 - U - update
 - D - delete
 
-#### 使用 `shell` 进行 `django` 数据的 `CRUD`
+#### 1.4.4.6. 使用 `shell` 进行 `django` 数据的 `CRUD`
 ```bash
 python manage.py shell # 进入 shell
 ```
-#### ORM 新增｜插入数据
+#### 1.4.4.7. ORM 新增｜插入数据
 - C - Create：新增数据方式
    1. 保存一条数据 `save()`
    2. 新增一条数据 `create()`
@@ -568,7 +568,7 @@ python manage.py shell # 进入 shell
 >>> article1.save()
 ```
 
-#### ORM 查询数据
+#### 1.4.4.8. ORM 查询数据
 - R - Read: 查询数据方式
   1. 返回所有数据 `all()`
   2. 按照查询条件返回单条数据 `get(**kwargs)`
@@ -621,7 +621,7 @@ python manage.py shell # 进入 shell
 'chris5'
 ```
 
-#### ORM 查询条件1: 基础
+#### 1.4.4.9. ORM 查询条件1: 基础
 - Conditional Search 1
 1. 相等/等于/布尔条件 
    1. `field__exact`/`field__iexact()`
@@ -688,7 +688,7 @@ article1 = Article.objects.get(user__username='chris')
 <Article: Article object (1)>
 ```
 
-#### ORM 查询条件2: 多条件查询
+#### 1.4.4.10. ORM 查询条件2: 多条件查询
 - Conditional Search 2
     1. 使用 `filter()` 时指定多个条件 （仅支持 `&`）
     2. `Q()` 函数，支持 `&` 和 `｜`
@@ -717,7 +717,7 @@ article1 = Article.objects.get(user__username='chris')
 <QuerySet [<User: User object (1)>, <User: User object (2)>, <User: User object (3)>, <User: User object (4)>, <User: User object (5)>]>
 ```
 
-#### ORM 修改数据
+#### 1.4.4.11. ORM 修改数据
 - U - Update: 修改数据方式
    1. 修改单条数据 `save()`
    2. 批量修改数据 `update()`
@@ -773,7 +773,7 @@ AttributeError: 'User' object has no attribute 'update'
 # 没演示，听说不常用
 ```
 
-#### ORM 删除数据
+#### 1.4.4.12. ORM 删除数据
 - D - Delete
     1. 物理删除 `delete()`
     2. 逻辑删除，为数据增加状态属性，如果属性为1就显示，为0则不显示，但实际数据没有删除，所以准确来说是控制显示
@@ -812,17 +812,17 @@ AttributeError: 'User' object has no attribute 'update'
 # 没演示。。。
 ```
 
-### `Django` 的管理后台 `admin`
+### 1.4.5. `Django` 的管理后台 `admin`
 1. 关于Django` 的管理后台 `admin 的知识可以在 `LEARN/Django/README.md` 的 Section2. Django Admin 中了解
 2. 这里结合点 1 做一些补充的记录
 3. 
-#### 创建超级管理员
+#### 1.4.5.1. 创建超级管理员
 ```bash
 python manager.py createsuperuser
 # enter username, email and password
 ```
 
-#### 配置页面为中文及中国时区（可选）
+#### 1.4.5.2. 配置页面为中文及中国时区（可选）
 ```py
 # 在 `settings.py` 中
 # LANGUAGE_CODE = 'en-us'
@@ -833,10 +833,10 @@ TIME_ZONE = 'Asia/Shanghai'
 
 ```
 
-#### 创建 `admin` 数据模型并绑定模型
+#### 1.4.5.3. 创建 `admin` 数据模型并绑定模型
 > 代码见后台配置章节
 
-### 后台配置 
+### 1.4.6. 后台配置 
 1. 更好后台的 app 名称（增加别名）
 ```py
 # account.apps.py
@@ -918,7 +918,7 @@ class ArticleAdmin(admin.ModelAdmin):
 admin.site.register(Article, ArticleAdmin)
 ```
 
-### 自定义函数增加字段
+### 1.4.7. 自定义函数增加字段
 自定义函数，将 `Article` 的外键 `user` 的字段 `username` 作为新的字段 `author`
 ```py
 # app01.admin.py
@@ -951,7 +951,7 @@ get_author.short_description = 'author'
 admin.site.register(Article, ArticleAdmin)
 ```
 
-### 补充：更改外键在编辑（详情）页的显示
+### 1.4.8. 补充：更改外键在编辑（详情）页的显示
 ```py
 # account.admin.py
 ...
@@ -963,9 +963,9 @@ class User(BaseModel):
 
 ```
 
-## 补充：
+## 1.5. 补充：
 
-## 在当前目录下创建项目
+## 1.6. 在当前目录下创建项目
 假设已有文件夹 project，当运行：
 ```bash
 django-admin startproject project
@@ -987,7 +987,7 @@ django-admin startproject project
 ```bash
 django-admin startproject config .
 ```
-### 重命名项目名称
+### 1.6.1. 重命名项目名称
 如果要更改项目名称：如 `website` 项目中将包含 `settings.py` 的 `website` 文件夹重命名为 `config`，出了文件夹名字更改外，还需要将：
 ```py
 # in settings.py 
@@ -1010,7 +1010,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 ```
 
-### 静态文件的相关配置
+### 1.6.2. 静态文件的相关配置
 ```py
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -1042,18 +1042,18 @@ CKEDITOR_IMAGE_BACKEND = 'pillow'  # 富文件上传图片的后台
 # from ckeditor.fields import RichTextField
 # from ckeditor_uploader.fields import RichTextUploadingField
 ```
-### 表单悬浮窗口实现以及表单数据验证流程
-1. 定义 `models.py`，建立数据表
-2. 定义 `urls.py`, 建立创建数据对应的 url
-3. 定义 `views.py` 中 `CreateView` | `UpdateView` 的 model view，与 url 进行绑定（`as_view()`），并定义表单验证成功 `form_valid()` 以及失败 `form_invalid()` 方法，返回对应的 `Response` 数据。
-4. 在 `modelView`，中定义 `model`, `form_class`, `template_class`，将数据表，表单，前端显示页面绑定
-5. 定义 `forms.py` 建立对应的数据表对应的表单模型，并通过定义 `clean_<field_name>` 创建每个字段的验证方法。
-6. 定义 `<model>_form.html`，建立表单的前端显示页面
-7. 在 `<model>_list.html` 中给定新建按钮跳转路径为给定 url，并通过 `sweetalter2` 实现浮窗效果
-8. 在 `<model>_form.html` 中，使用 `fetch` 实现 `submit` 异步请求，并对 model view 中成功 `form_valid()` 以及失败 `form_invalid()` 所返回的数据进行处理，将相关数据以特定方式显示在前端。
+### 1.6.3. 表单悬浮窗口实现以及表单数据验证流程
+1. 建立数据表：定义 `models.py`，
+2. 建立路由：定义 `urls.py`, 建立创建数据对应的 url
+3. 建立视图功能，实现 request <-> response 交互逻辑：定义 `views.py` 中 `CreateView` | `UpdateView` 的 model view，与 url 进行绑定（`as_view()`），并定义表单验证成功 `form_valid()` 以及失败 `form_invalid()` 方法，返回对应的 `Response` 数据。
+4. 建立数据-路由-模板的联系：在 `modelView`，中定义 `model`, `form_class`, `template_class`，将数据表，表单，前端显示页面绑定
+5. 建立数据显示界面：在 `<model>_list.html` 中给定新建按钮跳转路径为给定 url，并通过 `sweetalter2` 实现浮窗效果
+6. 建立表单：定义 `forms.py` 建立对应的数据表对应的表单模型，并通过定义 `clean_<field_name>` 创建每个字段的验证方法。
+7. 建立表单显示界面：定义 `<model>_form.html`，建立表单的前端显示页面
+8. 实现 submit 功能：在 `<model>_form.html` 中，使用 `fetch` 实现 `submit` 异步请求，并对 model view 中成功 `form_valid()` 以及失败 `form_invalid()` 所返回的数据进行处理，将相关数据以特定方式显示在前端。
 
 
-### `CreateView`
+### 1.6.4. `CreateView`
 ```py
 class StudentCreateView(CreateView):
     model = Student
@@ -1101,7 +1101,7 @@ class StudentCreateView(CreateView):
 ```
 
 
-### `ModelForm`
+### 1.6.5. `ModelForm`
 - ModelForm 根据与之关联的模型自动生成表单字段。每个模型字段都对应一个表单字段。例如，CharField 转换为 forms.CharField，DateField 转换为 forms.DateField，等等。
 - ModelForm 自动继承并执行模型定义中的验证逻辑，如字段的 max_length、unique、blank、null 等约束条件。
 - ModelForm 提供了 clean() 方法，可以对整个表单的数据进行验证和清理。你还可以为特定字段定义 clean_<fieldname>() 方法，以对单个字段进行自定义验证和清理。
@@ -1157,7 +1157,7 @@ class StudentForm(forms.ModelForm):
 
 ```
 
-### 使用 `fetch` 实现 `submit` 异步请求
+### 1.6.6. 使用 `fetch` 实现 `submit` 异步请求
 > 通过使用 `fetch` 实现异步请求，是的新的请求不会阻塞页面（同步请求需要我们跳转到新的页面），同时它能更精细的控制请求的细节（请求头，请求方法，请求体等），这样可以实现 `CURD` 时不加载新的页面，而是弹出悬浮框。
 
 ```js
