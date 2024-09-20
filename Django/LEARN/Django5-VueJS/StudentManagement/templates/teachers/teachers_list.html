@@ -10,19 +10,16 @@
                 <span>班级:</span>
                 <select name="grade">
                     <option value="" selected>请选择班级</option>
-                    
+
                     {% for grade in grades %}
-                        <option value="{{ grade.pk }}" 
-                        {% if grade.pk|stringformat:"s" == current_grade %} 
-                            selected
-                        {% endif %}>
+                    <option value="{{ grade.pk }}" {% if grade.pk|stringformat:"s" == current_grade %} selected {% endif %}>
                         {{ grade.grade_name }}</option>
                     {% endfor %}
 
                 </select>
                 <span>姓名/电话:</span>
                 <input type="text" name="search" placeholder="姓名/电话:">
-                <input type="submit" value="搜索" >
+                <input type="submit" value="搜索">
                 <!-- <a href="{% url 'teacher_create' %}">
                     <button type="button" class="add" id="add">新增</button>
                 </a> -->
@@ -46,7 +43,7 @@
             </tr>
         </thead>
         <tbody>
-            
+
             {% for teacher in teachers %}
             <tr>
                 <td><input type="checkbox" name="teacher_ids" value="{{ teacher.pk }}"></td>
@@ -79,36 +76,69 @@
 </div>
 
 <script>
-    const createTeacher = () => {
+    const triggerCreateOrUpdateForm = (url) => {
+        const html = `<iframe src="${url}" width="100%", height="800px", frameborder="0"></iframe>`
+        Swal.fire({
+            position: 'top-end',
+            html: html,
+            width: 600,
+            showConfirmButton: false,
+        })
+    };
+
+
+    const handleDeleteRequest = function (url) {
+        Swal.fire({
+            title: "确认删除？",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: '删除',
+            confirmButtonColor: '#d33'
+        }).then(result => {
+            if (result.isConfirmed){
+                fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-Request-With': 'XMLHttpRequest',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    }
+                }).then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success'){
+                        Swal.fire('Deleted !', data.messages, "success").then(result =>{
+                            if(result.isConfirmed){
+                                window.location.reload();
+                            }
+                        })
+                    }else{
+                        Swal.fire('Error !', data.messages, 'error').then(result =>{
+                            if(result.isConfirmed){
+                                window.location.reload();
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+
+
+    document.getElementById('add').addEventListener('click', () => {
         const createUrl = "{% url 'teacher_create' %}"
-        const html = `<iframe src="${createUrl}" width="100%", height="800px", frameborder="0"></iframe>`
-        Swal.fire({
-            position: 'top-end',
-            html: html,
-            width: 600,
-            showConfirmButton: false,
-        })
-    };
-
-    const updateTeacher = function (button){
-        // 获取button的 href数据
-        const updateUrl = button.getAttribute('href');
-        const html = `<iframe src="${updateUrl}" width="100%", height="800px", frameborder="0"></iframe>`;
-        console.log(updateUrl);
-        Swal.fire({
-            position: 'top-end',
-            html: html,
-            width: 600,
-            showConfirmButton: false,
-        })
-    };
-
-    
-    document.getElementById('add').addEventListener('click', createTeacher);
+        triggerCreateOrUpdateForm(createUrl)
+    });
     document.querySelectorAll('.edit').forEach(button => {
-        button.addEventListener('click', (e) =>{
+        button.addEventListener('click', (e) => {
             e.preventDefault();
-            updateTeacher(button);
+            const updateUrl = button.getAttribute('href'); // 在 arrow function 中不能使用 this
+            triggerCreateOrUpdateForm(updateUrl);
+        })
+    })
+    document.querySelectorAll('.del').forEach(button =>{
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const deleteUrl = this.getAttribute('href') // this 就是 button, 只能使用在函数或者函数表达式中
+            handleDeleteRequest(deleteUrl)
         })
     })
 </script>

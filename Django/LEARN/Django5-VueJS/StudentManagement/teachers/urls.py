@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (TeacherListView, TeacherCreateView, TeacherUpdateView,
-                    TeacherDeleteView, TeacherBulkDeleteView, upload_teacher)
+                    TeacherDeleteView, TeacherBulkDeleteView)
 
 urlpatterns = [
     path('', TeacherListView.as_view(), name='teachers_list'),
@@ -8,5 +8,4 @@ urlpatterns = [
     path('<int:pk>/update/', TeacherUpdateView.as_view(), name='teacher_update'),
     path('<int:pk>/delete/', TeacherDeleteView.as_view(), name='teacher_delete'),
     path('bulk_delete/', TeacherBulkDeleteView.as_view(), name='teacher_bulk_delete'),
-    path('upload_teahcer/', upload_teacher, name='update_teacher'),
 ]

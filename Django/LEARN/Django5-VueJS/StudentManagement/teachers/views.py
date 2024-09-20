@@ -36,7 +36,7 @@ class TeacherListView(BaseTeacherView, ListView):
         keyword = self.request.GET.get('search')
         grade_id = self.request.GET.get('grade')
         if grade_id:
-            queryset = queryset.filter(grade_id__icontains=grade_id)
+            queryset = queryset.filter(grade__pk=grade_id)
         if keyword:
             filter = Q(teacher_name__icontains=keyword) | Q(phone_number__icontains=keyword)
             queryset = queryset.filter(filter)
@@ -113,10 +113,22 @@ class TeacherUpdateView(BaseTeacherView, UpdateView):
 class TeacherDeleteView(BaseTeacherView, DeleteView):
     template_name = "teachers/teachers_list.html"
 
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        try:
+            self.object.delete()
+            response = {
+                'status': 'success',
+                'messages': '删除成功',
+            }
+            return JsonResponse(response, status=200)
+        except Exception as e:
+            response = {
+                'status': 'error',
+                'messages': '删除失败' + str(e)
+            }
+            return JsonResponse(response, status=500)
+
 
 class TeacherBulkDeleteView(BaseTeacherView, DeleteView):
-    pass
-
-
-def upload_teacher():
     pass

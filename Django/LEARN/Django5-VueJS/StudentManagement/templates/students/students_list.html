@@ -14,8 +14,7 @@
                     <option value selected>请选择班级</option>
                     {% for grade in grades %}
                     <!-- stringformat:"s" 将数据转化为字符串 -->
-                    <option value="{{ grade.pk }}" {% if grade.pk|stringformat:"s"==current_grade %} selected {% endif
-                        %}>
+                    <option value="{{ grade.pk }}" {% if grade.pk|stringformat:"s" == current_grade %} selected {% endif %}>
                         {{ grade.grade_name }}
                     </option>
                     {% endfor %}
@@ -182,11 +181,18 @@
                         // delete () 方法运行完毕后，会返回 response 数据
                     }).then(response => response.json())
                         .then(data => {
-                            if (data.status === 'success') {
-                                Swal.fire("Deleted!", data.messages, "success");
-                                window.location.reload();
-                            } else {
-                                Swal.fire("Error!", data.meesages, 'error')
+                            if (data.status === 'success'){
+                                Swal.fire('Deleted !', data.messages, "success").then(result =>{
+                                    if(result.isConfirmed){
+                                        window.location.reload();
+                                    }
+                                })
+                            }else{
+                                Swal.fire('Error !', data.messages, 'error').then(result =>{
+                                    if(result.isConfirmed){
+                                        window.location.reload();
+                                    }
+                                })
                             }
                         })
                 }
