@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.urls import reverse_lazy
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Teacher
 from grades.models import Grade
@@ -50,7 +50,7 @@ class TeacherCreateView(BaseTeacherView, CreateView):
     template_name = "teachers/teacher_form.html"
     form_class = TeacherForm
 
-    # 接受form表单数据并创建对应用户 （字段验证发生在这之前，在 form 的clean_<field_data>中进行
+    # 接受form表单数据并创建对应用户 （字段验证发生在这之前，在 form 的clean_<field_data>中进行）
     def form_valid(self, form):
         # 接受字段
         teacher_name = form.cleaned_data.get('teacher_name')
@@ -114,6 +114,7 @@ class TeacherDeleteView(BaseTeacherView, DeleteView):
     template_name = "teachers/teachers_list.html"
 
     def delete(self, request, *args, **kwargs):
+        # self.get_object() 时，Django 会自动基于 URL 参数获取对象。Django 提供这个方法来封装对象检索的逻辑，确保代码的简洁性和一致性。
         self.object = self.get_object()
         try:
             self.object.delete()
@@ -128,7 +129,3 @@ class TeacherDeleteView(BaseTeacherView, DeleteView):
                 'messages': '删除失败' + str(e)
             }
             return JsonResponse(response, status=500)
-
-
-class TeacherBulkDeleteView(BaseTeacherView, DeleteView):
-    pass

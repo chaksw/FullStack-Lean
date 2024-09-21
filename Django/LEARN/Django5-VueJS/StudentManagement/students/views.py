@@ -41,7 +41,8 @@ class StudentListView(ListView):
     # 获取搜索的关键词：
         # 1. 在 students_list 的表单元素 <form> 中，attribute action 对应的 students_list 视图，也就是当触发sumbit的时候，该表单中的信息就会提交到 students_list url 所对应的视图中，也就是 StudentListView
         # 2. 表单为 method 为 GET 请求 所以数据存储在 request.GET 下
-        # 3. 数据来源于 input 元素下 attribute name='search' 的内容，所以在 request.GET 下获取  'search' 的内容
+        # 3。 ListView 自动处理 GET 请求。当用户访问与视图关联的 URL 并发送 GET 请求时，Django 调用 ListView 的 get() 方法。这个 get() 方法内部会调用 get_queryset() 来获取视图要显示的数据。
+        # 4. 数据来源于 input 元素下 attribute name='search' 的内容，所以在 request.GET 下获取  'search' 的内容
     def get_queryset(self):
         queryset = super().get_queryset()
         keyword = self.request.GET.get('search')

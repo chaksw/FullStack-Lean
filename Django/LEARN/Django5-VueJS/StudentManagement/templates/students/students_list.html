@@ -253,7 +253,6 @@
                         })
                 }
             })
-            // fetch 发送请求
         }
 
     })
@@ -367,7 +366,7 @@
                 }).then(blob => {
                     // 为 Blob 数据创建一个临时的 URL
                     const url = window.URL.createObjectURL(blob);
-                    // 为 url 创建一个 a 不显示的 a （超链接）标签
+                    // 为 url 创建一个不显示的 a （超链接）标签
                     const a = document.createElement('a');
                     a.style.display = 'none';
                     a.href = url;
@@ -376,7 +375,7 @@
                     document.body.appendChild(a);
                     // 模拟点击这个标签跳转到 url，触发下载行为
                     a.click();
-                    // 下载完成后，移除临时创建的下载链接。
+                    // 下载完成后，移除临时创建的超链接标签和下载链接。
                     document.body.removeChild(a);
                     window.URL.revokeObjectURL(url);
                 }).catch(error => {

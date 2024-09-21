@@ -1,0 +1,15 @@
+from django.urls import path
+from .views import ScoreListView, ScoreCreateView, ScoreUpdateView, ScoreDeleteView, ScoreDeleteMultipleView, ScoreDetailView, upload_scores, export_scores
+
+
+urlpatterns = [
+    path('', ScoreListView.as_view(), name='scores_list'),
+    path('create/', ScoreCreateView.as_view(), name='score_create'),
+    path('update/<int:pk>/', ScoreUpdateView.as_view(), name='score_update'),
+    path('delete/<int:pk>/', ScoreDeleteView.as_view(), name='score_delete'),
+    path('delete_multiple/', ScoreDeleteMultipleView.as_view(), name='score_delete_multiple'),
+    path('detail/<int:pk>/', ScoreDetailView.as_view(), name='score_detail'),
+    path('upload_scores/', upload_scores, name='upload_scores'),
+    path('export_scores/', export_scores, name='export_scores'),
+    # path('my_scores', )
+]

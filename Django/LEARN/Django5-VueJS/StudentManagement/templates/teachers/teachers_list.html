@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load url_utils %}
 {% block content %}
 
 
@@ -62,15 +62,29 @@
         </tbody>
     </table>
     <div class="pagination">
-        <div>
-            <div>
-                <!-- <span>页码： 1</span> -->
-                <span>第1页/共1页</span>
+        <span class=step-links>
+            <span class=step-links>
+                {% if page_obj.has_previous %}
+                <!-- 相当于调用 search_url(request, [page: 1])，将request中的 -->
+                <a href="?{% search_url request page=1 %}">&laquo; 首页</a>
+                <a href="?{% search_url request page=page_obj.previous_page_number%}">上一页</a>
+                {% endif %}
+                <span class="current">
+                    {{ page_obj.number}} / {{ page_obj.paginator.num_pages }}
+                </span>
 
+                {% if page_obj.has_next %}
+                <a href="?{% search_url request page=page_obj.next_page_number %}">下一页</a>
+                <a href="?{% search_url request page=page_obj.paginator.num_pages %}">尾页 &raquo</a>
+                {% endif %}
+                <!-- <span class=current>
+                    1 / 2
+                </span>
+                <a href="http://127.0.0.1:8000/students/?page=2">下一页</a>
+                <a href="http://127.0.0.1:8000/students/?page=2">尾页 »</a> -->
 
-
-            </div>
-        </div>
+            </span>
+        </span>
 
     </div>
 </div>
@@ -87,7 +101,7 @@
     };
 
 
-    const handleDeleteRequest = function (url) {
+    const handelDelte = function (url) {
         Swal.fire({
             title: "确认删除？",
             icon: "warning",
@@ -99,7 +113,7 @@
                 fetch(url, {
                     method: 'DELETE',
                     headers: {
-                        'X-Request-With': 'XMLHttpRequest',
+                        'X-Requested-With': 'XMLHttpRequest',
                         'X-CSRFToken': '{{ csrf_token }}',
                     }
                 }).then(response => response.json())
@@ -138,7 +152,7 @@
         button.addEventListener('click', function(e) {
             e.preventDefault();
             const deleteUrl = this.getAttribute('href') // this 就是 button, 只能使用在函数或者函数表达式中
-            handleDeleteRequest(deleteUrl)
+            handelDelte(deleteUrl)
         })
     })
 </script>

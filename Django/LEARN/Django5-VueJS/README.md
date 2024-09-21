@@ -1043,14 +1043,15 @@ CKEDITOR_IMAGE_BACKEND = 'pillow'  # 富文件上传图片的后台
 # from ckeditor_uploader.fields import RichTextUploadingField
 ```
 ### 1.6.3. 表单悬浮窗口实现以及表单数据验证流程
-1. 建立数据表：定义 `models.py`，
-2. 建立路由：定义 `urls.py`, 建立创建数据对应的 url
-3. 建立视图功能，实现 request <-> response 交互逻辑：定义 `views.py` 中 `CreateView` | `UpdateView` 的 model view，与 url 进行绑定（`as_view()`），并定义表单验证成功 `form_valid()` 以及失败 `form_invalid()` 方法，返回对应的 `Response` 数据。
-4. 建立数据-路由-模板的联系：在 `modelView`，中定义 `model`, `form_class`, `template_class`，将数据表，表单，前端显示页面绑定
-5. 建立数据显示界面：在 `<model>_list.html` 中给定新建按钮跳转路径为给定 url，并通过 `sweetalter2` 实现浮窗效果
-6. 建立表单：定义 `forms.py` 建立对应的数据表对应的表单模型，并通过定义 `clean_<field_name>` 创建每个字段的验证方法。
-7. 建立表单显示界面：定义 `<model>_form.html`，建立表单的前端显示页面
-8. 实现 submit 功能：在 `<model>_form.html` 中，使用 `fetch` 实现 `submit` 异步请求，并对 model view 中成功 `form_valid()` 以及失败 `form_invalid()` 所返回的数据进行处理，将相关数据以特定方式显示在前端。
+1. 在项目跟 `urls.py` 中建立根路由
+2. 建立数据表：定义 `models.py`，
+3. 建立路由：定义 `urls.py`, 建立创建数据对应的 url
+4. 建立视图功能，实现 request <-> response 交互逻辑：定义 `views.py` 中 `CreateView` | `UpdateView` 的 model view，与 url 进行绑定（`as_view()`），并定义表单验证成功 `form_valid()` 以及失败 `form_invalid()` 方法，返回对应的 `Response` 数据。
+5. 建立数据-路由-模板的联系：在 `modelView`，中定义 `model`, `form_class`, `template_class`，将数据表，表单，前端显示页面绑定
+6. 建立数据显示界面：在 `<model>_list.html` 中给定新建按钮跳转路径为给定 url，并通过 `sweetalter2` 实现浮窗效果
+7. 建立表单：定义 `forms.py` 建立对应的数据表对应的表单模型，并通过定义 `clean_<field_name>` 创建每个字段的验证方法。
+8. 建立表单显示界面：定义 `<model>_form.html`，建立表单的前端显示页面
+9. 实现 submit 功能：在 `<model>_form.html` 中，使用 `fetch` 实现 `submit` 异步请求，并对 model view 中成功 `form_valid()` 以及失败 `form_invalid()` 所返回的数据进行处理，将相关数据以特定方式显示在前端。
 
 
 ### 1.6.4. `CreateView`
@@ -1239,3 +1240,13 @@ document.addEventListener('DOMContentLoaded', () => {
 ```
 
 
+### `request` 和 `self.request` 的区别
+在 Django 中， `request` 和 `self.request` 都指的是 HTTP 请求对象，但它们的**使用场景**和**上下文**有所不同：
+
+1. `request` （作为参数传递的请求对象）
+    - `request` 是在基于函数的视图（Function-Based Views，FBV）和基于类的视图（Class-Based Views，CBV）的方法中作为参数显式传递的。   
+    - 它通常代表当前的 HTTP 请求对象，包含了所有与请求相关的数据，如请求方法、用户信息、GET 和 POST 数据等。
+2. `self.request`（作为类实例的属性）
+    - `self.request` 是在基于类的视图（Class-Based Views，CBV）中使用的，是视图实例的一个属性，表示当前的 HTTP 请求对象。
+    - 在基于类的视图中，`self.request` **是自动从请求中提取并存储在视图实例中的**，因此你不需要显式地将 request 作为方法参数传递。
+3. 在 Django 的 DeleteView 或其他基于类的视图（CBV）中，`self.request` 和 `request` 在方法中的确本质上是同一个对象。它们都指向当前的 HTTP 请求对象，包含相同的数据和信息（如请求方法、用户信息、GET/POST 数据等）。

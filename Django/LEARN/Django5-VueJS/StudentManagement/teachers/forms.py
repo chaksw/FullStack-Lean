@@ -1,8 +1,13 @@
 from django.core.exceptions import ValidationError
-import datetime 
+import datetime
 from django import forms
 from .models import Teacher
 from grades.models import Grade
+
+GENDER_CHOICES = [
+    ('M', '男'),
+    ('F', '女'),
+]
 
 
 class TeacherForm(forms.ModelForm):
@@ -15,6 +20,8 @@ class TeacherForm(forms.ModelForm):
         # 为前端表单重新定义 grade的排序方式
         # 重新定义 外键 grade 为 Grade 的 object 的排序方式，并以 grade_number 进行排序（默认升序）
         self.fields.get('grade').queryset = Grade.objects.all().order_by('grade_number')
+        self.fields['grade'].empty_label = '请选择班级'
+        self.fields['gender'].widget = forms.Select(choices=GENDER_CHOICES)
 
     def clean_teacher_name(self):
         teacher_name = self.cleaned_data.get('teacher_name')

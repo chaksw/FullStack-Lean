@@ -16,7 +16,7 @@ class Teacher(models.Model):
     phone_number = models.CharField(verbose_name='联系方式', max_length=20)
     gender = models.CharField(verbose_name='性别', max_length=1, choices=GENDER_CHOICES)
     birthday = models.DateField(verbose_name='出生日期', help_text='格式例如：2020-05-01')
-    grade = models.ForeignKey(to=Grade, verbose_name='管理班级', on_delete=models.CASCADE, related_name='teachers')
+    grade = models.ForeignKey(to=Grade, verbose_name='管理班级', on_delete=models.DO_NOTHING, related_name='teachers')
 
     def __str__(self):
         return self.teacher_name
