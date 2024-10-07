@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ScoreListView, ScoreCreateView, ScoreUpdateView, ScoreDeleteView, ScoreDeleteMultipleView, ScoreDetailView, upload_scores, export_scores
+from .views import ScoreListView, ScoreCreateView, ScoreUpdateView, ScoreDeleteView, ScoreDeleteMultipleView, ScoreDetailView, MyScoreListView, upload_scores, export_scores
 
 
 urlpatterns = [
@@ -11,5 +11,5 @@ urlpatterns = [
     path('detail/<int:pk>/', ScoreDetailView.as_view(), name='score_detail'),
     path('upload_scores/', upload_scores, name='upload_scores'),
     path('export_scores/', export_scores, name='export_scores'),
-    # path('my_scores', )
+    path('my_scores', MyScoreListView.as_view(), name='my_scores'),
 ]
