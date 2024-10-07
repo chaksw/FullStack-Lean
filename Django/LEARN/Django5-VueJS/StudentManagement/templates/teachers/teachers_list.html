@@ -90,7 +90,7 @@
 </div>
 
 <script>
-    const triggerCreateOrUpdateForm = (url) => {
+    const showIframe = (url) => {
         const html = `<iframe src="${url}" width="100%", height="800px", frameborder="0"></iframe>`
         Swal.fire({
             position: 'top-end',
@@ -136,18 +136,22 @@
         })
     }
 
-
+    // 新增
     document.getElementById('add').addEventListener('click', () => {
         const createUrl = "{% url 'teacher_create' %}"
-        triggerCreateOrUpdateForm(createUrl)
+        showIframe(createUrl)
     });
+
+    // 编辑
     document.querySelectorAll('.edit').forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
             const updateUrl = button.getAttribute('href'); // 在 arrow function 中不能使用 this
-            triggerCreateOrUpdateForm(updateUrl);
+            showIframe(updateUrl);
         })
     })
+
+    // 删除
     document.querySelectorAll('.del').forEach(button =>{
         button.addEventListener('click', function(e) {
             e.preventDefault();

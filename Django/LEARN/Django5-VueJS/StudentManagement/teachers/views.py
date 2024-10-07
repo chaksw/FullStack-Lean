@@ -25,11 +25,6 @@ class TeacherListView(BaseTeacherView, ListView):
     paginate_by = 10
 
     # 3.搜索功能：基于特定字段过滤数据
-    def get_context_data(self):
-        context = super().get_context_data()
-        context['grades'] = Grade.objects.all().order_by('grade_number')
-        context['current_grade'] = self.request.GET.get('grade', '')
-        return context
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -41,6 +36,13 @@ class TeacherListView(BaseTeacherView, ListView):
             filter = Q(teacher_name__icontains=keyword) | Q(phone_number__icontains=keyword)
             queryset = queryset.filter(filter)
         return queryset
+
+    # 定义班级下拉栏的排序方式，并将当前被选班级加入到上下文 context 中
+    def get_context_data(self):
+        context = super().get_context_data()
+        context['grades'] = Grade.objects.all().order_by('grade_number')
+        context['current_grade'] = self.request.GET.get('grade', '')
+        return context
 
     # 4.排序：基于特定字段的特定规则进行排序
 

@@ -61,13 +61,13 @@ class StudentCreateView(CreateView):
     form_class = StudentForm
     template_name = 'students/student_form.html'
     # success_url = reverse_lazy('students_list')
+
     # 1.当 type='sumbit' 的按钮按下后，会提交表单，产生一个 post 请求，将表单数据发送到服务器
     # 2.服务器接收到数据后，CreateView 会调用 ModelForm 中的各种方法，包括 form.is_valid(), clean_<field_name> 方法来验证数据是否合法
     #
     # 3.如果数据有效，默认情况下 form_valid() 会被执行， 其中会自动调用 form.save() 将数据保存到数据库中，（如果重写了 form_valid()，则不会自动调用 form.save(), 而需要显示调用)
     # 4.如果数据保存，会重定向到 success_url 中指定的页面
     # 表单字段验证
-
     def form_valid(self, form):
         # 接收字段
         student_name = form.cleaned_data.get('student_name')

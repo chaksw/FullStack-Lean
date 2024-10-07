@@ -963,9 +963,9 @@ class User(BaseModel):
 
 ```
 
-## 1.5. 补充：
+## 1.5. Student Management 项目
 
-## 1.6. 在当前目录下创建项目
+### 1.5.1. 在当前目录下创建项目
 假设已有文件夹 project，当运行：
 ```bash
 django-admin startproject project
@@ -987,7 +987,7 @@ django-admin startproject project
 ```bash
 django-admin startproject config .
 ```
-### 1.6.1. 重命名项目名称
+### 1.5.2. 重命名项目名称
 如果要更改项目名称：如 `website` 项目中将包含 `settings.py` 的 `website` 文件夹重命名为 `config`，出了文件夹名字更改外，还需要将：
 ```py
 # in settings.py 
@@ -1010,7 +1010,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 ```
 
-### 1.6.2. 静态文件的相关配置
+### 1.5.3. 静态文件的相关配置
 ```py
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -1042,10 +1042,10 @@ CKEDITOR_IMAGE_BACKEND = 'pillow'  # 富文件上传图片的后台
 # from ckeditor.fields import RichTextField
 # from ckeditor_uploader.fields import RichTextUploadingField
 ```
-### 1.6.3. 表单悬浮窗口实现以及表单数据验证流程
+### 1.5.4. 表单悬浮窗口实现以及表单数据验证流程
 1. 在项目跟 `urls.py` 中建立根路由
-2. 建立数据表：定义 `models.py`，
-3. 建立路由：定义 `urls.py`, 建立创建数据对应的 url
+2. 建立数据表：定义 `models.py` 中的CBV，
+3. 建立路由：定义 `urls.py`, 建立创建数据模型对应的 url
 4. 建立视图功能，实现 request <-> response 交互逻辑：定义 `views.py` 中 `CreateView` | `UpdateView` 的 model view，与 url 进行绑定（`as_view()`），并定义表单验证成功 `form_valid()` 以及失败 `form_invalid()` 方法，返回对应的 `Response` 数据。
 5. 建立数据-路由-模板的联系：在 `modelView`，中定义 `model`, `form_class`, `template_class`，将数据表，表单，前端显示页面绑定
 6. 建立数据显示界面：在 `<model>_list.html` 中给定新建按钮跳转路径为给定 url，并通过 `sweetalter2` 实现浮窗效果
@@ -1054,7 +1054,7 @@ CKEDITOR_IMAGE_BACKEND = 'pillow'  # 富文件上传图片的后台
 9. 实现 submit 功能：在 `<model>_form.html` 中，使用 `fetch` 实现 `submit` 异步请求，并对 model view 中成功 `form_valid()` 以及失败 `form_invalid()` 所返回的数据进行处理，将相关数据以特定方式显示在前端。
 
 
-### 1.6.4. `CreateView`
+### 1.5.5. `CreateView`
 ```py
 class StudentCreateView(CreateView):
     model = Student
@@ -1102,7 +1102,7 @@ class StudentCreateView(CreateView):
 ```
 
 
-### 1.6.5. `ModelForm`
+### 1.5.6. `ModelForm`
 - ModelForm 根据与之关联的模型自动生成表单字段。每个模型字段都对应一个表单字段。例如，CharField 转换为 forms.CharField，DateField 转换为 forms.DateField，等等。
 - ModelForm 自动继承并执行模型定义中的验证逻辑，如字段的 max_length、unique、blank、null 等约束条件。
 - ModelForm 提供了 clean() 方法，可以对整个表单的数据进行验证和清理。你还可以为特定字段定义 clean_<fieldname>() 方法，以对单个字段进行自定义验证和清理。
@@ -1158,9 +1158,9 @@ class StudentForm(forms.ModelForm):
 
 ```
 
-### 1.6.6. 使用 `fetch` 实现 `submit` 异步请求
+### 1.5.7. 使用 `fetch` 实现 `submit` 异步请求
 > 通过使用 `fetch` 实现异步请求，使得新的请求不会阻塞页面（同步请求需要我们跳转到新的页面），同时它能更精细的控制请求的细节（请求头，请求方法，请求体等），这样可以实现 `CURD` 时不加载新的页面，而是弹出悬浮框。
-### 1.6.7. 使用 `fetch` 实现 `submit` 异步请求
+### 1.5.8. 使用 `fetch` 实现 `submit` 异步请求
 > 通过使用 `fetch` 实现异步请求，是的新的请求不会阻塞页面（同步请求需要我们跳转到新的页面），同时它能更精细的控制请求的细节（请求头，请求方法，请求体等），这样可以实现 `CURD` 时不加载新的页面，而是弹出悬浮框。
 
 ```js
@@ -1240,7 +1240,7 @@ document.addEventListener('DOMContentLoaded', () => {
 ```
 
 
-### `request` 和 `self.request` 的区别
+### 1.5.9. `request` 和 `self.request` 的区别
 在 Django 中， `request` 和 `self.request` 都指的是 HTTP 请求对象，但它们的**使用场景**和**上下文**有所不同：
 
 1. `request` （作为参数传递的请求对象）

@@ -17,7 +17,7 @@ from utils.handle_excel import ReadExcel, WriteExcel
 # Create your views here.
 
 
-# 使用 transaction.atomic() 确如果某些操作失败，所有更改会被回滚。
+# 使用 transaction.atomic() 确保如果某些操作失败，所有更改会被回滚。
 @transaction.atomic
 def upload_student_scores(file):
     read_excel = ReadExcel(file)
