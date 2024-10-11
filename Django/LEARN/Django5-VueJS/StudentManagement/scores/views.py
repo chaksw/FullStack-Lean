@@ -244,5 +244,14 @@ class ScoreDetailView(DetailView):
     template_name = "scores/score_detail.html"
 
 
-class MyScoreListView(ScoreBaseView, ListView):
+class MyScoreListView(ListView):
+    model = Score
     template_name = "scores/my_score_list.html"
+    context_object_name = 'scores'
+    paginate_by = 10
+
+    def get_queryset(self):
+        # 仅返回当前用户的成绩
+        student_number = self.request.user.student.student_number
+        score = Score.objects.filter(student_number=student_number)
+        return score

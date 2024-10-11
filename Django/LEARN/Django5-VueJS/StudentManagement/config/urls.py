@@ -16,13 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic.base import RedirectView
 from accounts import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # 定义重定向：当访问首页 '/' 时，跳转到 '/students/' 页面
+    path('', RedirectView.as_view(url="/students/", permanent=False)),
     path('grades/', include('grades.urls')),
     path('students/', include('students.urls')),
     path('teachers/', include('teachers.urls')),
     path('scores/', include('scores.urls')),
-    path('login/', views.user_login, name='user_login')
+    path('login/', views.user_login, name='user_login'),
+    path('logout/', views.user_logout, name='user_logout')
+    path('change_password/', views.change_password, name='change_password')
 ]

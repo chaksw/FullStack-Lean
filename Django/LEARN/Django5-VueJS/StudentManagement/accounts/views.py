@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .forms import LoginForm
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from teachers.models import Teacher
 from students.models import Student
 
@@ -66,7 +66,8 @@ def user_login(request):
                 # login() 会将 user 对象的信息写入 session 中
                 login(request=request, user=user)
 
-                # 将 role 写入 session，后续根据 role 来展示页面和提供功能
+                # 将 role & 用户的姓名信息 写入 session，后续根据 role 来展示页面和提供功能
+                request.session['username'] = user_name.split('_')[0]
                 request.session['user_role'] = role
                 return JsonResponse({'status': 'success', 'messages': '登录成功', 'role': role})
             else:
@@ -75,3 +76,16 @@ def user_login(request):
             return JsonResponse({'status': 'error', 'messages': '用户名或密码错误'}, status=401)
 
     return render(request, 'accounts/login.html')
+
+
+def user_logout(request):
+    """退出登录"""
+    if 'user_role' in request.session:
+        # 清除 session 中 user_role 信息
+        del request.session['user_role']
+    logout(request)
+    return redirect('user_login')
+
+
+def change_password(request):
+    return render(request, 'account/change_password.html')
