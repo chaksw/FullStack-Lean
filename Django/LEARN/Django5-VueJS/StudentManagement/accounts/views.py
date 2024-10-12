@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .forms import LoginForm
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from teachers.models import Teacher
 from students.models import Student
 
@@ -11,6 +12,7 @@ from students.models import Student
 
 def user_login(request):
     # 判断是否为 post 请求
+    user_name = ''
     if request.method == 'POST':
         # form 表单验证
         # 传入 POST 请求数据，建立对应表单对象
@@ -88,4 +90,21 @@ def user_logout(request):
 
 
 def change_password(request):
-    return render(request, 'account/change_password.html')
+    if request.method == 'POST':
+        # 使用 django 自带的 PasswordChangeForm 来获取更改密码的表单，输入 user 信息和 提交的更改密码表单信息 request.POST, 注意表单中的name必须根据django的要求，旧密码为 old_password, 新密码为 new_password1, 确认密码为 new_password2
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            response = JsonResponse({
+                'status': 'success',
+                'messages': '您的密码已成功更新!'
+            })
+            return response
+        else:
+            errors = form.errors.as_json()
+            return JsonResponse({
+                'status': 'error',
+                'messages': errors
+            })
+    return render(request, 'accounts/change_password.html')
