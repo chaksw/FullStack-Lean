@@ -17,41 +17,48 @@
         <div class="wrapper">
             <div class="left">
                 <div class="head">
-                    <a href="/students/">
-                        <h2>学生管理系统</h2>
-                    </a>
+                    <a href="/students/"><h2>学生管理系统</h2></a>
                 </div>
                 <div class="profile">
-                    <!-- account.views 中 login(request, user) 中返回了 user这个对象存储在了 reuqest中，所以可以通过 request.user.username 获取登录用户的名称-->
-                    <!-- account.views 中将 用户姓名 和 role 写入 request.session['user_role']，所以可以通过 request.session.user_role 获取用户的 role 数据-->
-                    欢迎 [{{ request.session.username }}]
-                    {% if request.session.user_role == 'admin' %} 
-                    管理员 
-                    {% elif request.session.user_role == 'student' %} 
-                    同学 
-                    {% elif request.session.user_role == 'teacher' %} 
-                    老师 
+                    <!-- account.views 中 login(request, user) 中返回了 user这个对象存储在了 reuqest中，所以可以通过 request.user.username 获取登录用户的名称 -->
+                    <!-- account.views 中将 用户姓名 和 role 写入 request.session['user_role']，所以可以通过 request.session.user_role 获取用户的 role 数据 -->
+                    欢迎 [{{ request.session.username }}]{% if request.session.user_role == 'admin' %}
+                        管理员
+                    {% elif request.session.user_role == 'student' %}
+                        同学
+                    {% elif request.session.user_role == 'teacher' %}
+                        老师
                     {% endif %}
                 </div>
                 <div class="content">
                     <ul>
-                        <li class="active">
-                            <span class="iconfont icon-fangzi"></span>
-                            <a href="/grades/" class="nav-link">班级管理</a>
-                        </li>
-                        <li class="active">
-                            <span class="iconfont icon-kapian"></span>
-                            <a href="/teachers/">老师管理</a>
-                        </li>
+                        {% if request.session.user_role == 'admin' %}
+                            <li class="active">
+                                <span class="iconfont icon-fangzi"></span>
+                                <a href="/grades/" class="nav-link">班级管理</a>
+                            </li>
+                            <li class="active">
+                                <span class="iconfont icon-kapian"></span>
+                                <a href="/teachers/">老师管理</a>
+                            </li>
+                        {% endif %}
+                        {% if request.session.user_role == 'teacher' or request.session.user_role == 'admin' %}
+                            <li>
+                                <span class="iconfont icon-ren"></span>
+                                <a href="/students/">学生管理</a>
+                            </li>
+                            <li>
+                                <span class="iconfont icon-shuben"></span>
+                                <a href="/scores/">成绩管理</a>
+                            </li>
+                        {% endif %}
 
-                        <li>
-                            <span class="iconfont icon-ren"></span>
-                            <a href="/students/">学生管理</a>
-                        </li>
-                        <li>
-                            <span class="iconfont icon-shuben"></span>
-                            <a href="/scores/">成绩管理</a>
-                        </li>
+                        {% if request.session.user_role == 'student' %}
+                            <li>
+                                <span class="iconfont icon-bianji"></span>
+                                <a href="{% url 'my_scores' %}">成绩列表</a>
+                            </li>
+                        {% endif %}
 
                         <li>
                             <span class="iconfont icon-bianji"></span>
@@ -65,7 +72,11 @@
                 </div>
             </div>
 
-            <div class="right">{% block content %} {% endblock %}</div>
+            <div class="right">
+                {% block content %}
+
+                {% endblock %}
+            </div>
         </div>
     </body>
 </html>

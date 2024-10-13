@@ -69,7 +69,10 @@ def user_login(request):
                 login(request=request, user=user)
 
                 # 将 role & 用户的姓名信息 写入 session，后续根据 role 来展示页面和提供功能
-                request.session['username'] = user_name.split('_')[0]
+                if role != 'admin':
+                    request.session['username'] = user_name.split('_')[0]
+                else:
+                    request.session['username'] = username
                 request.session['user_role'] = role
                 return JsonResponse({'status': 'success', 'messages': '登录成功', 'role': role})
             else:

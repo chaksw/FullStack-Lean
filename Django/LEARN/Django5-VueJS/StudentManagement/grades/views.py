@@ -4,16 +4,23 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from .models import Grade
 from .forms import GradeForm
+from utils.permissions import RoleRequiredMixin
 # Create your views here.
 
 
-class GradeListView(ListView):
+class BaseGradeView(RoleRequiredMixin):
     model = Grade
+    # 创建数据需要定义表单类
+    form_class = GradeForm
+    context_object_name = 'grades'
+    allowed_roles = ['admin']
+
+
+class GradeListView(BaseGradeView, ListView):
     template_name = 'grades/grades_list.html'
     fields = ['grade_name', 'grade_number']
     # 表示使用 render() 函数是，传递到模版的参数
     # 等效为: render(request=request, context=grades)
-    context_object_name = 'grades'
     '''
     实现分页功能
     定义每页显示记录数量
@@ -47,7 +54,7 @@ class GradeListView(ListView):
 
 
 # 结合 表单类创建 新增表单
-class GradeCreateView(CreateView):
+class GradeCreateView(BaseGradeView, CreateView):
     model = Grade
     # 创建数据需要定义表单类
     form_class = GradeForm
@@ -61,16 +68,12 @@ class GradeCreateView(CreateView):
 
 # 更新视图和创建视图基本相同，，因为都是处理同个数据模型的表单的 POST 请求，（更新也可以是 PUT 请求，但是 django CBV 不直接支持 PUT 请求，但可以使用 Django REST Framework 来实现）。
 # 区别在于，更新视图是更新已有数据，可以在更新页面中需要接受和显示对应的数据，接受数据在编辑按钮中的 url 添加对应的pk来实现，而显示对应数据则是 form 表单中的 {{ field }}
-class GradeUpdateView(UpdateView):
-    model = Grade
-    # 创建数据需要定义表单类
-    form_class = GradeForm
+class GradeUpdateView(BaseGradeView, UpdateView):
     template_name = 'grades/grade_form.html'
     success_url = reverse_lazy('grades_list')
 
 
 # 删除视图比新增/更新很类似，他们都是以处理表单数据，同样是发送 post 请求，跟更新数据一样需要接受对应的数据，因为不需要对数据进行编辑或者新建，所以不需要输入框。
 class GradeDeleteView(DeleteView):
-    model = Grade
     template_name = 'grades/grade_delete_confirm.html'
     success_url = reverse_lazy('grades_list')

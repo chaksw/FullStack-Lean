@@ -8,12 +8,14 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Teacher
 from grades.models import Grade
 from .forms import TeacherForm
+from utils.permissions import RoleRequiredMixin
 # Create your views here.
 
 
-class BaseTeacherView():
+class BaseTeacherView(RoleRequiredMixin):
     model = Teacher
     success_url = reverse_lazy('teachers_list')
+    allowed_roles = ['admin']
 
 
 class TeacherListView(BaseTeacherView, ListView):

@@ -14,17 +14,22 @@ from .models import Student
 from grades.models import Grade
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from utils.handle_excel import ReadExcel, WriteExcel, ExportExcel
+from utils.permissions import RoleRequiredMixin, role_required
 
 # Create your views here.
 
 
-class StudentListView(ListView):
+class BaseStudentView(RoleRequiredMixin):
     model = Student
-    template_name = 'students/students_list.html'
-    # fields = []
     # context_object_name 用于指定传递给模板的上下文变量的名称。
     context_object_name = 'students'
+    form_class = StudentForm
+    allowed_roles = ['admin', 'teacher']
 
+
+class StudentListView(BaseStudentView, ListView):
+    template_name = 'students/students_list.html'
+    # fields = []
     paginate_by = 10
 
     # 搜索功能： 基于所在班级进行搜索
@@ -56,9 +61,8 @@ class StudentListView(ListView):
         return queryset
 
 
-class StudentCreateView(CreateView):
-    model = Student
-    form_class = StudentForm
+class StudentCreateView(BaseStudentView, CreateView):
+
     template_name = 'students/student_form.html'
     # success_url = reverse_lazy('students_list')
 
@@ -100,9 +104,8 @@ class StudentCreateView(CreateView):
         }, status=400)
 
 
-class StudentUpdateView(UpdateView):
-    model = Student
-    form_class = StudentForm
+class StudentUpdateView(BaseStudentView, UpdateView):
+
     template_name = 'students/student_form.html'
 
     def form_valid(self, form):
@@ -133,9 +136,7 @@ class StudentUpdateView(UpdateView):
         }, status=400)
 
 
-class StudentDeleteView(DeleteView):
-    model = Student
-    # form_class = StudentForm
+class StudentDeleteView(BaseStudentView, DeleteView):
     success_url = reverse_lazy('students_list')
 
     # 重写父类 delete() 方法
@@ -155,7 +156,7 @@ class StudentDeleteView(DeleteView):
             }, status=500)
 
 
-class StudentBulkDeleteView(DeleteView):
+class StudentBulkDeleteView(BaseStudentView, DeleteView):
     model = Student
     success_url = reverse_lazy('students_list')
 
@@ -187,6 +188,7 @@ class StudentBulkDeleteView(DeleteView):
             }, status=500)
 
 
+@role_required('admin', 'teacher')
 def upload_student(request):
     """Upload student data from excel file
 
@@ -265,6 +267,7 @@ def upload_student(request):
         }, status=200)
 
 
+@role_required('admin', 'teacher')
 def export_excel(request):
     """export stduent data with selected grade name
 

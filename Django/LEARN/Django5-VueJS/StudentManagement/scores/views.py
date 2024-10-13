@@ -14,6 +14,7 @@ from students.models import Student
 from grades.models import Grade
 from django.urls import reverse_lazy
 from utils.handle_excel import ReadExcel, WriteExcel
+from utils.permissions import RoleRequiredMixin, role_required
 # Create your views here.
 
 
@@ -60,6 +61,7 @@ def upload_student_scores(file):
     return {'status': 'success', 'messages': '文件上传成功'}
 
 
+@role_required('admin', 'teacher')
 def upload_scores(request):
     if request.method == 'POST':
         try:
@@ -78,6 +80,7 @@ def upload_scores(request):
     return JsonResponse({'error': '无效的请求'}, status=400)
 
 
+@role_required('admin', 'teacher')
 def export_scores(request):
     if request.method == 'POST':
         # 获取请求体
@@ -117,9 +120,10 @@ def export_scores(request):
         return response
 
 
-class ScoreBaseView():
+class ScoreBaseView(RoleRequiredMixin):
     model = Score
     success_url = reverse_lazy('scores_list')
+    allowed_roles = ['admin', 'teacher']
 
 
 class ScoreListView(ScoreBaseView, ListView):
