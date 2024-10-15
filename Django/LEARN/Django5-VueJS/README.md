@@ -1,5 +1,5 @@
 # 1. Django + Vue Course
-> 这个 README.md 作为 Django/LEARN/Django 课程的进阶延伸.
+> 这个 README.md 作为 FullStack-Lean/Django/LEARN/Django 课程的进阶延伸.
 
 ## 1.1. `URLS` 路由匹配模式 （`urls.py` 中的url路径定义方式）
 ### 1.1.1. 字符串精准匹配： 定义啥就识别啥
@@ -1250,3 +1250,8 @@ document.addEventListener('DOMContentLoaded', () => {
     - `self.request` 是在基于类的视图（Class-Based Views，CBV）中使用的，是视图实例的一个属性，表示当前的 HTTP 请求对象。
     - 在基于类的视图中，`self.request` **是自动从请求中提取并存储在视图实例中的**，因此你不需要显式地将 request 作为方法参数传递。
 3. 在 Django 的 DeleteView 或其他基于类的视图（CBV）中，`self.request` 和 `request` 在方法中的确本质上是同一个对象。它们都指向当前的 HTTP 请求对象，包含相同的数据和信息（如请求方法、用户信息、GET/POST 数据等）。
+
+# Django Rest Framework
+> 关于我对 Django rest frameworkd 的初步理解可以看：FullStack-Lean/Django/PRACTICE/Django-REST-API/README.md
+
+相比去传统的
