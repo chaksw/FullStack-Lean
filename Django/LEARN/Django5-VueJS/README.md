@@ -1254,4 +1254,3 @@ document.addEventListener('DOMContentLoaded', () => {
 # Django Rest Framework
 > 关于我对 Django rest frameworkd 的初步理解可以看：FullStack-Lean/Django/PRACTICE/Django-REST-API/README.md
 
-相比去传统的
