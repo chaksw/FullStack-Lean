@@ -11,8 +11,8 @@ from rest_framework import viewsets
 from django_filters import rest_framework as filters
 
 
-from .serializers import MovieSerializer
-from .models import Movie
+from .serializers import MovieSerializer, CategorySerializer
+from .models import Movie, Category
 
 # from .serializers import MovieListSerializer, MoviewDetailSerializer
 # Create your views here.
@@ -116,6 +116,8 @@ class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Movie.objects.all()
     serializer_class = MoviewDetailSerializer
 '''
+
+
 # RetrieveUpdateDestroyAPIView 中已经实现了如下功能，我们只需要定义好queryset & serializer_class即可
 # 注意更新数据不再使用put()调用 partial_update()，而是使用 patch()
 # def get(self, request, *args, **kwargs):
@@ -136,10 +138,12 @@ class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
 class MovieFilter(filters.FilterSet):
     # 设定字段 movie_name 的查询方式为 lookup_expr='icontains'，即不区分大小写的包含
     movie_name = filters.CharFilter(lookup_expr='icontains')
+    category_id = filters.NumberFilter()
+    region = filters.NumberFilter()
 
     class Meta:
         model = Movie
-        fields = ['movie_name']
+        fields = ['movie_name', 'region', 'category_id']
 
 
 # ======================================================================
@@ -169,3 +173,8 @@ class MovieViewSet(viewsets.ModelViewSet):
     # filterset_fields = ('movie_name',)
     # 以 class FilterSet 方式进行搜索配置
     filterset_class = MovieFilter
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer

@@ -73,7 +73,6 @@ export default {
         this.getMovieData();
     },
     methods: {
-        // 根据 url 中的 ?page= 参数实现分页显示
         getMovieData: function () {
             // 基础 api
             let url = "/api/movie";
@@ -81,6 +80,10 @@ export default {
             const page = Number(this.$route.query.page);
             // 获取路由 search 的参数
             const search = this.$route.query.search;
+            // 获取路由 category id 参数
+            const category_id = Number(this.$route.query.category_id);
+            // 获取路由 region 参数
+            const region = Number(this.$route.query.region);
             // 将获取到的参数全部加入到 URLSearchParams 对象中
             const params = new URLSearchParams();
             if (page) {
@@ -88,6 +91,12 @@ export default {
             }
             if (search) {
                 params.append("movie_name", search);
+            }
+            if (category_id) {
+                params.append("category_id", category_id);
+            }
+            if (region) {
+                params.append("region", region);
             }
             // // 组合含 page 的 url
             // if (!isNaN(page) && page !== 0) {

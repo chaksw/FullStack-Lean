@@ -11,7 +11,6 @@
                             style="height: 39px"
                             alt="" />
                     </a>
-
                     <div id="nav" class="px-4">
                         <category />
                     </div>
@@ -100,13 +99,20 @@
 </template>
 
 <script>
+import axios from "axios";
+import Category from "@/components/Category.vue";
+
 export default {
     name: "Header",
+    components: {
+        Category,
+    },
     data: () => {
         return {
             keyword: "",
             username: "",
             showMenu: false,
+            category: {},
         };
     },
 

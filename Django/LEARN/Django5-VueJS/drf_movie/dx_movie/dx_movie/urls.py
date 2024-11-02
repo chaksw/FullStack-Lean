@@ -23,6 +23,7 @@ router = DefaultRouter()
 # 每个 viewset 都可以通过路由注册的方式，即可想所有 urls 的 CURD 资源导入，而在 urlpatterns 中只需要 include(router.urls) 即可，也不需要在每个app文件夹下定义 urls.py
 #
 router.register(r'movie', views.MovieViewSet)
+router.register(r'category', views.CategoryViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

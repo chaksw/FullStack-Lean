@@ -1421,8 +1421,12 @@ export default {
 };
 ```
 
-## 2.4. 基于 `django-filter` 的搜索功能 ([结合 DRF 使用](https://django-filter.readthedocs.io/en/stable/guide/rest_framework.html))
-
+## 2.4. 基于 `django-filter` 的搜索功能和分类显示功能 ([结合 DRF 使用](https://django-filter.readthedocs.io/en/stable/guide/rest_framework.html))
+搜索功能和分类显示本质上是显示满足特定过滤条件的数据，过滤条件通常为包含特定字段或者是包含特定字段的部分内容。所以实现逻辑为：
+1. 过滤功能的设置（配置）
+2. 设置可供过滤的字段 （用 django-filter 实现）
+3. 获取包含过滤内容的 url
+4. 获取该url下的内容并显示
 ```py
 # settings.py
 # 安装 django-filter 并加入到 INSTALLED_APPS[]中
@@ -1447,8 +1451,13 @@ REST_FRAMEWORK = {
 ```
 
 ```py
-# in app->views.py
+# in app->views.py， 当然前提是已经定义对应的 model 和 serializer
+from rest_framework import viewsets
 from django_filters import rest_framework as filters
+
+
+from .serializers import MovieSerializer, CategorySerializer
+from .models import Movie, Category
 
 # 以 class 形式设置可搜索字段的模糊查询
 class MovieFilter(filters.FilterSet):
@@ -1472,13 +1481,20 @@ class MovieViewSet(viewsets.ModelViewSet):
     # filterset_fields = ('movie_name',)
     # 以 class FilterSet 方式进行搜索配置
     filterset_class = MovieFilter
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
 ```
 
-对应 Vue 中的实现：
-1. 获取 search 框中的搜索数据，加入到路由参数中
-2. 从路由参数中获取到的搜索数据组合到当前url中，组成新的 url并跳转到该包含搜索数据的 url 页面中
-3. 更改原有的页面跳转逻辑，让页面跳转时保留其他 query 参数，以防新的url出现多页数据（数据结果大于 pageSize）时的跳转错误
-
+#### 对应 Vue 中的搜索功能和分类功能的实现：
+1. 对于搜索功能，先获取 search 框，加入到路由参数中
+2. 从路由参数中获取 search, category_id, region 参数
+3. 将获取到的参数组合到当前url中，实现用 axios 获取该 url 下的数据的逻辑
+4. 对于分类功能，将 url 与对应的跳转按钮进行绑定
+5. 更改原有的页面跳转逻辑，让页面跳转时保留其他 query 参数，以防新的url出现多页数据（数据结果大于 pageSize）时的跳转错误
 ```js
 // Header.vue
 // 1. 获取搜索框中的查询数据
@@ -1494,7 +1510,8 @@ searchMovies: function () {
 
 ```js
 // MovieList.vue
-// 2. 从路由参数中获取到的搜索数据组合到当前url中，组成新的 url并跳转到该包含搜索数据的 url 页面中
+// 2. 从路由参数中获取 search, category_id, region 参数
+// 3. 将获取到的参数组合到当前url中，实现用 axios 获取该 url 下的数据的逻辑
 getMovieData: function () {
     // 基础 api
     let url = "/api/movie";
@@ -1502,6 +1519,10 @@ getMovieData: function () {
     const page = Number(this.$route.query.page);
     // 获取路由 search 的参数
     const search = this.$route.query.search;
+    // 获取路由 category id 参数
+    const category_id = Number(this.$route.query.category_id);
+    // 获取路由 region 参数
+    const region = Number(this.$route.query.region);
     // 将获取到的参数全部加入到 URLSearchParams 对象中
     const params = new URLSearchParams();
     if (page) {
@@ -1509,6 +1530,12 @@ getMovieData: function () {
     }
     if (search) {
         params.append("movie_name", search);
+    }
+    if (category_id) {
+        params.append("category_id", category_id);
+    }
+    if (region) {
+        params.append("region", region);
     }
     // // 组合含 page 的 url
     // if (!isNaN(page) && page !== 0) {
@@ -1529,8 +1556,114 @@ getMovieData: function () {
 ```
 
 ```js
+// Category.vue
+// 4. 对于分类功能，将 url 与对应的跳转按钮进行绑定
+<template>
+    <div>
+        <ul class="hidden md:flex items-center space-x-4 ml-2">
+            <li><a href="">首页</a></li>
+            <li><a href="">热门</a></li>
+
+            <li
+                v-for="category in info.results"
+                :key="category.id"
+                @click="category.display = !category.display"
+                class="dropdown-menu flex items-center relative hover: cursor-pointer select-none">
+                {{ category.category_name }}
+                <span
+                    ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path
+                            fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </span>
+                <!-- 额外定义的category.display默认属性值是 true，所以这里要先取反 -->
+                <div
+                    :class="{ hidden: !category.display }"
+                    class="dropdown-item-content absolute top-9 w-32 trasition ease-in-out delay-150 z-50">
+                    <ul class="bg-primary-700 py-2 px-4">
+                        <li class="plx-2 py-2">
+                            <a href="/?category_id=1">全部</a>
+                        </li>
+                        <li
+                            v-for="region in regions"
+                            :key="region.id"
+                            class="plx-2 py-2">
+                            <a
+                                :href="
+                                    '/?category_id=' +
+                                    category.id +
+                                    '&region=' +
+                                    region.id
+                                "
+                                >{{ region.name }}</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+</template>
+
+<script>
+import axios from "axios";
+
+export default {
+    name: "Category",
+    data: () => {
+        return {
+            info: "",
+            regions: [
+                { id: 1, name: "中国大陆" },
+                { id: 2, name: "中国香港" },
+                { id: 3, name: "中国台湾" },
+                { id: 4, name: "美国" },
+                { id: 5, name: "韩国" },
+                { id: 6, name: "日本" },
+                { id: 7, name: "其他" },
+            ],
+        };
+    },
+    mounted() {
+        this.getCategory();
+    },
+    methods: {
+        // 获取 category url 数据
+        // 当函数内要使用 this 的时候，一定要以 function() 的形式定义函数
+        getCategory: function () {
+            const url = "/api/category";
+            axios
+                .get(url)
+                .then((response) => {
+                    this.info = response.data;
+                    // console.log(this.info);
+                })
+                .catch((error) => {
+                    console.log("error", error);
+                });
+        },
+        // method(){} ES6 提供的简写方法
+        // toggle 下拉框显示
+        toggleDisplay(category) {
+            category.display = !category.display;
+        },
+    },
+};
+</script>
+
+<style></style>
+
+```
+
+```js
 // Page.vue
-// 3. 更改原有的页面跳转逻辑，让页面跳转时保留其他 query 参数
+// 5. 更改原有的页面跳转逻辑，让页面跳转时保留其他 query 参数
 goToPage(page) {
     this.current = page;
     // this.$router.push：这是 Vue Router 中的导航方法，用于编程式导航到指定的路由。
@@ -1549,3 +1682,5 @@ goToPage(page) {
     this.$router.push({ query: params });
 },
 ```
+
+#### 分类功能的实现
