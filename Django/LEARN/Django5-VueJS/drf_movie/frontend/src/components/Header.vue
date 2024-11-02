@@ -30,7 +30,7 @@
                                 class="absolute top-0 right-0 flex items-center h-full">
                                 <div
                                     class="rounded text-xs text-gray-400 px-2 mr-2">
-                                    <button v-on:click.prevent="searchMovies">
+                                    <button @click.prevent="searchMovies">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             class="h-4 w-4"
@@ -108,6 +108,17 @@ export default {
             username: "",
             showMenu: false,
         };
+    },
+
+    methods: {
+        searchMovies: function () {
+            const keyword = this.keyword.trim();
+            // 导航到名为 "home" 的路由，同时将查询参数 search 设置为指定的 keyword 值，加入到 $route.query 中，导航到 home 是保证无论当前在什么页面都能让跳到一个只包含 search参数的 url中
+            this.$router.push({
+                name: "home",
+                query: { search: keyword },
+            });
+        },
     },
 };
 </script>

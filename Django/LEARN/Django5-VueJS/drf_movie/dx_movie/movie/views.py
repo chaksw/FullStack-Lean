@@ -1,16 +1,20 @@
-from django.shortcuts import render
-from django.http import JsonResponse, Http404
-from rest_framework.decorators import api_view
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework import generics
-from rest_framework import mixins
-from rest_framework import viewsets
+# from django.shortcuts import render
+# from django.http import JsonResponse, Http404
+# from rest_framework.decorators import api_view
+# from rest_framework import status
+# from rest_framework.response import Response
+# from rest_framework.views import APIView
+# from rest_framework import generics
+# from rest_framework import mixins
 
-from .models import Movie
-# from .serializers import MovieListSerializer, MoviewDetailSerializer
+from rest_framework import viewsets
+from django_filters import rest_framework as filters
+
+
 from .serializers import MovieSerializer
+from .models import Movie
+
+# from .serializers import MovieListSerializer, MoviewDetailSerializer
 # Create your views here.
 
 '''
@@ -128,6 +132,16 @@ class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
 #     return self.destroy(request=request, *args, **kwargs)
 
 
+# 以 class 形式设置可搜索字段的模糊查询
+class MovieFilter(filters.FilterSet):
+    # 设定字段 movie_name 的查询方式为 lookup_expr='icontains'，即不区分大小写的包含
+    movie_name = filters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = Movie
+        fields = ['movie_name']
+
+
 # ======================================================================
 # 基于 django rest framework 的视图集 viewsets.ModelViewSet ，将针对一个数据模型的列表/新增/查看/更新/删除功能结合在一个 serializerclass 中
 # ModelViewSet 融合了 GenericAPIView 中对一个数据模型的所有 http 操作相关的类
@@ -141,6 +155,17 @@ class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
 # benefit：
 # 1. 在 serializers.py 中，不再需要分开 MovieListSerializer, MoviewDetailSerializer
 # 2. 在路由 urls.py 中，不需要分别为视图列表和单个数据视图操作定路由，而只需要采取注册的方式即可
+
+
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+    # 在 DRF 原有的配置中
+    # filter_backends = api_settings.DEFAULT_FILTER_BACKENDS
+    # 现基于 django-filter 进行新的配置
+    # 记得元组单个数据都是要加逗号 ,
+    filter_backends = (filters.DjangoFilterBackend,)
+    # # 配置可搜索字段
+    # filterset_fields = ('movie_name',)
+    # 以 class FilterSet 方式进行搜索配置
+    filterset_class = MovieFilter

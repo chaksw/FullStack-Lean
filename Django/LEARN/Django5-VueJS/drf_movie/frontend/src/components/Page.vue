@@ -17,6 +17,7 @@
                 </svg>
             </button>
         </span>
+        <!-- 遍历每一页 -->
         <a v-for="page in pages" :key="page" class="page-link">
             <button
                 v-if="page === '...'"
@@ -35,7 +36,6 @@
                 {{ page }}
             </button>
         </a>
-        <!-- 遍历每一页 -->
         <!-- <div class="page-link">
             <button
                 class="w-8 h-8 rounded mx-1 my-1 bg-blue-500 text-white"></button>
@@ -113,17 +113,26 @@ export default {
 
     methods: {
         getPageFromUrl() {
+            // 获取当前页面信息
             const page = Number(this.$route.query.page);
             return page ? page : 1;
         },
         goToPage(page) {
+            this.current = page;
             // this.$router.push：这是 Vue Router 中的导航方法，用于编程式导航到指定的路由。
             // { query: { page } }：这是传递的查询对象，将 page 参数设置为当前的 page 变量值。这样会自动生成类似 ?page=2 的查询字符串附加到 URL 中。
             // 假设当前 url 为 /movie
             // 执行 this.$router.push({ query: { page: 2 } }); 新的 url 会变成 movie/?page=2
             // alert(page);
-            this.$router.push({ query: { page } });
-            this.current = page;
+            // 只有 page 页时的实现
+            // this.$router.push({ query: { page } });
+            // 如果当前路由包含了多个参数 (page, search, etc)，跳转时要保留除 page 外的参数
+            // this.$route.query 是 Vue Router 提供的 query 对象，它包含当前路由 URL 中的所有查询参数。例如，对于 URL /search?keyword=vue&category=frontend，this.$route.query 会是 { keyword: "vue", category: "frontend" }。
+            // { ...this.$route.query }：利用对象的扩展运算符 (...) 创建一个 query 的浅拷贝到新对象 params 中。这样你可以在 params 对象中修改参数而不影响实际的 URL。
+            const params = { ...this.$route.query };
+            params.page = page;
+            console.log(params);
+            this.$router.push({ query: params });
         },
     },
 };

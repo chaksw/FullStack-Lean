@@ -9,36 +9,37 @@
                         class="movie"
                         v-for="movie in info.results"
                         :key="movie.id">
-                        <a href=""></a>
-                        <div class="relative">
-                            <div
-                                class=""
-                                style="
-                                    min-height: 259px;
-                                    max-height: 300px;
-                                    height: 274px;
-                                ">
-                                <img
-                                    class="rounded h-full w-full"
-                                    :src="movie.image_url"
-                                    alt=""
-                                    crossorigin="anonymous" />
+                        <a :href="'/movie/' + movie.id">
+                            <div class="relative">
                                 <div
-                                    class="rounded absolute top-0 bg-purple-600 px-1 text-sm">
-                                    {{ movie.is_top ? "置顶" : "" }}
-                                </div>
-                                <div
-                                    class="rounded absolute bottom-0 right-0 bg-blue-500 px-1 text-sm">
-                                    {{
-                                        movie.quality === 1
-                                            ? "720p"
-                                            : movie.quality === 2
-                                            ? "1080p"
-                                            : "4k"
-                                    }}
+                                    class=""
+                                    style="
+                                        min-height: 259px;
+                                        max-height: 300px;
+                                        height: 274px;
+                                    ">
+                                    <img
+                                        class="rounded h-full w-full"
+                                        :src="movie.image_url"
+                                        alt=""
+                                        crossorigin="anonymous" />
+                                    <div
+                                        class="rounded absolute top-0 bg-purple-600 px-1 text-sm">
+                                        {{ movie.is_top ? "置顶" : "" }}
+                                    </div>
+                                    <div
+                                        class="rounded absolute bottom-0 right-0 bg-blue-500 px-1 text-sm">
+                                        {{
+                                            movie.quality === 1
+                                                ? "720p"
+                                                : movie.quality === 2
+                                                ? "1080p"
+                                                : "4k"
+                                        }}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <p>{{ movie.movie_name }} ({{ movie.release_year }})</p>
                         <p class="text-sm text-primary-200">
                             {{ movie.language }}
@@ -68,18 +69,35 @@ export default {
         Page,
     },
     mounted() {
+        // 在 mounted 时自动调用
         this.getMovieData();
     },
     methods: {
         // 根据 url 中的 ?page= 参数实现分页显示
         getMovieData: function () {
+            // 基础 api
             let url = "/api/movie";
-            // 获取页数信息
+            // 获取路由 page 信息
             const page = Number(this.$route.query.page);
-            if (!isNaN(page) && page !== 0) {
-                url = url + "/?page=" + page;
+            // 获取路由 search 的参数
+            const search = this.$route.query.search;
+            // 将获取到的参数全部加入到 URLSearchParams 对象中
+            const params = new URLSearchParams();
+            if (page) {
+                params.append("page", page);
             }
-            // 发送 axios 请求
+            if (search) {
+                params.append("movie_name", search);
+            }
+            // // 组合含 page 的 url
+            // if (!isNaN(page) && page !== 0) {
+            //     url = url + "/?page=" + page;
+            // }
+            // 组合 url
+            // 组合后的 url 为如： /api/movie?page=2&movie_name=%E6%88%91%E7%9A%84
+            url = url + "?" + params.toString();
+            console.log(url);
+            // 发送 axios GET 请求
             axios
                 .get(url)
                 .then((response) => (this.info = response.data))

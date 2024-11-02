@@ -1251,6 +1251,301 @@ document.addEventListener('DOMContentLoaded', () => {
     - 在基于类的视图中，`self.request` **是自动从请求中提取并存储在视图实例中的**，因此你不需要显式地将 request 作为方法参数传递。
 3. 在 Django 的 DeleteView 或其他基于类的视图（CBV）中，`self.request` 和 `request` 在方法中的确本质上是同一个对象。它们都指向当前的 HTTP 请求对象，包含相同的数据和信息（如请求方法、用户信息、GET/POST 数据等）。
 
-# Django Rest Framework
+# 2. Django Rest Framework + VUE
 > 关于我对 Django rest frameworkd 的初步理解可以看：FullStack-Lean/Django/PRACTICE/Django-REST-API/README.md
+> 关于对 Vue 的学习总结看：FullStack-Lean/Django/LEARN/Vue3/README.md
 
+## 2.1. Django + Vue 跨域访问配置 `vue.config.js`
+```js
+// vue.config.js
+// 这部分是默认的
+const { defineConfig } = require("@vue/cli-service");
+module.exports = defineConfig({
+    transpileDependencies: true,
+});
+
+// 配置代理，解决跨域问题
+module.exports = {
+    devServer: {
+        proxy: {
+            "/api/": {
+                target: `http://127.0.0.1:8000/api`, // 后段 API 服务器地址
+                changeOrigin: true, // 改变请求的源头，解决跨域问题
+                pathRewrite: {
+                    "^/api": "", // 将 "/api" 前缀移除
+                },
+            },
+        },
+    },
+};
+```
+
+
+## 2.2. Vue 中获取特定 id 的数据
+```js
+// MovieDetail.vue
+// Vue Router 提供的 $route 对象中的 params。如果 URL 路径定义中包含了 :id 参数（例如 /movie/:id），则 this.$route.params.id 会获取到当前电影的 ID 值。
+getMovieInfo: function () {
+    axios
+        .get("/api/movie/" + this.$route.params.id)
+        .then((response) => (this.movie = response.data))
+        .catch((error) => {
+            console.log(error);
+        });
+},
+```
+
+## 2.3. 基于 DRD + Vue 分页功能实现
+
+### 2.3.1. Django 中的设置 (基于 DRF)
+```py
+# setting.py
+# 使用 rest_framework.pagination.PageNumberPagination 实现分页功能
+# 定义每一页最大数据量为 12 
+# 注意：这样的设置后，GET api/movie/ 返回的数据会从之前的数据列表(list)，变为多个dict，每个dict包含除数据外的 paginaiton 信息（next: url, previsou: url)且 api/movie = api/movie/?page=1
+# DRF pagination
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 12
+}
+```
+### 2.3.2. 获取分页数据
+进行分页设置后，数据会存储在 `dict.result` 列表中，且每页数据都分配给了 `api/movie/?page=x` 所以在vue中要获取数据，事实上是获取每个带page的url中的数据所以，获取数据的逻辑变为:
+1. 获取路由的 `page` 参数数据 `x`
+2. 组合url, GET url `api/movie/?page=x`
+```js
+// MovieList.vue
+// 根据 url 中的 ?page= 参数实现分页显示
+getMovieData: function () {
+    // 基础 api
+    let url = "/api/movie";
+    // 获取路由 page 信息
+    const page = Number(this.$route.query.page);
+    // 组合含 page 的 url
+    if (!isNaN(page) && page !== 0) {
+        url = url + "/?page=" + page;
+    }
+    // 发送 axios GET 请求
+    axios
+        .get(url)
+        .then((response) => (this.info = response.data))
+        .catch((error) => {
+            console.log("error", error);
+        });
+},
+```
+
+### 2.3.3. 基于 pagination 信息实现分页按钮及页面跳转
+核心思路： 基于获取到的 `pagination` 数据以及当前的页面数据来决定可跳转页面
+1. 获取当前的 page 信息 `current`，显示为对应页按钮（并用特定css效果区别与其他页按钮）
+2. 基于 `current` 获取附近可跳转的 pages， 如 `current + 1` 和 `current - 1`，显示为对应可跳转页按钮
+3. 获取最后一页和第一页的 page，显示为可跳转页按钮
+4. 其他过远的 page 用 `...` 按钮显示
+5. 特殊情况：如果当前页是第一页和最后一页，对应的1-4点都要特殊处理
+6. 定义跳转功能
+
+实现：
+```js
+// Page.vue
+export default {
+    name: "Page",
+    data: () => {
+        return {
+            current: 1,
+        };
+    },
+    mounted() {
+        this.current = this.getPageFromUrl();
+    },
+    props: {
+        info: Array,
+    },
+    computed: {
+        // 获取最后一页
+        lastPage() {
+            let pageSize = 12;
+            return Math.ceil(this.info.count / pageSize);
+        },
+        // 获取上一页
+        prePage() {
+            if (this.current > 1) {
+                return this.current - 1;
+            }
+            return 1;
+        },
+        // 获取下一页
+        nextPage() {
+            if (this.current < this.lastPage) {
+                return this.current + 1;
+            }
+            return this.current;
+        },
+        // 基于当前页显示可跳转的页面
+        // 2. 基于 `current` 获取附近可跳转的 pages， 如 `current + 1` 和 `current - 1`，显示为对应可跳转页按钮
+        // 3. 获取最后一页和第一页的 page，显示为可跳转页按钮
+        // 4. 其他过远的 page 用 `...` 按钮显示
+        pages() {
+            const pages = [];
+            for (let i = 1; i <= this.lastPage; i++) {
+                if (
+                    i === 1 ||
+                    i === this.lastPage ||
+                    (i <= this.current + 1 && i >= this.current - 1)
+                ) {
+                    pages.push(i);
+                } else if (pages[pages.length - 1] !== "...") {
+                    pages.push("...");
+                }
+            }
+            return pages;
+        },
+    },
+
+    methods: {
+        // 1. 获取当前页: this.$route.query.page;
+        getPageFromUrl() {
+            const page = Number(this.$route.query.page);
+            return page ? page : 1;
+        },
+        // 6. 页面跳转功能： this.$router.push({ query: { page } });
+        goToPage(page) {
+            // this.$router.push：这是 Vue Router 中的导航方法，用于编程式导航到指定的路由。
+            // { query: { page } }：这是传递的查询对象，将 page 参数设置为当前的 page 变量值。这样会自动生成类似 ?page=2 的查询字符串附加到 URL 中。
+            // 假设当前 url 为 /movie
+            // 执行 this.$router.push({ query: { page: 2 } }); 新的 url 会变成 movie/?page=2
+            // alert(page);
+            this.$router.push({ query: { page } });
+            this.current = page;
+        },
+    },
+};
+```
+
+## 2.4. 基于 `django-filter` 的搜索功能 ([结合 DRF 使用](https://django-filter.readthedocs.io/en/stable/guide/rest_framework.html))
+
+```py
+# settings.py
+# 安装 django-filter 并加入到 INSTALLED_APPS[]中
+
+INSTALLED_APPS = [
+    ...
+    'rest_framework',
+    'django-filters',
+    ...
+]
+# 配置默认的 DRF FILTER_BACKENDS
+REST_FRAMEWORK = {
+    # 这部分是 pagination 的配置
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 12,
+    # filter backend 配置
+    'DEFAULT_FILTER_BACKEND': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    )
+}
+# 
+```
+
+```py
+# in app->views.py
+from django_filters import rest_framework as filters
+
+# 以 class 形式设置可搜索字段的模糊查询
+class MovieFilter(filters.FilterSet):
+    # 设定字段 movie_name 的查询方式为 lookup_expr='icontains'，即不区分大小写的包含
+    movie_name = filters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = Movie
+        fields = ['movie_name']
+
+# 基于原有的serializer ModelViewSet 进行搜索配置
+class MovieViewSet(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    # 在 DRF 原有的配置中
+    # filter_backends = api_settings.DEFAULT_FILTER_BACKENDS
+    # 现基于 django-filter 进行新的配置
+    # 记得元组单个数据都是要加逗号 ,
+    filter_backends = (filters.DjangoFilterBackend,)
+    # # 配置可搜索字段
+    # filterset_fields = ('movie_name',)
+    # 以 class FilterSet 方式进行搜索配置
+    filterset_class = MovieFilter
+```
+
+对应 Vue 中的实现：
+1. 获取 search 框中的搜索数据，加入到路由参数中
+2. 从路由参数中获取到的搜索数据组合到当前url中，组成新的 url并跳转到该包含搜索数据的 url 页面中
+3. 更改原有的页面跳转逻辑，让页面跳转时保留其他 query 参数，以防新的url出现多页数据（数据结果大于 pageSize）时的跳转错误
+
+```js
+// Header.vue
+// 1. 获取搜索框中的查询数据
+searchMovies: function () {
+    const keyword = this.keyword.trim();
+    // 导航到名为 "home" 的路由，同时将查询参数 search 设置为指定的 keyword 值，加入到 $route.query 中
+    this.$router.push({
+        name: "home",
+        query: { search: keyword },
+    });
+},
+```
+
+```js
+// MovieList.vue
+// 2. 从路由参数中获取到的搜索数据组合到当前url中，组成新的 url并跳转到该包含搜索数据的 url 页面中
+getMovieData: function () {
+    // 基础 api
+    let url = "/api/movie";
+    // 获取路由 page 信息
+    const page = Number(this.$route.query.page);
+    // 获取路由 search 的参数
+    const search = this.$route.query.search;
+    // 将获取到的参数全部加入到 URLSearchParams 对象中
+    const params = new URLSearchParams();
+    if (page) {
+        params.append("page", page);
+    }
+    if (search) {
+        params.append("movie_name", search);
+    }
+    // // 组合含 page 的 url
+    // if (!isNaN(page) && page !== 0) {
+    //     url = url + "/?page=" + page;
+    // }
+    // 组合 url
+    // 组合后的 url 为如： /api/movie?page=2&movie_name=%E6%88%91%E7%9A%84
+    url = url + "?" + params.toString();
+    console.log(url);
+    // 发送 axios GET 请求
+    axios
+        .get(url)
+        .then((response) => (this.info = response.data))
+        .catch((error) => {
+            console.log("error", error);
+        });
+},
+```
+
+```js
+// Page.vue
+// 3. 更改原有的页面跳转逻辑，让页面跳转时保留其他 query 参数
+goToPage(page) {
+    this.current = page;
+    // this.$router.push：这是 Vue Router 中的导航方法，用于编程式导航到指定的路由。
+    // { query: { page } }：这是传递的查询对象，将 page 参数设置为当前的 page 变量值。这样会自动生成类似 ?page=2 的查询字符串附加到 URL 中。
+    // 假设当前 url 为 /movie
+    // 执行 this.$router.push({ query: { page: 2 } }); 新的 url 会变成 movie/?page=2
+    // alert(page);
+    // 只有 page 页时的实现
+    // this.$router.push({ query: { page } });
+    // 如果当前路由包含了多个参数 (page, search, etc)，跳转时要保留除 page 外的参数
+    // this.$route.query 是 Vue Router 提供的 query 对象，它包含当前路由 URL 中的所有查询参数。例如，对于 URL /search?keyword=vue&category=frontend，this.$route.query 会是 { keyword: "vue", category: "frontend" }。
+    // { ...this.$route.query }：利用对象的扩展运算符 (...) 创建一个 query 的浅拷贝到新对象 params 中。这样你可以在 params 对象中修改参数而不影响实际的 URL。
+    const params = { ...this.$route.query };
+    params.page = page;
+    console.log(params);
+    this.$router.push({ query: params });
+},
+```
