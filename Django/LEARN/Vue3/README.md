@@ -153,9 +153,9 @@
 
 ## 2.2. Create Vue Project
 
-1. `npm init vue@latest`
+1. ---`npm init vue@latest`---
    这一指令将会安装并执行`create-vue`，它是 Vue 官方的项目脚手架工具。执行后将会看到一些诸如 TypeScript 和测试支持之类的可选功能提示
-
+   根据最新的 [quickstart doc](https://vuejs.org/guide/quick-start.html#creating-a-vue-application)， 使用 `npm create vue@latest` 
 ```bash
 ✔ Project name: … vue-base
 ✔ Add TypeScript? … No / Yes
