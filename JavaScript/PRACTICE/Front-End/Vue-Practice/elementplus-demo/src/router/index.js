@@ -2,8 +2,12 @@ import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
 	{
-		path: "/",
-		component: () => import("@/views/index.vue"),
+		path: "/button-icon",
+		component: () => import("@/views/buttonIcon.vue"),
+	},
+	{
+		path: "/message",
+		component: () => import("@/views/message.vue"),
 	},
 ];
 
