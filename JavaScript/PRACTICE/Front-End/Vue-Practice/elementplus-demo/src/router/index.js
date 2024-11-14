@@ -17,6 +17,10 @@ const routes = [
 		path: "/input",
 		component: () => import("@/views/input.vue"),
 	},
+	{
+		path: "/radios",
+		component: () => import("@/views/radios.vue"),
+	},
 ];
 
 const router = createRouter({
