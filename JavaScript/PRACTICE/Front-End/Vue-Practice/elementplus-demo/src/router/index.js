@@ -13,6 +13,10 @@ const routes = [
 		path: "/tabs",
 		component: () => import("@/views/tabs.vue"),
 	},
+	{
+		path: "/input",
+		component: () => import("@/views/input.vue"),
+	},
 ];
 
 const router = createRouter({
