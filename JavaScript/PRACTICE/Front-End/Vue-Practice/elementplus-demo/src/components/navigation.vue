@@ -44,7 +44,7 @@
 		<el-menu-item index="3">Item 3</el-menu-item>
 		<el-menu-item index="4">Item 4</el-menu-item>
 	</el-menu>
-	
+
 	<!-- <h3 class="ml-2">Customized Navigation</h3>
 	<el-menu
 		:default-active="selectedIndex"
@@ -92,18 +92,18 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+	import { reactive, ref } from "vue";
 
-// 默认选中的菜单索引
-const selectedIndex = ref("2");
-// 选中菜单触发的回调
-const selected = (index, indexPath) => {
-	console.log("index", index, "indexPath", indexPath);
-};
+	// 默认选中的菜单索引
+	const selectedIndex = ref("2");
+	// 选中菜单触发的回调
+	const selected = (index, indexPath) => {
+		console.log("index", index, "indexPath", indexPath);
+	};
 
-const userCommand = (command) => {
-	console.log(command);
-};
+	const userCommand = (command) => {
+		console.log(command);
+	};
 </script>
 
 <style lang="scss" scoped></style>
