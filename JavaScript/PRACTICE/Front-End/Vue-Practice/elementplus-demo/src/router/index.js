@@ -9,6 +9,10 @@ const routes = [
 		path: "/message",
 		component: () => import("@/views/message.vue"),
 	},
+	{
+		path: "/tabs",
+		component: () => import("@/views/tabs.vue"),
+	},
 ];
 
 const router = createRouter({

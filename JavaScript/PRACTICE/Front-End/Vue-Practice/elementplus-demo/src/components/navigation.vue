@@ -44,7 +44,8 @@
 		<el-menu-item index="3">Item 3</el-menu-item>
 		<el-menu-item index="4">Item 4</el-menu-item>
 	</el-menu>
-	<h3 class="ml-2">Customized Navigation</h3>
+	
+	<!-- <h3 class="ml-2">Customized Navigation</h3>
 	<el-menu
 		:default-active="selectedIndex"
 		@select="selected"
@@ -64,7 +65,7 @@
 		</el-menu-item>
 		<el-menu-item index="3">Item 3</el-menu-item>
 		<el-menu-item index="4">Item 4</el-menu-item>
-	</el-menu>
+	</el-menu> -->
 
 	<h3>Bread crumb</h3>
 	<el-breadcrumb separator="/">
