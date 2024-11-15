@@ -22,7 +22,7 @@ npm i
 npm install vue-router@4 --save
 ```
 
-2. Router prese: mapping of `@` to `../src` (only valid with `import` command)
+2. Path mapping of `@` to `../src` (only valid with `import` command) (independently with router@4)
 ```js
 // in vite.config.js (created in npm create vite@latest)
 
@@ -131,7 +131,7 @@ export default {
 ```
 
 ```js
-// postcss.config.js
+// postcss.config.js, work done with generation, not need to update
 export default {
   plugins: {
     tailwindcss: {},
@@ -271,5 +271,43 @@ app.mount("#app");
 "editor.quickSuggestions": {
     "strings": true
 },
+```
+
+### Font setting (using [inter](https://rsms.me/inter) recommanded by TailwindCss)
+```html
+<!-- in index.html -->
+ <!-- <link rel="stylesheet" href="https://rsms.me/inter/inter.css"> -->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Vite + Vue</title>
+	</head>
+	<body>
+		<div id="app"></div>
+		<script type="module" src="/src/main.js"></script>
+	</body>
+</html>
+
+```
+
+```js
+// in tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+const defaultTheme = require("tailwindcss/defaultTheme")
+export default {
+	...
+	theme: {
+		extend: {
+			fontFamily: {
+				sans: ['InterVariable', ...defaultTheme.fontFamily.sans]
+			}
+		},
+	},
+	...
+};
+
 ```
 
