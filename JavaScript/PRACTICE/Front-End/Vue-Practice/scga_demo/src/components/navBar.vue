@@ -1,30 +1,44 @@
 <template>
 	<div>
-		<el-menu
-			mode="horizontal"
-			:default-active="selectedIndex"
-			@select="selected"
-			style="font-size: 50px;"
-		>
-			<el-menu-item index="0" alt="logo"
-				><a href="/"><arrow-down-left-icon /><el-icon><Menu /></el-icon> </a
-			></el-menu-item>
+		<el-menu mode="horizontal" :default-active="selectedIndex">
+			<el-menu-item index="0" alt="logo" class="menu-item">
+				<a href="/">
+					<el-icon><Menu /></el-icon>
+				</a>
+			</el-menu-item>
 			<el-menu-item index="1">
 				<el-sub-menu>
-					<template #title>SCGA</template>
-					<el-menu-item index="2-1">Option 1</el-menu-item>
-					<el-menu-item index="2-2">Option 2</el-menu-item>
-					<el-menu-item index="2-3">Option 3</el-menu-item>
+					<template #title>
+						<div class="menu-item">SCGA</div>
+					</template>
+					<el-menu-item index="2-1" class="sub-menu-item"
+						>Option 1</el-menu-item
+					>
+					<el-menu-item index="2-2" class="sub-menu-item"
+						>Option 2</el-menu-item
+					>
+					<el-menu-item index="2-3" class="sub-menu-item"
+						>Option 3</el-menu-item
+					>
 				</el-sub-menu>
 			</el-menu-item>
-			<el-menu-item index="2">TRS</el-menu-item>
+			<el-menu-item index="2" class="menu-item">TRS</el-menu-item>
 
-			<el-menu-item index="3">RA</el-menu-item>
+			<el-menu-item index="3" class="menu-item">RA</el-menu-item>
 		</el-menu>
 	</div>
 </template>
 
-<script setup>
-</script>
+<script setup></script>
 
-<style lang="scss" scoped></style>
+<style lang="css" scoped>
+	.el-menu--horizontal {
+		--el-menu-horizontal-height: 60px;
+	}
+	.menu-item {
+		font-size: 16px !important;
+	}
+	.sub-menu-item {
+		font-size: 14px !important;
+	}
+</style>

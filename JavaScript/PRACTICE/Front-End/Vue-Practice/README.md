@@ -311,3 +311,12 @@ export default {
 
 ```
 
+### Font setting (using element-plus default font)
+```css
+/* in src/style.css (create if not existed*/
+body {
+	font-family: Inter, "Helvetica Neue", Helvetica, "PingFang SC",
+		"Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+}
+
+```
