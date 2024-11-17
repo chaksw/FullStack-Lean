@@ -1,33 +1,35 @@
 <template>
-	<div class="common-layout">
+	<div>
 		<el-container>
 			<!-- header -->
 			<el-header>
 				<navigation />
 			</el-header>
+			<!-- sidebar & divier & main -->
 			<el-container>
-				<el-aside>
-					<sidebar />
-				</el-aside>
-				<el-container>
-					<el-main>
-						<h3>Test</h3>
-					</el-main>
+				<sidebar />
+				<!-- divider -->
+				<div>
+					<el-divider
+						direction="vertical"
+						style="min-height: 100vh; height: 100%"
+					></el-divider>
+				</div>
+				<!-- main -->
+				<el-main>
+					<file-functions />
 					<router-view />
-					<el-footer>Footer</el-footer>
-				</el-container>
+				</el-main>
 			</el-container>
 		</el-container>
+		<el-footer>Footer</el-footer>
 	</div>
 </template>
 
 <script setup>
 	import navigation from "@/components/navBar.vue";
-	import sidebar from "@/components/sidebar.vue";
+	import sidebar from "@/components/sidebar/sidebar.vue";
+	import fileFunctions from "@/views/scga/fileFunctions.vue";
 </script>
 
-<style lang="css" scoped>
-	.el-aside {
-		width: 70px !important;
-	}
-</style>
+<style lang="css" scoped></style>

@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="nav">
 		<el-menu mode="horizontal" :default-active="selectedIndex">
 			<el-menu-item index="0" alt="logo" class="menu-item">
 				<a href="/">
@@ -32,6 +32,13 @@
 <script setup></script>
 
 <style lang="css" scoped>
+	.nav {
+		margin-left: -20px;
+	}
+	.el-menu {
+		padding-left: 10px;
+	}
+
 	.el-menu--horizontal {
 		--el-menu-horizontal-height: 60px;
 	}
