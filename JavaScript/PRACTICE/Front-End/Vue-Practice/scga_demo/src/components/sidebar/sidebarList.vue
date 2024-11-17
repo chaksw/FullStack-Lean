@@ -1,14 +1,12 @@
 <template>
 	<el-menu :default-active="selectedIndex" class="uncpllapsed-sidebar-list">
-		<el-menu-item index="0" class="menu-item">
-			<el-icon><Location /></el-icon>
-		</el-menu-item>
-		<el-menu-item index="1" class="menu-item">
-			<el-icon><Menu /></el-icon> </el-menu-item
-		><el-menu-item index="2" class="menu-item">
-			<el-icon><Setting /></el-icon> </el-menu-item
-		><el-menu-item index="3" class="menu-item">
+		<el-menu-item index="0" class="sidebar-item">
 			<el-icon><Document /></el-icon>
+			<p>Cureent</p>
+		</el-menu-item>
+		<el-menu-item index="1" class="sidebar-item">
+			<el-icon><Files /></el-icon>
+			<p>Previous</p>
 		</el-menu-item>
 	</el-menu>
 </template>
@@ -21,7 +19,18 @@
 		flex-direction: column;
 		justify-content: top;
 		align-items: center;
-		width: 20%;
+		width: 25%;
+		padding: 8px 0;
 		min-height: 100vh;
+	}
+	.sidebar-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		font-size: 14px;
+		padding-top: 12px;
+		line-height: 30px;
 	}
 </style>
