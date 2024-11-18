@@ -3,7 +3,7 @@
 	<el-container class="sidebar-horizontal-header">
 		<!-- Title & buttons -->
 		<el-container class="sidebar-horizontal-header-content">
-			<p>SCGA WorkSpace</p>
+			<p>{{ header }}</p>
 			<div style="display: flex; align-items: center">
 				<el-button>New</el-button>
 				<el-button>Import</el-button>
@@ -13,7 +13,10 @@
 	</el-container>
 </template>
 
-<script setup></script>
+<script setup>
+	import { ref } from "vue";
+	const header = ref("EDSGGF_GS_GCOM_00_016");
+</script>
 
 <style lang="css" scoped>
 	.sidebar-horizontal-header {
