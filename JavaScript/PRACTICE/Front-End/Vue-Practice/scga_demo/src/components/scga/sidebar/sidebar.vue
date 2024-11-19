@@ -1,13 +1,16 @@
 <template>
 	<el-aside>
-		<sidebar-header />
-		<sidebar-container />
+		<sidebarHeader />
+		<sidebarContainer />
 	</el-aside>
 </template>
 
 <script setup>
 	import sidebarHeader from "./sidebarHeader.vue";
 	import sidebarContainer from "./sidedbarContainer.vue";
+	
+
+	
 </script>
 
 <style lang="css" scoped>

@@ -9,7 +9,7 @@
 			<el-menu-item index="1">
 				<el-sub-menu>
 					<template #title>
-						<div class="menu-item">SCGA</div>
+						<div class="menu-item"><a href="/scga">SCGA</a></div>
 					</template>
 					<el-menu-item index="2-1" class="sub-menu-item"
 						>Option 1</el-menu-item

@@ -1,18 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
-	// {
-	// 	path: "/",
-	// 	component: () => {},
-	// },
-	// {
-	// 	path: "/",
-	// 	component: () => {},
-	// },
-	// {
-	// 	path: "/",
-	// 	component: () => {},
-	// },
+	{
+		path: "/",
+		alias: "/scga",
+		// redirect: '/',
+		name: 'scga',
+		component: () => import ("@/views/scga.vue"),
+	},
+	
 ];
 
 const router = createRouter({

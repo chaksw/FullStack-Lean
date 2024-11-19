@@ -3,7 +3,7 @@
 	<el-container class="sidebar-horizontal-header">
 		<!-- Title & buttons -->
 		<el-container class="sidebar-horizontal-header-content">
-			<p>{{ header }}</p>
+			<p>{{ baseline }}</p>
 			<div style="display: flex; align-items: center">
 				<el-button>New</el-button>
 				<el-button>Import</el-button>
@@ -14,8 +14,9 @@
 </template>
 
 <script setup>
-	import { ref } from "vue";
-	const header = ref("EDSGGF_GS_GCOM_00_016");
+	import { ref, inject } from "vue";
+	const baseline = inject('baseline')
+	// const header = ref("EDSGGF_GS_GCOM_00_016");
 </script>
 
 <style lang="css" scoped>
