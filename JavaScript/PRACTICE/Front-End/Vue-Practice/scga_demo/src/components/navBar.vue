@@ -1,6 +1,6 @@
 <template>
 	<div class="nav">
-		<el-menu mode="horizontal" :default-active="selectedIndex">
+		<el-menu mode="horizontal" default-active="1">
 			<el-menu-item index="0" alt="logo" class="menu-item">
 				<a href="/">
 					<el-icon><Menu /></el-icon>

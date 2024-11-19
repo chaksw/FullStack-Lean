@@ -11,7 +11,10 @@
 	</el-menu>
 </template>
 
-<script setup></script>
+<script setup>
+	import { ref } from "vue";
+	const selectedIndex = ref("0");
+</script>
 
 <style lang="css" scoped>
 	.uncpllapsed-sidebar-list {

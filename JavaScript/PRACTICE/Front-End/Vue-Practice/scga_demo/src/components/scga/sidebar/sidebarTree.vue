@@ -8,6 +8,7 @@
 			clearable
 		/>
 		<el-tree
+			highlight-current
 			ref="treeRef"
 			style="max-width: 600px"
 			class="filter-tree"
@@ -20,17 +21,79 @@
 
 <script setup>
 	import { Search } from "@element-plus/icons-vue";
-	import { ref, inject, watch, onMounted } from "vue";
-
-	const levels = inject("levels");
-
+	import { ref, inject, watch } from "vue";
 	const filterText = ref("");
 	const treeRef = ref();
+	const levels = inject("levels");
+	const data = ref();
+	const functions = ref([]);
+	const processLevelData = (levels) => {
+		let data = [];
+		// for each level data
+		for (let idx = 0; idx < levels.value.length; idx++) {
+			let level = {};
+			let testPlan = {};
+			let testException = {};
+			level.id = levels.value[idx].id;
+			level.label = "Level " + levels.value[idx].level;
+			level.children = [];
 
-	// const defaultProps = {
-	// 	children: "children",
-	// 	label: "label",
-	// };
+			// test plan
+			if (levels.value[idx].test_plan) {
+				testPlan = precessTestPlanData(levels.value[idx].test_plan);
+				level.children.push(testPlan);
+			}
+			// test exception
+			if (levels.value[idx].test_exception) {
+				testException = precessTesExceptionData(
+					levels.value[idx].test_exception
+				);
+				level.children.push(testException);
+			}
+			if (level.children.length !== 0) {
+				data.push(level);
+			}
+		}
+		// console.log(data);
+		return data;
+	};
+	const precessTestPlanData = (testPlanData) => {
+		// console.log(testPlanData);
+		let testPlan = {};
+		testPlan.id = testPlanData.id;
+		testPlan.label = testPlanData.sheet_name;
+		testPlan.lv_total_coverage = testPlanData.lv_total_coverage
+		console.log(testPlan.lv_total_coverage);
+		testPlan.children = processModulesData(testPlanData.modules);
+		return testPlan;
+	};
+	const precessTesExceptionData = (testExceptionData) => {
+		let testException = {};
+		testException.id = testExceptionData.id;
+		testException.label = testExceptionData.sheet_name;
+		testException.children = processModulesData(testExceptionData.modules);
+		return testException;
+	};
+
+	const processModulesData = (modulesData) => {
+		let modules = [];
+		
+		for (let idx = 0; idx < modulesData.length; idx++) {
+			let module = {};
+			module.id = modulesData[idx].id;
+			module.label = modulesData[idx].module_name;
+			module.functions = modulesData[idx].functions
+			modules.push(module);
+		}
+		return modules;
+	};
+
+	watch(() => {
+		if (levels.value) {
+			console.log(levels.value);
+			data.value = processLevelData(levels);
+		}
+	});
 
 	const defaultProps = {
 		label: "label",
@@ -43,78 +106,8 @@
 
 	const filterNode = (value, data) => {
 		if (!value) return true;
-		return data.label.includes(value);
+		return data.label.toLowerCase().includes(value.toLowerCase());
 	};
-
-	const formLevelData = function (levels) {
-		for (const level in levels.value) {
-			console.log(levels.value);
-			let levelData = {};
-			levelData.id = level.id;
-			levelData.label = "Level " + level.level;
-			levelData.children = [level.test_plan, level.test_exception];
-			// console.log(levelData.label);
-		}
-	};
-	onMounted(() => {
-		console.log("asdasd");
-		formLevelData(levels);
-	});
-	// const data = [
-	// 	{
-	// 		id: levels.value[0].id,
-	// 		label: "Level " + levels.value[0].level,
-	// 		children: [
-	// 			{
-	// 				id: levels.value[0].test_plan.id,
-	// 				label: "Test Plan",
-	// 				children: [
-	// 					{
-	// 						id: 10,
-	// 						label: "PfdDioASCB.cpp",
-	// 					},
-	// 					{
-	// 						id: 11,
-	// 						label: "PfdGioAtt.cpp",
-	// 					},
-	// 				],
-	// 			},
-	// 			{
-	// 				id: 5,
-	// 				label: "Test Exception",
-	// 				children: [],
-	// 			},
-	// 		],
-	// 	},
-	// 	{
-	// 		id: 2,
-	// 		label: "Level B",
-	// 		children: [
-	// 			{
-	// 				id: 6,
-	// 				label: "Test Plan",
-	// 			},
-	// 			{
-	// 				id: 7,
-	// 				label: "Test Exception",
-	// 			},
-	// 		],
-	// 	},
-	// 	{
-	// 		id: 3,
-	// 		label: "Level C",
-	// 		children: [
-	// 			{
-	// 				id: 8,
-	// 				label: "Test Plan",
-	// 			},
-	// 			{
-	// 				id: 9,
-	// 				label: "Test Exception",
-	// 			},
-	// 		],
-	// 	},
-	// ];
 </script>
 
 <style lang="css" scoped>

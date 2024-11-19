@@ -9,8 +9,6 @@
 	import sidebarHeader from "./sidebarHeader.vue";
 	import sidebarContainer from "./sidedbarContainer.vue";
 	
-
-	
 </script>
 
 <style lang="css" scoped>
