@@ -1,14 +1,22 @@
 <template>
 	<el-aside>
 		<sidebarHeader />
-		<sidebarContainer />
+		<sidebarContainer @send-module="onSendModule"/>
 	</el-aside>
 </template>
 
 <script setup>
 	import sidebarHeader from "./sidebarHeader.vue";
 	import sidebarContainer from "./sidedbarContainer.vue";
-	
+	import { defineEmits } from "vue";
+	// const selectedModule = ref();
+	const emit = defineEmits(['sendModule'])
+
+	// send to scga.vue
+	const onSendModule = (module) => {
+		// console.log("on sidebar", module);
+		emit("sendModule", module)
+	};
 </script>
 
 <style lang="css" scoped>
