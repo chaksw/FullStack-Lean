@@ -16,7 +16,11 @@
 				label="Percent MC/DC"
 				:formatter="
 					(value) =>
-						(value.coverage.percent_coverage_MCDC * 100).toFixed(2) + '%'"/>
+						(value.coverage.percent_coverage_MCDC * 100).toFixed(
+							2
+						) + '%'
+				"
+			/>
 			<el-table-column
 				prop="coverage.percent_coverage_Analysis"
 				label="Percent Analysis"
@@ -70,17 +74,27 @@
 </template>
 
 <script setup>
-	import { inject, ref, watch } from "vue";
-	const module = inject("selectedModule");
-	const functions = ref();
-	watch(() => {
-		if (module.value) {
-			// console.log("testplan", module.value.functions);
-			functions.value = module.value.functions;
-		}
+	import { ref, toRef } from "vue";
+
+	const props = defineProps({
+		selectedModule: {
+			type: Object,
+		},
 	});
+	const functions = ref()
+	const selectedModule = toRef(props, "selectedModule");
+	functions.value = selectedModule.value.functions
+	console.log("testplan", selectedModule.value);
+	console.log("testplan functions", selectedModule.value.functions);
+
+	// const functions = ref();
+	// onMounted(() => {
+	// 	if (props.selectedModuleValue) {
+	// 		functions.value = props.selectedModuleValue.functions;
+	// 	}
+	// });
 
 	const processFcuntions = (funcs) => {};
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="css" scoped></style>

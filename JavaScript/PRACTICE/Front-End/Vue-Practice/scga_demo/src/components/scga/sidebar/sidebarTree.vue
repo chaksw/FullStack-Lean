@@ -130,6 +130,7 @@
 
 	// handle node-click
 	const handleNodeClick = (data) => {
+		// emit module data
 		if (data.hasOwnProperty("functions")) {
 			selectedModule.value = data;
 			// send to sidebar container

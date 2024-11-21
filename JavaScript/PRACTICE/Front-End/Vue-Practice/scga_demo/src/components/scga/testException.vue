@@ -1,5 +1,5 @@
 <template>
-	<el-table :data="uncoverages" style="width: 100%" max-height="800">
+	<el-table :data="uncoverages" style="width: 100%" max-height="750">
 		<el-table-column fixed prop="root.root.name" label="Module" />
 
 		<el-table-column fixed prop="root.name" label="Function Name" />
@@ -40,14 +40,23 @@
 </template>
 
 <script setup>
-	import { inject, ref, watch } from "vue";
-	const module = inject("selectedModule");
+	import { inject, ref, watch, toRef, onMounted } from "vue";
+	// const module = inject("testExceptionModule");
+	const props = defineProps({
+		selectedModule: {
+			type: Object,
+		},
+	});
+	const selectedModule = toRef(props, "selectedModule");
+	// console.log("test exception", selectedModule);
+	
 	const functions = ref();
 	const uncoverages = ref([]);
+
 	const processFunctions = (module) => {
 		let funcs = [];
-		for (let i = 0; i < module.functions.length; i++) {
-			let func = module.functions[i];
+		for (const function_ of module.functions) {
+			let func = function_;
 			func.root = {};
 			func.root.name = module.label;
 			func.root.root = module.root;
@@ -56,7 +65,7 @@
 				processUnCoverages(func)
 			);
 		}
-		console.log(uncoverages);
+		console.log("uncoverage", uncoverages);
 		return funcs;
 	};
 
@@ -71,10 +80,11 @@
 		}
 		return uncoverages;
 	};
-	watch(() => {
-		if (module.value) {
-			// console.log("test exception", module.value);
-			functions.value = processFunctions(module.value);
+	
+	onMounted(() => {
+		if (selectedModule) {
+			console.log("test exception", selectedModule.value);
+			functions.value = processFunctions(selectedModule.value);
 			// console.log(functions.value);
 		}
 	});
