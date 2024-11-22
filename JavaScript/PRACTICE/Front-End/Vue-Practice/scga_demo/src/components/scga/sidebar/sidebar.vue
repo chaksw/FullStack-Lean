@@ -8,7 +8,6 @@
 <script setup>
 	import sidebarHeader from "./sidebarHeader.vue";
 	import sidebarContainer from "./sidedbarContainer.vue";
-	import { defineEmits } from "vue";
 	// const selectedModule = ref();
 	const emit = defineEmits(['sendModule'])
 

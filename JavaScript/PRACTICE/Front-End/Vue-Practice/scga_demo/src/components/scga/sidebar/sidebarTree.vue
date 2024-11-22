@@ -22,7 +22,7 @@
 
 <script setup>
 	import { Search } from "@element-plus/icons-vue";
-	import { ref, inject, watch, defineEmits, reactive } from "vue";
+	import { ref, inject, watch } from "vue";
 	const filterText = ref("");
 	const treeRef = ref();
 	const defaultProps = {

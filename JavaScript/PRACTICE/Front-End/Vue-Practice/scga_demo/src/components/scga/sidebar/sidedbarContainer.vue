@@ -1,6 +1,6 @@
 <template>
 	<el-container>
-		<sidebar-list />
+		<!-- <sidebar-list /> -->
 		<sidebar-tree @emit-module="onEmitModule" />
 	</el-container>
 </template>
@@ -8,7 +8,6 @@
 <script setup>
 	import sidebarList from "./sidebarList.vue";
 	import sidebarTree from "./sidebarTree.vue";
-	import { defineEmits } from "vue";
 
 	const emit = defineEmits(['sendModule'])
 	// send to sidebar.vue

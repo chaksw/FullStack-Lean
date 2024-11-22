@@ -2,7 +2,7 @@
 	<el-menu :default-active="selectedIndex" class="uncpllapsed-sidebar-list">
 		<el-menu-item index="0" class="sidebar-item">
 			<el-icon><Document /></el-icon>
-			<p>Cureent</p>
+			<p>Current</p>
 		</el-menu-item>
 		<el-menu-item index="1" class="sidebar-item">
 			<el-icon><Files /></el-icon>
