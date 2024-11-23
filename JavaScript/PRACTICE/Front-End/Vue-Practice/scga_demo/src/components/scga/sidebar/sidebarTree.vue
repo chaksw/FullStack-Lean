@@ -35,7 +35,7 @@
 
 	const selectedModule = ref({});
 	// define a emit method name: emitModule
-	const emit = defineEmits(['emitModule'])
+	const emit = defineEmits(["emitModule"]);
 
 	// level data process
 	const processLevelData = (levels) => {
@@ -52,12 +52,18 @@
 
 			// test plan
 			if (levels.value[idx].test_plan) {
-				testPlan = precessTestPlanData(level.baseline, levels.value[idx].test_plan);
+				testPlan = precessTestPlanData(
+					level.baseline,
+					levels.value[idx].test_plan
+				);
 				level.children.push(testPlan);
 			}
 			// test exception
 			if (levels.value[idx].test_exception) {
-				testException = precessTesExceptionData(level.baseline, levels.value[idx].test_exception);
+				testException = precessTesExceptionData(
+					level.baseline,
+					levels.value[idx].test_exception
+				);
 				level.children.push(testException);
 			}
 			if (level.children.length !== 0) {
@@ -94,12 +100,12 @@
 
 	const processModulesData = (superRoot, testData) => {
 		let modules = [];
-		const modulesData = testData.modules
+		const modulesData = testData.modules;
 		for (let idx = 0; idx < modulesData.length; idx++) {
 			let module = {};
 			module.id = modulesData[idx].id;
 			module.label = modulesData[idx].module_name;
-			module.root = {}
+			module.root = {};
 			module.root.name = testData.sheet_name;
 			module.root.root = superRoot;
 			module.functions = modulesData[idx].functions;
@@ -113,7 +119,6 @@
 		if (levels.value) {
 			// console.log(levels.value);
 			treeViewData.value = processLevelData(levels);
-			
 		}
 	});
 
@@ -133,14 +138,12 @@
 		// emit module data
 		if (data.hasOwnProperty("functions")) {
 			selectedModule.value = data;
-			// send to sidebar container
-			emit('emitModule', selectedModule)
+			// send to sidebar container -- delete container,
+			// send to sidebar.vue
+			emit("emitModule", selectedModule);
 			// console.log(selectedModule.value);
 		}
 	};
-	
-
-	
 </script>
 
 <style lang="css" scoped>
@@ -149,5 +152,8 @@
 		flex-direction: column;
 		justify-content: top;
 		padding: 10px;
+	}
+	.filter-tree {
+		padding-top: 8px;
 	}
 </style>
