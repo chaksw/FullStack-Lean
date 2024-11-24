@@ -117,7 +117,6 @@
 	// fetch levels data
 	watch(() => {
 		if (levels.value) {
-			// console.log(levels.value);
 			treeViewData.value = processLevelData(levels);
 		}
 	});

@@ -20,12 +20,15 @@
 					@tab-remove="removeTab"
 				>
 					<el-tab-pane
-						v-for="(item) in moduleTabs"
+						v-for="item in moduleTabs"
 						:key="item.name"
 						:label="item.title"
 						:name="item.name"
 					>
-						<testPlan :selectedModule="item.content" v-if="isTestPlan" />
+						<testPlan
+							:selectedModule="item.content"
+							v-if="isTestPlan"
+						/>
 						<testException :selectedModule="item.content" v-else />
 					</el-tab-pane>
 				</el-tabs>
@@ -122,7 +125,6 @@
 				isTestPlan.value = false;
 				addTab(testExceptionModule);
 			}
-			
 		}
 	};
 
@@ -136,11 +138,13 @@
 		await axios
 			.get(url)
 			.then((response) => {
-				data.value = response.data.results;
-				// console.log(data.value);
-				baseline.value = data.value[0].baseline;
-				levels.value = data.value[0].levels;
-				levels.value.baseline = baseline.value;
+				if (response.data) {
+					data.value = response.data.results;
+					// console.log(data.value);
+					baseline.value = data.value[0].baseline;
+					levels.value = data.value[0].levels;
+					levels.value.baseline = baseline.value;
+				}
 			})
 			.catch((error) => {
 				console.log(error);
