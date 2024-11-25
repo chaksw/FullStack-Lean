@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-	import sidebarList from "./sidebarList.vue";
+	// import sidebarList from "./sidebarList.vue";
 	import sidebarTree from "./sidebarTree.vue";
 
 	const emit = defineEmits(['sendModule'])

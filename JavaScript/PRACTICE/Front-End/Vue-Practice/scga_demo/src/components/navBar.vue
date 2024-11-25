@@ -6,21 +6,10 @@
 					<el-icon><Menu /></el-icon>
 				</a>
 			</el-menu-item>
-			<el-menu-item index="1">
-				<el-sub-menu>
-					<template #title>
-						<div class="menu-item"><a href="/scga">SCGA</a></div>
-					</template>
-					<el-menu-item index="2-1" class="sub-menu-item"
-						>Option 1</el-menu-item
-					>
-					<el-menu-item index="2-2" class="sub-menu-item"
-						>Option 2</el-menu-item
-					>
-					<el-menu-item index="2-3" class="sub-menu-item"
-						>Option 3</el-menu-item
-					>
-				</el-sub-menu>
+			<el-menu-item index="1" class="menu-item">
+				<a href="/scga">
+					SCGA
+				</a>
 			</el-menu-item>
 			<el-menu-item index="2" class="menu-item">TRS</el-menu-item>
 

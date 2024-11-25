@@ -5,8 +5,7 @@
 			placeholder="Search file"
 			:prefix-icon="Search"
 			clearable
-			style="width: 100%"
-		/>
+			style="width: 100%" />
 		<el-tree
 			ref="treeRef"
 			class="filter-tree"
@@ -15,8 +14,7 @@
 			:filter-node-method="filterNode"
 			@node-click="handleNodeClick"
 			highlight-current
-			style="max-width: 400px"
-		/>
+			style="max-width: 400px" />
 	</el-container>
 </template>
 
